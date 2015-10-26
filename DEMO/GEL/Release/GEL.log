@@ -1,0 +1,173 @@
+﻿Build started 07-10-2015 19:25:16.
+     1>Project "D:\Programmering\DSC + SPH\DEMO\GEL\GEL.vcxproj" on node 2 (Rebuild target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(936,5): warning MSB8027: Two or more files with the name of load.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Geometry\load.cpp, HMesh\load.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(936,5): warning MSB8027: Two or more files with the name of obj_load.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Geometry\obj_load.cpp, HMesh\obj_load.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(936,5): warning MSB8027: Two or more files with the name of ply_load.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Geometry\ply_load.cpp, HMesh\ply_load.cpp.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\GEL.pdb" /Gd /TP /analyze- /errorReport:prompt CGLA\ArithSqMat3x3Float.cpp CGLA\ArithSqMat4x4Float.cpp CGLA\ArithVec2Float.cpp CGLA\ArithVec3Float.cpp CGLA\eigensolution.cpp CGLA\gel_rand.cpp CGLA\Mat3x3d.cpp CGLA\Mat3x3f.cpp CGLA\Mat4x4d.cpp CGLA\Mat4x4f.cpp CGLA\statistics.cpp CGLA\TableTrigonometry.cpp CGLA\Vec2i.cpp CGLA\Vec3f.cpp CGLA\Vec3i.cpp Geometry\AABox.cpp Geometry\BBox.cpp Geometry\BoundingINode.cpp Geometry\BoundingLNode.cpp Geometry\BoundingNode.cpp Geometry\BoundingTree.cpp Geometry\BSPTree.cpp Geometry\build_bbtree.cpp Geometry\GradientFilter.cpp Geometry\load.cpp Geometry\load_raw.cpp Geometry\Neighbours.cpp Geometry\obj_load.cpp Geometry\OBox.cpp Geometry\ply_load.cpp Geometry\Polygonizer.cpp Geometry\QEM.cpp Geometry\tessellate.cpp Geometry\ThreeDDDA.cpp Geometry\Triangle.cpp Geometry\TrilinFilter.cpp Geometry\TriMesh.cpp Geometry\verification.cpp HMesh\cleanup.cpp HMesh\ConnectivityKernel.cpp HMesh\curvature.cpp HMesh\dual.cpp HMesh\flatten.cpp HMesh\load.cpp HMesh\Manifold.cpp HMesh\mesh_optimization.cpp HMesh\obj_load.cpp HMesh\obj_save.cpp HMesh\off_load.cpp HMesh\off_save.cpp HMesh\ply_load.cpp HMesh\quadric_simplify.cpp HMesh\refine_edges.cpp HMesh\smooth.cpp HMesh\subdivision.cpp HMesh\triangulate.cpp HMesh\x3d_load.cpp HMesh\x3d_save.cpp
+         ArithSqMat3x3Float.cpp
+         ArithSqMat4x4Float.cpp
+         ArithVec2Float.cpp
+         ArithVec3Float.cpp
+         eigensolution.cpp
+         gel_rand.cpp
+         Mat3x3d.cpp
+         Mat3x3f.cpp
+         Mat4x4d.cpp
+         Mat4x4f.cpp
+         statistics.cpp
+         TableTrigonometry.cpp
+         Vec2i.cpp
+         Vec3f.cpp
+         Vec3i.cpp
+         AABox.cpp
+         BBox.cpp
+     1>Geometry\BBox.cpp(192): warning C4305: 'argument': truncation from 'const double' to 'float'
+         BoundingINode.cpp
+         BoundingLNode.cpp
+         BoundingNode.cpp
+         Compiling...
+         BoundingTree.cpp
+         BSPTree.cpp
+         build_bbtree.cpp
+     1>Geometry\build_bbtree.cpp(17): warning C4305: 'initializing': truncation from 'const double' to 'float'
+         GradientFilter.cpp
+         load.cpp
+         load_raw.cpp
+         Neighbours.cpp
+         obj_load.cpp
+     1>Geometry\obj_load.cpp(206): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(453): note: see declaration of 'strtok'
+     1>Geometry\obj_load.cpp(210): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(2254): note: see declaration of 'sscanf'
+     1>Geometry\obj_load.cpp(216): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(2254): note: see declaration of 'sscanf'
+     1>Geometry\obj_load.cpp(221): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(2254): note: see declaration of 'sscanf'
+     1>Geometry\obj_load.cpp(226): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(2254): note: see declaration of 'sscanf'
+     1>Geometry\obj_load.cpp(228): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(453): note: see declaration of 'strtok'
+         OBox.cpp
+         ply_load.cpp
+         Polygonizer.cpp
+         QEM.cpp
+         tessellate.cpp
+         ThreeDDDA.cpp
+         Triangle.cpp
+         TrilinFilter.cpp
+         TriMesh.cpp
+         verification.cpp
+         cleanup.cpp
+         ConnectivityKernel.cpp
+         Compiling...
+         curvature.cpp
+         dual.cpp
+         flatten.cpp
+         load.cpp
+         Manifold.cpp
+         mesh_optimization.cpp
+         obj_load.cpp
+     1>HMesh\obj_load.cpp(49): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(453): note: see declaration of 'strtok'
+     1>HMesh\obj_load.cpp(54): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(2254): note: see declaration of 'sscanf'
+     1>HMesh\obj_load.cpp(56): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\string.h(453): note: see declaration of 'strtok'
+         obj_save.cpp
+         off_load.cpp
+         off_save.cpp
+         ply_load.cpp
+         quadric_simplify.cpp
+         refine_edges.cpp
+         smooth.cpp
+         subdivision.cpp
+         triangulate.cpp
+         x3d_load.cpp
+         x3d_save.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\GEL.pdb" /Gd /TC /analyze- /errorReport:prompt Geometry\rply.c
+         rply.c
+     1>Geometry\rply.c(297): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+     1>Geometry\rply.c(388): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+     1>Geometry\rply.c(421): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>Geometry\rply.c(439): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>Geometry\rply.c(463): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>Geometry\rply.c(488): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>Geometry\rply.c(502): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>Geometry\rply.c(1132): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>Geometry\rply.c(1147): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>Geometry\rply.c(1150): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(2254): note: see declaration of 'sscanf'
+     1>Geometry\rply.c(1171): warning C4996: 'vsprintf': This function or variable may be unsafe. Consider using vsprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1465): note: see declaration of 'vsprintf'
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Programmering\DSC + SPH\DEMO\Release\GEL.lib" /NOLOGO /LTCG Release\ArithSqMat3x3Float.obj
+         Release\ArithSqMat4x4Float.obj
+         Release\ArithVec2Float.obj
+         Release\ArithVec3Float.obj
+         Release\eigensolution.obj
+         Release\gel_rand.obj
+         Release\Mat3x3d.obj
+         Release\Mat3x3f.obj
+         Release\Mat4x4d.obj
+         Release\Mat4x4f.obj
+         Release\statistics.obj
+         Release\TableTrigonometry.obj
+         Release\Vec2i.obj
+         Release\Vec3f.obj
+         Release\Vec3i.obj
+         Release\AABox.obj
+         Release\BBox.obj
+         Release\BoundingINode.obj
+         Release\BoundingLNode.obj
+         Release\BoundingNode.obj
+         Release\BoundingTree.obj
+         Release\BSPTree.obj
+         Release\build_bbtree.obj
+         Release\GradientFilter.obj
+         Release\load.obj
+         Release\load_raw.obj
+         Release\Neighbours.obj
+         Release\obj_load.obj
+         Release\OBox.obj
+         Release\ply_load.obj
+         Release\Polygonizer.obj
+         Release\QEM.obj
+         Release\rply.obj
+         Release\tessellate.obj
+         Release\ThreeDDDA.obj
+         Release\Triangle.obj
+         Release\TrilinFilter.obj
+         Release\TriMesh.obj
+         Release\verification.obj
+         Release\cleanup.obj
+         Release\ConnectivityKernel.obj
+         Release\curvature.obj
+         Release\dual.obj
+         Release\flatten.obj
+         Release\load.obj
+         Release\Manifold.obj
+         Release\mesh_optimization.obj
+         Release\obj_load.obj
+         Release\obj_save.obj
+         Release\off_load.obj
+         Release\off_save.obj
+         Release\ply_load.obj
+         Release\quadric_simplify.obj
+         Release\refine_edges.obj
+         Release\smooth.obj
+         Release\subdivision.obj
+         Release\triangulate.obj
+         Release\x3d_load.obj
+         Release\x3d_save.obj
+     1>Release\load.obj : warning LNK4042: object specified more than once; extras ignored
+     1>Release\obj_load.obj : warning LNK4042: object specified more than once; extras ignored
+     1>Release\ply_load.obj : warning LNK4042: object specified more than once; extras ignored
+         GEL.vcxproj -> D:\Programmering\DSC + SPH\DEMO\Release\GEL.lib
+     1>Done Building Project "D:\Programmering\DSC + SPH\DEMO\GEL\GEL.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:38.59

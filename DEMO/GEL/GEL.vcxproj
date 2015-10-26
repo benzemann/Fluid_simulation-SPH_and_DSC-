@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1F8CF74E-F2DD-45FD-9B85-CAE95DA429B6}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>GEL</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CGLA\ArithMatFloat.h" />
+    <ClInclude Include="CGLA\ArithQuat.h" />
+    <ClInclude Include="CGLA\ArithSqMat2x2Float.h" />
+    <ClInclude Include="CGLA\ArithSqMat3x3Float.h" />
+    <ClInclude Include="CGLA\ArithSqMat4x4Float.h" />
+    <ClInclude Include="CGLA\ArithSqMatFloat.h" />
+    <ClInclude Include="CGLA\ArithVec.h" />
+    <ClInclude Include="CGLA\ArithVec2Float.h" />
+    <ClInclude Include="CGLA\ArithVec3Float.h" />
+    <ClInclude Include="CGLA\ArithVec3Int.h" />
+    <ClInclude Include="CGLA\ArithVec4Float.h" />
+    <ClInclude Include="CGLA\ArithVec4Int.h" />
+    <ClInclude Include="CGLA\ArithVecFloat.h" />
+    <ClInclude Include="CGLA\ArithVecInt.h" />
+    <ClInclude Include="CGLA\BitMask.h" />
+    <ClInclude Include="CGLA\CGLA.h" />
+    <ClInclude Include="CGLA\eigensolution.h" />
+    <ClInclude Include="CGLA\ExceptionStandard.h" />
+    <ClInclude Include="CGLA\Mat2x2d.h" />
+    <ClInclude Include="CGLA\Mat2x2f.h" />
+    <ClInclude Include="CGLA\Mat2x3d.h" />
+    <ClInclude Include="CGLA\Mat2x3f.h" />
+    <ClInclude Include="CGLA\Mat3x3d.h" />
+    <ClInclude Include="CGLA\Mat3x3f.h" />
+    <ClInclude Include="CGLA\Mat4x4d.h" />
+    <ClInclude Include="CGLA\Mat4x4f.h" />
+    <ClInclude Include="CGLA\Quatd.h" />
+    <ClInclude Include="CGLA\Quaternion.h" />
+    <ClInclude Include="CGLA\Quatf.h" />
+    <ClInclude Include="CGLA\statistics.h" />
+    <ClInclude Include="CGLA\TableTrigonometry.h" />
+    <ClInclude Include="CGLA\UnitVector.h" />
+    <ClInclude Include="CGLA\Vec2d.h" />
+    <ClInclude Include="CGLA\Vec2f.h" />
+    <ClInclude Include="CGLA\Vec2i.h" />
+    <ClInclude Include="CGLA\Vec2ui.h" />
+    <ClInclude Include="CGLA\Vec3d.h" />
+    <ClInclude Include="CGLA\Vec3f.h" />
+    <ClInclude Include="CGLA\Vec3Hf.h" />
+    <ClInclude Include="CGLA\Vec3i.h" />
+    <ClInclude Include="CGLA\Vec3uc.h" />
+    <ClInclude Include="CGLA\Vec3usi.h" />
+    <ClInclude Include="CGLA\Vec4d.h" />
+    <ClInclude Include="CGLA\Vec4f.h" />
+    <ClInclude Include="CGLA\Vec4i.h" />
+    <ClInclude Include="CGLA\Vec4uc.h" />
+    <ClInclude Include="Geometry\AABox.h" />
+    <ClInclude Include="Geometry\AncestorGrid.h" />
+    <ClInclude Include="Geometry\BBox.h" />
+    <ClInclude Include="Geometry\BoundingINode.h" />
+    <ClInclude Include="Geometry\BoundingLNode.h" />
+    <ClInclude Include="Geometry\BoundingNode.h" />
+    <ClInclude Include="Geometry\BoundingTree.h" />
+    <ClInclude Include="Geometry\BSPTree.h" />
+    <ClInclude Include="Geometry\build_bbtree.h" />
+    <ClInclude Include="Geometry\Cell.h" />
+    <ClInclude Include="Geometry\GradientFilter.h" />
+    <ClInclude Include="Geometry\GridAlgorithm.h" />
+    <ClInclude Include="Geometry\HGrid.h" />
+    <ClInclude Include="Geometry\IndexedFaceSet.h" />
+    <ClInclude Include="Geometry\KDTree.h" />
+    <ClInclude Include="Geometry\load.h" />
+    <ClInclude Include="Geometry\load_raw.h" />
+    <ClInclude Include="Geometry\Material.h" />
+    <ClInclude Include="Geometry\Neighbours.h" />
+    <ClInclude Include="Geometry\obj_load.h" />
+    <ClInclude Include="Geometry\OBox.h" />
+    <ClInclude Include="Geometry\ply_load.h" />
+    <ClInclude Include="Geometry\Polygonizer.h" />
+    <ClInclude Include="Geometry\QEM.h" />
+    <ClInclude Include="Geometry\Ray.h" />
+    <ClInclude Include="Geometry\RGrid.h" />
+    <ClInclude Include="Geometry\rply.h" />
+    <ClInclude Include="Geometry\save_raw.h" />
+    <ClInclude Include="Geometry\tessellate.h" />
+    <ClInclude Include="Geometry\ThreeDDDA.h" />
+    <ClInclude Include="Geometry\Triangle.h" />
+    <ClInclude Include="Geometry\TrilinFilter.h" />
+    <ClInclude Include="Geometry\TriMesh.h" />
+    <ClInclude Include="Geometry\verification.h" />
+    <ClInclude Include="HMesh\AttributeVector.h" />
+    <ClInclude Include="HMesh\cleanup.h" />
+    <ClInclude Include="HMesh\ConnectivityKernel.h" />
+    <ClInclude Include="HMesh\curvature.h" />
+    <ClInclude Include="HMesh\dual.h" />
+    <ClInclude Include="HMesh\flatten.h" />
+    <ClInclude Include="HMesh\ItemID.h" />
+    <ClInclude Include="HMesh\ItemVector.h" />
+    <ClInclude Include="HMesh\Iterators.h" />
+    <ClInclude Include="HMesh\load.h" />
+    <ClInclude Include="HMesh\Manifold.h" />
+    <ClInclude Include="HMesh\mesh_optimization.h" />
+    <ClInclude Include="HMesh\obj_load.h" />
+    <ClInclude Include="HMesh\obj_save.h" />
+    <ClInclude Include="HMesh\off_load.h" />
+    <ClInclude Include="HMesh\off_save.h" />
+    <ClInclude Include="HMesh\ply_load.h" />
+    <ClInclude Include="HMesh\quadric_simplify.h" />
+    <ClInclude Include="HMesh\refine_edges.h" />
+    <ClInclude Include="HMesh\smooth.h" />
+    <ClInclude Include="HMesh\subdivision.h" />
+    <ClInclude Include="HMesh\triangulate.h" />
+    <ClInclude Include="HMesh\Walker.h" />
+    <ClInclude Include="HMesh\x3d_load.h" />
+    <ClInclude Include="HMesh\x3d_save.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CGLA\ArithSqMat3x3Float.cpp" />
+    <ClCompile Include="CGLA\ArithSqMat4x4Float.cpp" />
+    <ClCompile Include="CGLA\ArithVec2Float.cpp" />
+    <ClCompile Include="CGLA\ArithVec3Float.cpp" />
+    <ClCompile Include="CGLA\eigensolution.cpp" />
+    <ClCompile Include="CGLA\gel_rand.cpp" />
+    <ClCompile Include="CGLA\Mat3x3d.cpp" />
+    <ClCompile Include="CGLA\Mat3x3f.cpp" />
+    <ClCompile Include="CGLA\Mat4x4d.cpp" />
+    <ClCompile Include="CGLA\Mat4x4f.cpp" />
+    <ClCompile Include="CGLA\statistics.cpp" />
+    <ClCompile Include="CGLA\TableTrigonometry.cpp" />
+    <ClCompile Include="CGLA\Vec2i.cpp" />
+    <ClCompile Include="CGLA\Vec3f.cpp" />
+    <ClCompile Include="CGLA\Vec3i.cpp" />
+    <ClCompile Include="Geometry\AABox.cpp" />
+    <ClCompile Include="Geometry\BBox.cpp" />
+    <ClCompile Include="Geometry\BoundingINode.cpp" />
+    <ClCompile Include="Geometry\BoundingLNode.cpp" />
+    <ClCompile Include="Geometry\BoundingNode.cpp" />
+    <ClCompile Include="Geometry\BoundingTree.cpp" />
+    <ClCompile Include="Geometry\BSPTree.cpp" />
+    <ClCompile Include="Geometry\build_bbtree.cpp" />
+    <ClCompile Include="Geometry\GradientFilter.cpp" />
+    <ClCompile Include="Geometry\load.cpp" />
+    <ClCompile Include="Geometry\load_raw.cpp" />
+    <ClCompile Include="Geometry\Neighbours.cpp" />
+    <ClCompile Include="Geometry\obj_load.cpp" />
+    <ClCompile Include="Geometry\OBox.cpp" />
+    <ClCompile Include="Geometry\ply_load.cpp" />
+    <ClCompile Include="Geometry\Polygonizer.cpp" />
+    <ClCompile Include="Geometry\QEM.cpp" />
+    <ClCompile Include="Geometry\rply.c" />
+    <ClCompile Include="Geometry\tessellate.cpp" />
+    <ClCompile Include="Geometry\ThreeDDDA.cpp" />
+    <ClCompile Include="Geometry\Triangle.cpp" />
+    <ClCompile Include="Geometry\TrilinFilter.cpp" />
+    <ClCompile Include="Geometry\TriMesh.cpp" />
+    <ClCompile Include="Geometry\verification.cpp" />
+    <ClCompile Include="HMesh\cleanup.cpp" />
+    <ClCompile Include="HMesh\ConnectivityKernel.cpp" />
+    <ClCompile Include="HMesh\curvature.cpp" />
+    <ClCompile Include="HMesh\dual.cpp" />
+    <ClCompile Include="HMesh\flatten.cpp" />
+    <ClCompile Include="HMesh\load.cpp" />
+    <ClCompile Include="HMesh\Manifold.cpp" />
+    <ClCompile Include="HMesh\mesh_optimization.cpp" />
+    <ClCompile Include="HMesh\obj_load.cpp" />
+    <ClCompile Include="HMesh\obj_save.cpp" />
+    <ClCompile Include="HMesh\off_load.cpp" />
+    <ClCompile Include="HMesh\off_save.cpp" />
+    <ClCompile Include="HMesh\ply_load.cpp" />
+    <ClCompile Include="HMesh\quadric_simplify.cpp" />
+    <ClCompile Include="HMesh\refine_edges.cpp" />
+    <ClCompile Include="HMesh\smooth.cpp" />
+    <ClCompile Include="HMesh\subdivision.cpp" />
+    <ClCompile Include="HMesh\triangulate.cpp" />
+    <ClCompile Include="HMesh\x3d_load.cpp" />
+    <ClCompile Include="HMesh\x3d_save.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

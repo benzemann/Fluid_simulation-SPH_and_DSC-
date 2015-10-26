@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/gelsvn/!svn/ver/609/trunk/src/LinAlg
+END
+LinAlgIO.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/gelsvn/!svn/ver/595/trunk/src/LinAlg/LinAlgIO.cpp
+END
+LinAlgIO.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/gelsvn/!svn/ver/595/trunk/src/LinAlg/LinAlgIO.h
+END
+LapackFunc.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/gelsvn/!svn/ver/595/trunk/src/LinAlg/LapackFunc.cpp
+END
+Vector.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/gelsvn/!svn/ver/601/trunk/src/LinAlg/Vector.h
+END
+Matrix.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/gelsvn/!svn/ver/601/trunk/src/LinAlg/Matrix.h
+END
+LapackFunc.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/gelsvn/!svn/ver/605/trunk/src/LinAlg/LapackFunc.h
+END

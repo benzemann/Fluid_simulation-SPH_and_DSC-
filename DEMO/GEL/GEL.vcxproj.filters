@@ -1,0 +1,520 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="CGLA">
+      <UniqueIdentifier>{d358b999-6904-4d34-9a69-be565e106acf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{14739b1e-3314-442a-97e2-c923d36dcb4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HMesh">
+      <UniqueIdentifier>{cd083d12-cc28-44ec-b5f9-a66da4c4ad09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GLGraphics">
+      <UniqueIdentifier>{651d9b37-1db2-4e73-abe9-c0b4bd2bb052}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CGLA\ArithVec3Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec3Int.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec4Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec4Int.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVecFloat.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVecInt.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\BitMask.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\CGLA.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\eigensolution.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ExceptionStandard.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat2x2d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat2x2f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat2x3d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat2x3f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat3x3d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat3x3f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat4x4d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat4x4f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Quatd.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Quaternion.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Quatf.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\statistics.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\TableTrigonometry.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\UnitVector.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec2d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec2f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec2i.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec2ui.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3Hf.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3i.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3uc.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3usi.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec4d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec4f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec4i.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec4uc.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithMatFloat.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithQuat.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithSqMat2x2Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithSqMat3x3Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithSqMat4x4Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithSqMatFloat.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec2Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\verification.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\AABox.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\AncestorGrid.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\BBox.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\BoundingINode.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\BoundingLNode.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\BoundingNode.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\BoundingTree.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\BSPTree.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\build_bbtree.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\Cell.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\GradientFilter.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\GridAlgorithm.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\HGrid.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\IndexedFaceSet.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\KDTree.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\load.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\load_raw.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\Material.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\Neighbours.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\obj_load.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\OBox.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\ply_load.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\Polygonizer.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\QEM.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\Ray.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\RGrid.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\rply.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\save_raw.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\tessellate.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\ThreeDDDA.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\Triangle.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\TrilinFilter.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\TriMesh.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\smooth.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\subdivision.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\triangulate.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\Walker.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\x3d_load.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\x3d_save.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\AttributeVector.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\cleanup.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\ConnectivityKernel.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\curvature.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\dual.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\flatten.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\ItemID.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\ItemVector.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\Iterators.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\load.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\Manifold.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\mesh_optimization.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\obj_load.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\obj_save.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\off_load.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\off_save.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\ply_load.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\quadric_simplify.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HMesh\refine_edges.h">
+      <Filter>HMesh</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CGLA\eigensolution.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\gel_rand.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Mat3x3d.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Mat3x3f.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Mat4x4d.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Mat4x4f.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\statistics.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\TableTrigonometry.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Vec2i.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Vec3f.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Vec3i.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\ArithSqMat3x3Float.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\ArithSqMat4x4Float.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\ArithVec2Float.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\ArithVec3Float.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\AABox.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\BBox.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\BoundingINode.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\BoundingLNode.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\BoundingNode.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\BoundingTree.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\BSPTree.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\build_bbtree.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\GradientFilter.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\load.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\load_raw.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\Neighbours.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\obj_load.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\OBox.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\ply_load.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\Polygonizer.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\QEM.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\rply.c">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\tessellate.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\ThreeDDDA.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\Triangle.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\TrilinFilter.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\TriMesh.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry\verification.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\subdivision.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\triangulate.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\x3d_load.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\x3d_save.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\cleanup.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\ConnectivityKernel.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\curvature.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\dual.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\flatten.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\load.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\Manifold.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\mesh_optimization.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\obj_load.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\obj_save.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\off_load.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\off_save.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\ply_load.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\quadric_simplify.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\refine_edges.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HMesh\smooth.cpp">
+      <Filter>HMesh</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

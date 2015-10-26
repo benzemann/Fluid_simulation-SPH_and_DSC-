@@ -1,0 +1,209 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/gelsvn/!svn/ver/618/trunk/src/GLGraphics
+END
+gel_gl.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/gelsvn/!svn/ver/603/trunk/src/GLGraphics/gel_gl.h
+END
+stbi_DDS_aug_c.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/gelsvn/!svn/ver/594/trunk/src/GLGraphics/stbi_DDS_aug_c.h
+END
+image_DXT.c
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/gelsvn/!svn/ver/369/trunk/src/GLGraphics/image_DXT.c
+END
+GLViewController.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/gelsvn/!svn/ver/594/trunk/src/GLGraphics/GLViewController.cpp
+END
+SinglePassWireframeRenderer.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/SinglePassWireframeRenderer.cpp
+END
+Console.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/Console.cpp
+END
+stb_image_write.c
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/gelsvn/!svn/ver/555/trunk/src/GLGraphics/stb_image_write.c
+END
+image_DXT.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/gelsvn/!svn/ver/594/trunk/src/GLGraphics/image_DXT.h
+END
+SOIL.c
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/gelsvn/!svn/ver/603/trunk/src/GLGraphics/SOIL.c
+END
+gel_glut.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/gelsvn/!svn/ver/603/trunk/src/GLGraphics/gel_glut.h
+END
+stb_image_write.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/gelsvn/!svn/ver/555/trunk/src/GLGraphics/stb_image_write.h
+END
+SOIL.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/gelsvn/!svn/ver/594/trunk/src/GLGraphics/SOIL.h
+END
+SimpleTrackBall.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/SimpleTrackBall.h
+END
+IDBufferWireFrameRenderer.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/IDBufferWireFrameRenderer.cpp
+END
+ManifoldRenderer.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/ManifoldRenderer.h
+END
+glsl_shader.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/glsl_shader.cpp
+END
+stb_image.c
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/gelsvn/!svn/ver/555/trunk/src/GLGraphics/stb_image.c
+END
+stbi_DDS_aug.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/gelsvn/!svn/ver/594/trunk/src/GLGraphics/stbi_DDS_aug.h
+END
+stb_image.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/gelsvn/!svn/ver/555/trunk/src/GLGraphics/stb_image.h
+END
+QuatTrackBall.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/QuatTrackBall.h
+END
+draw.h
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/draw.h
+END
+GLViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/gelsvn/!svn/ver/594/trunk/src/GLGraphics/GLViewController.h
+END
+SinglePassWireframeRenderer.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/SinglePassWireframeRenderer.h
+END
+Console.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/Console.h
+END
+SimpleTrackBall.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/gelsvn/!svn/ver/594/trunk/src/GLGraphics/SimpleTrackBall.cpp
+END
+ManifoldRenderer.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/gelsvn/!svn/ver/618/trunk/src/GLGraphics/ManifoldRenderer.cpp
+END
+image_helper.c
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/gelsvn/!svn/ver/373/trunk/src/GLGraphics/image_helper.c
+END
+gel_glu.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/gelsvn/!svn/ver/603/trunk/src/GLGraphics/gel_glu.h
+END
+IDBufferWireFrameRenderer.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/IDBufferWireFrameRenderer.h
+END
+image_helper.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/gelsvn/!svn/ver/594/trunk/src/GLGraphics/image_helper.h
+END
+QuatTrackBall.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/gelsvn/!svn/ver/609/trunk/src/GLGraphics/QuatTrackBall.cpp
+END
+stb_image_aug.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/gelsvn/!svn/ver/597/trunk/src/GLGraphics/stb_image_aug.h
+END
+glsl_shader.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/gelsvn/!svn/ver/601/trunk/src/GLGraphics/glsl_shader.h
+END
+draw.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/gelsvn/!svn/ver/608/trunk/src/GLGraphics/draw.cpp
+END
