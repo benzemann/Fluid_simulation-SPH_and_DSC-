@@ -23,14 +23,17 @@ namespace HMesh
     class ItemID
     {
     public:
+		typedef size_t IndexType;
+
         ItemID(): index(INVALID_INDEX){}
 
         bool operator ==(const ItemID& other) const { return index == other.index; }
         bool operator !=(const ItemID& other) const { return index != other.index; }
         bool operator <(const ItemID& other) const { return index < other.index; }
 		
+		IndexType get_index() const{ return index;}
     private:
-        typedef size_t IndexType;
+        
         static const IndexType INVALID_INDEX =  -1;
 
         IndexType index;

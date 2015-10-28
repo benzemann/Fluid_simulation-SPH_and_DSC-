@@ -25,6 +25,7 @@
 #include "trializer.h"
 #include "object_generator.h"
 #include "draw.h"
+
 DSC2D::ParticleSystem particle_system;
 int tmp;
 int tmp2;
@@ -117,7 +118,7 @@ UI::UI(int &argc, char** argv)
         CONTINUOUS = true;
         RECORD = true;
         
-        Util::ArgExtracter ext(argc, argv);
+        ::Util::ArgExtracter ext(argc, argv);
         ext.extract("nu", VELOCITY);
         ext.extract("delta", DISCRETIZATION);
         ext.extract("alpha", ACCURACY);
@@ -135,6 +136,11 @@ UI::UI(int &argc, char** argv)
 	particle_system = DSC2D::ParticleSystem();
 	tmp = 0;
     check_gl_error();
+
+	create_water();
+	track_particle_function* instance = static_cast<track_particle_function*>(vel_fun.get());
+	instance->dsc_ptr = &(*dsc);
+	instance->init();
 }
 
 void UI::update_title()
@@ -172,7 +178,7 @@ void UI::display()
 		++tmp;
 		// The particle system is only updated every third time frame.
 		if (tmp == 2){
-			particle_system.update(*dsc);
+	//		particle_system.update(*dsc);
 			tmp = 0;
 			//identify_water(0.7);
 		}
@@ -325,11 +331,12 @@ void UI::draw()
     {
 		std::vector<DSC2D::vec2> particle_pos;
 		std::vector<bool> particle_inside;
-		for (int i = 0; i < particle_system.get_no_particles(); i++){
-			particle_pos.push_back(particle_system.get_particle_pos(i));
-			particle_inside.push_back(particle_system.is_particle_inside(i));
-		}
+// 		for (int i = 0; i < particle_system.get_no_particles(); i++){
+// 			particle_pos.push_back(particle_system.get_particle_pos(i));
+// 			particle_inside.push_back(particle_system.is_particle_inside(i));
+// 		}
         Painter::draw_complex(*dsc, particle_pos, particle_inside);
+		// Painter::draw_vertices_index(*dsc);
         if(RECORD && CONTINUOUS)
         {
             Painter::save_painting(WIN_SIZE_X, WIN_SIZE_Y, basic_log->get_path(), vel_fun->get_time_step());
@@ -434,7 +441,7 @@ void UI::expand_blobs()
     start();
 }
 
-void UI::create_water()
+void UI::create_water() 
 {
 	stop();
 
@@ -450,10 +457,11 @@ void UI::create_water()
 	DesignDomain *domain = new DesignDomain(DesignDomain::RECTANGLE, width, height, DISCRETIZATION);
 
 	dsc = std::unique_ptr<DeformableSimplicialComplex>(new DeformableSimplicialComplex(DISCRETIZATION, points, faces, domain));
-	identify_water(0.0884); // 0.0884
 	vel_fun = std::unique_ptr<VelocityFunc<>>(new track_particle_function(VELOCITY, ACCURACY, particle_system));
 	
 	reshape(width + 2 * DISCRETIZATION, height + 2 * DISCRETIZATION);
+
+
 	start();
 }
 

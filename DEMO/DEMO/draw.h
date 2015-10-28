@@ -60,6 +60,7 @@ public:
      */
     static void draw_complex(const DSC2D::DeformableSimplicialComplex& complex, std::vector<DSC2D::vec2> particle_pos, std::vector<bool> particle_inside);
     
+	static void draw_vertices_index(const DSC2D::DeformableSimplicialComplex& dsc);
     /**
      Draws the domain.
      */

@@ -31,7 +31,6 @@
 
 namespace DSC2D {
     
-    
     /**
      The base class representing a simplicial complex.
      */
@@ -661,6 +660,7 @@ namespace DSC2D {
         bool is_collapsable(HMesh::Walker hew, bool safe);
         
     public:
+
         /**
          Returns the length of the edge with ID eid.
          */
