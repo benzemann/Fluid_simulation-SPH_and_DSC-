@@ -1,0 +1,11 @@
+*.sdf
+*.suo
+
+Debug/
+Release/
+DEMO/Debug/
+DEMO/Release/
+DSC/Debug/
+DSC/Release/
+GEL/Debug/
+GEL/Release/
