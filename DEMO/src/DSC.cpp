@@ -215,10 +215,11 @@ namespace DSC2D
             work = false;
             for (auto vi = vertices_begin(); vi != vertices_end(); vi++)
             {
-                //if(is_movable(*vi))
-                //{
-				work = work | !move_vertex(*vi);
-                //}
+                if(is_movable(*vi))
+                {
+				//if(!is_outside(*vi))
+					work = work | !move_vertex(*vi);
+                }
             }
             
             fix_complex();
@@ -398,36 +399,15 @@ namespace DSC2D
         mesh->pos(vid) = CGLA::Vec3d(p[0], p[1], 0.f);
     }
 
-	void DeformableSimplicialComplex::set_destination_list_element(const node_key& vid, const vec2& dest) {
-		destination[vid] = dest;
-	}
-
     void DeformableSimplicialComplex::set_destination(const node_key& vid, const vec2& dest)
     {
         if(is_movable(vid))
         {
-            vec2 vec = dest - get_pos(vid);
-            clamp_vector(vid, vec);
-            destination[vid] = get_pos(vid) + vec;
+			vec2 vec = dest - get_pos(vid);
+			clamp_vector(vid, vec);
+			destination[vid] = get_pos(vid) + vec;
         }
     }
-	void DeformableSimplicialComplex::add_destination(const node_key& vid, const vec2& dest){
-		destination[vid] += dest;
-	}
-	void DeformableSimplicialComplex::sum_destination(){
-		for (auto vi = vertices_begin(); vi != vertices_end(); ++vi){
-			//if (is_movable(*vi))
-			//{
-			destination[*vi] = get_pos(*vi) + destination[*vi];
-			//}
-		}
-	}
-	void DeformableSimplicialComplex::ready_destination(){
-		for (auto vi = vertices_begin(); vi != vertices_end(); ++vi){
-			destination[*vi] = vec2(0);
-		}
-		
-	}
     
     void DeformableSimplicialComplex::init_attributes()
     {

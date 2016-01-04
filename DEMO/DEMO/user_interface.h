@@ -117,10 +117,6 @@ private:
     void smooth_filled();
     
     void expand_blobs();
-
-	void create_water();
-
-	void identify_water(float treshold);
     
     /**
      Updates the window title.

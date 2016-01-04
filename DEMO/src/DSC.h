@@ -31,6 +31,7 @@
 
 namespace DSC2D {
     
+    
     /**
      The base class representing a simplicial complex.
      */
@@ -322,10 +323,6 @@ namespace DSC2D {
          To actually move the vertices to their destination, call the deform function.
          */
         virtual void set_destination(const node_key& vid, const vec2& dest);
-		virtual void DeformableSimplicialComplex::set_destination_list_element(const node_key& vid, const vec2& dest);
-		virtual void DeformableSimplicialComplex::ready_destination();
-		virtual void DeformableSimplicialComplex::add_destination(const node_key& vid, const vec2& dest);
-		virtual void DeformableSimplicialComplex::sum_destination();
         /**
          Sets the average edge length of the edges in the simplical complex.
          */
@@ -660,7 +657,6 @@ namespace DSC2D {
         bool is_collapsable(HMesh::Walker hew, bool safe);
         
     public:
-
         /**
          Returns the length of the edge with ID eid.
          */

@@ -58,7 +58,7 @@ public:
     /**
      Draws the simplicial complex.
      */
-    static void draw_complex(const DSC2D::DeformableSimplicialComplex& complex, std::vector<DSC2D::vec2> particle_pos, std::vector<bool> particle_inside);
+    static void draw_complex(const DSC2D::DeformableSimplicialComplex& complex);
     
 	static void draw_vertices_index(const DSC2D::DeformableSimplicialComplex& dsc);
     /**
@@ -69,7 +69,7 @@ public:
     /**
      Draws the vertices with the colors defined by the get_vertex_colors function in the simplicial complex.
      */
-	static void draw_vertices(const DSC2D::DeformableSimplicialComplex& complex, std::vector<DSC2D::vec2> particle_pos, std::vector<bool> particle_inside);
+	static void draw_vertices(const DSC2D::DeformableSimplicialComplex& complex);
 
     /**
      Draws the edges with the colors defined by the get_edge_colors function in the simplicial complex.

@@ -67,12 +67,12 @@ void Painter::end()
 }
 
 
-void Painter::draw_complex(const DeformableSimplicialComplex& dsc, std::vector<DSC2D::vec2> particle_pos, std::vector<bool> particle_inside)
+void Painter::draw_complex(const DeformableSimplicialComplex& dsc)
 {
     draw_domain(*dsc.get_design_domain());
     draw_faces(dsc);
     draw_edges(dsc);
-    draw_vertices(dsc, particle_pos, particle_inside);
+    draw_vertices(dsc);
 }
 
 void print_gl(const double &x, const double &y, const char* str){
@@ -130,7 +130,7 @@ void Painter::draw_domain(const DesignDomain& domain, vec3 color)
     glEnd();
 }
 
-void Painter::draw_vertices(const DeformableSimplicialComplex& dsc, std::vector<DSC2D::vec2> particle_pos, std::vector<bool> particle_inside)
+void Painter::draw_vertices(const DeformableSimplicialComplex& dsc)
 {
     HMesh::VertexAttributeVector<vec3> colors = dsc.get_vertex_colors();
     glPointSize(std::max(std::floor(POINT_SIZE*dsc.get_avg_edge_length()), 1.));
@@ -140,25 +140,8 @@ void Painter::draw_vertices(const DeformableSimplicialComplex& dsc, std::vector<
     {
         p = vec3(dsc.get_pos(*vi)[0], dsc.get_pos(*vi)[1], 0.);
         glColor3d(static_cast<double>(colors[*vi][0]), static_cast<double>(colors[*vi][1]), static_cast<double>(colors[*vi][2]));
-        glVertex3d(static_cast<double>(p[0]), static_cast<double>(p[1]), static_cast<double>(p[2]));
+       // glVertex3d(static_cast<double>(p[0]), static_cast<double>(p[1]), static_cast<double>(p[2]));
     }
-	glColor3d(1.0, 0.0, 0.0); // Red color for the particles
-	for (int i = 0; i < particle_pos.size(); i++){
-		if (particle_inside[i] == true) {
-			glColor3d(1.0, 0.0, 0.0); // Red color for the particles
-			
-		}
-		else {
-			glColor3d(0.0, 1.0, 0.0); // Red color for the particles
-			
-			
-		}
-		glVertex3d(particle_pos[i][0], particle_pos[i][1], 0); // Render the particle at its position
-		
-	}
-	/*glVertex3d(108.33, 92.5, 0);
-	glVertex3d(100, 92.5, 0);
-	glVertex3d(91.66, 92.5, 0);*/
 	glEnd();
 }
 

@@ -20,15 +20,14 @@
 #include "average_function.h"
 #include "normal_function.h"
 #include "track_particle_function.h"
-#include "ParticleSystem.h"
 
 #include "trializer.h"
 #include "object_generator.h"
 #include "draw.h"
+#include <iostream>
 
-DSC2D::ParticleSystem particle_system;
-int tmp;
-int tmp2;
+using namespace std;
+
 void _check_gl_error(const char *file, int line)
 {
     GLenum err (glGetError());
@@ -133,14 +132,10 @@ UI::UI(int &argc, char** argv)
         QUIT_ON_COMPLETION = false;
     }
     update_title();
-	particle_system = DSC2D::ParticleSystem();
-	tmp = 0;
+
     check_gl_error();
 
-	create_water();
 	track_particle_function* instance = static_cast<track_particle_function*>(vel_fun.get());
-	instance->dsc_ptr = &(*dsc);
-	instance->init();
 }
 
 void UI::update_title()
@@ -156,6 +151,7 @@ void UI::update_title()
     std::string str(oss.str());
     glutSetWindowTitle(str.c_str());
 }
+double sum_time = 0.0;
 
 void UI::display()
 {
@@ -168,20 +164,14 @@ void UI::display()
     
     if(vel_fun && CONTINUOUS)
     {
-        
-		tmp2++;
-		if (tmp2 == 10) {
-			
-			tmp2 = 0;
+		double time = vel_fun->get_compute_time() + vel_fun->get_deform_time();
+		
+		if (vel_fun->get_time_step() >= 100) {
+			sum_time += time;
+			cout << "avg time: " << sum_time/ (vel_fun->get_time_step()-100) << endl;
+			cout << "total time: " << sum_time << endl;
 		}
-		vel_fun->take_time_step(*dsc);
-		++tmp;
-		// The particle system is only updated every third time frame.
-		if (tmp == 2){
-	//		particle_system.update(*dsc);
-			tmp = 0;
-			//identify_water(0.7);
-		}
+		
         basic_log->write_timestep(*vel_fun);
         if (vel_fun->is_motion_finished(*dsc))
         {
@@ -230,9 +220,6 @@ void UI::keyboard(unsigned char key, int x, int y) {
         case '3':
             expand_blobs();
             break;
-		case '4':
-			create_water();
-			break;
         case ' ':
             if(!CONTINUOUS)
             {
@@ -329,14 +316,8 @@ void UI::draw()
 	
     if (dsc)
     {
-		std::vector<DSC2D::vec2> particle_pos;
-		std::vector<bool> particle_inside;
-// 		for (int i = 0; i < particle_system.get_no_particles(); i++){
-// 			particle_pos.push_back(particle_system.get_particle_pos(i));
-// 			particle_inside.push_back(particle_system.is_particle_inside(i));
-// 		}
-        Painter::draw_complex(*dsc, particle_pos, particle_inside);
-		// Painter::draw_vertices_index(*dsc);
+        Painter::draw_complex(*dsc);
+		//Painter::draw_vertices_index(*dsc);
         if(RECORD && CONTINUOUS)
         {
             Painter::save_painting(WIN_SIZE_X, WIN_SIZE_Y, basic_log->get_path(), vel_fun->get_time_step());
@@ -439,53 +420,5 @@ void UI::expand_blobs()
     
     reshape(width + 2*DISCRETIZATION, height + 2*DISCRETIZATION);
     start();
-}
-
-void UI::create_water() 
-{
-	stop();
-
-	DISCRETIZATION = 20;
-	int width = WIN_SIZE_X - (2 * DISCRETIZATION);
-	int height = WIN_SIZE_Y - (2 * DISCRETIZATION);
-	
-	std::vector<real> points;
-	std::vector<int> faces;
-
-	Trializer::trialize(width, height, DISCRETIZATION, points, faces);
-
-	DesignDomain *domain = new DesignDomain(DesignDomain::RECTANGLE, width, height, DISCRETIZATION);
-
-	dsc = std::unique_ptr<DeformableSimplicialComplex>(new DeformableSimplicialComplex(DISCRETIZATION, points, faces, domain));
-	vel_fun = std::unique_ptr<VelocityFunc<>>(new track_particle_function(VELOCITY, ACCURACY, particle_system));
-	
-	reshape(width + 2 * DISCRETIZATION, height + 2 * DISCRETIZATION);
-
-
-	start();
-}
-
-void UI::identify_water(float treshold) {
-	// Calculate the mass density of the fluid.
-	float volume = 0.0;
-	float mass = 0.0;
-	for (auto fi = dsc->faces_begin(); fi != dsc->faces_end(); ++fi) {
-		volume += dsc->area(*fi);
-	}
-	for (int i = 0; i < 300; i++) {
-		mass += 0.02;
-	}
-	float V = mass / volume;
-
-	for (auto fi = dsc->faces_begin(); fi != dsc->faces_end(); ++fi) {
-		std::vector<vec2> vertices = dsc->get_pos(*fi);
-		vec2 center = vec2((vertices[0][0] + vertices[1][0] + vertices[2][0]) / 3.0, (vertices[0][1] + vertices[1][1] + vertices[2][1]) / 3.0);
-		float mass_at_point = particle_system.fluid_density(center, 5.0) * V * 1000000.0;
-		// if mass is greater than the threshold value it is marked as inside the fluid
-		if (mass_at_point > treshold) {
-			ObjectGenerator::set_water(*dsc, *fi); // Sets the face with the face id to inside the water
-		}
-	}
-
 }
 
