@@ -1,0 +1,9 @@
+﻿Build started 04-01-2016 18:51:31.
+     1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DSC\DSC.vcxproj" on node 2 (Build target(s)).
+     1>Lib:
+         DSC.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\DSC.lib
+     1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DSC\DSC.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.06

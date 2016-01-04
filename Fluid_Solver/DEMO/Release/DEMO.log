@@ -1,0 +1,78 @@
+﻿Build started 04-01-2016 18:51:31.
+     1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (DEMO.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"D:\Programmering\DSC + SPH\DEMO\DEMO\Eigen\src" /I"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO.sln\..\..\src" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt demo.cpp user_interface.cpp
+         demo.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(168): warning C4018: '<': signed/unsigned mismatch
+         D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(160): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
+                 with
+                 [
+                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
+                 ]
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1199): note: see reference to class template instantiation 'DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>' being compiled
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1198): note: while compiling class template member function 'void std::default_delete<_Ty>::operator ()(_Ty *) noexcept const'
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1403): note: see reference to function template instantiation 'void std::default_delete<_Ty>::operator ()(_Ty *) noexcept const' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1233): note: see reference to class template instantiation 'std::default_delete<_Ty>' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1242): note: see reference to class template instantiation 'std::_Get_deleter_pointer_type<_Ty,std::default_delete<_Ty>>' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1285): note: see reference to class template instantiation 'std::_Unique_ptr_base<_Ty,_Dx>' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>,
+                     _Dx=std::default_delete<DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\user_interface.h(39): note: see reference to class template instantiation 'std::unique_ptr<DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>,std::default_delete<_Ty>>' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+         user_interface.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(168): warning C4018: '<': signed/unsigned mismatch
+         D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(160): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
+                 with
+                 [
+                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
+                 ]
+         user_interface.cpp(173): note: see reference to function template instantiation 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)' being compiled
+                 with
+                 [
+                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\track_particle_function.h(5): note: see reference to class template instantiation 'DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>' being compiled
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.exe" /INCREMENTAL:NO /NOLOGO glew32.lib GEL.lib DSC.lib freeglut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.lib" /MACHINE:X86 /SAFESEH Release\demo.obj
+         Release\draw.obj
+         Release\log.obj
+         Release\track_particle_function.obj
+         Release\user_interface.obj
+         Generating code
+         362 of 1834 functions (19.7%) were compiled, the rest were copied from previous compilation.
+           0 functions were new in current compilation
+           152 functions had inline decision re-evaluated but remain unchanged
+         Finished generating code
+         DEMO.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.exe
+     1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:05.26
