@@ -30,8 +30,11 @@
 #include <GEL/GL/glew.h>
 #include <GLUT/glut.h>
 #endif
+/*
+A default user interface which utilize OpenGL, GLEW and GLUT.At least some of the motion functions should be overridden.
+*/
 
-/class UI
+class UI
 {
     std::unique_ptr<DSC2D::VelocityFunc<>> vel_fun;
     std::unique_ptr<DSC2D::DeformableSimplicialComplex> dsc;
@@ -47,9 +50,7 @@
     double VELOCITY;
     double DISCRETIZATION;
     double ACCURACY;
-    static UI* in    
-stance;
-    std::string create_log_path()
+    static UI* instance;
     
 public:
     
@@ -59,6 +60,7 @@ public:
     {
         return instance;
     }
+	std::string create_log_path()
     {
         std::ostringstream s;
         s << "LOG/delta" << DISCRETIZATION << "_nu" << VELOCITY << "_alpha" << ACCURACY;
@@ -139,6 +141,3 @@ private:
      */
     void stop();
 };
-**
- A default user interface which utilize OpenGL, GLEW and GLUT. At least some of the motion functions should be overridden.
- */

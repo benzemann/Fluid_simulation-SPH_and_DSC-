@@ -6,7 +6,7 @@ class track_particle_function : public DSC2D::VelocityFunc<>
 public:
 	track_particle_function(double velocity, double accuracy) : VelocityFunc(velocity / 100., accuracy / 100.)
 	{
-
+		
 	}
 
 	/**

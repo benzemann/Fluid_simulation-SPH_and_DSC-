@@ -17,7 +17,7 @@
 #include "user_interface.h"
 
 #include "track_particle_function.h"
-
+#include "Particle_System.h"
 #include "trializer.h"
 #include "object_generator.h"
 #include "draw.h"
@@ -133,6 +133,9 @@ UI::UI(int &argc, char** argv)
     check_gl_error();
 
 	track_particle_function* instance = static_cast<track_particle_function*>(vel_fun.get());
+
+	particlesystem::Particle_System ps(300);
+	
 }
 
 void UI::update_title()
