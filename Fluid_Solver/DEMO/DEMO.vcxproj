@@ -93,6 +93,7 @@
     <ClInclude Include="log.h" />
     <ClInclude Include="Particle_System.h" />
     <ClInclude Include="SparseQR.h" />
+    <ClInclude Include="SPH.h" />
     <ClInclude Include="track_particle_function.h" />
     <ClInclude Include="user_interface.h" />
   </ItemGroup>
@@ -102,6 +103,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Particle_System.cpp" />
+    <ClCompile Include="SPH.cpp" />
     <ClCompile Include="track_particle_function.cpp" />
     <ClCompile Include="user_interface.cpp" />
   </ItemGroup>

@@ -18,10 +18,12 @@
 
 #include "track_particle_function.h"
 #include "Particle_System.h"
+#include "SPH.h"
 #include "trializer.h"
 #include "object_generator.h"
 #include "draw.h"
 #include <iostream>
+#include <chrono>
 
 using namespace std;
 
@@ -133,8 +135,6 @@ UI::UI(int &argc, char** argv)
     check_gl_error();
 
 	track_particle_function* instance = static_cast<track_particle_function*>(vel_fun.get());
-
-	particlesystem::Particle_System ps(300);
 	
 }
 
@@ -161,7 +161,7 @@ void UI::display()
 	
     draw();
     update_title();
-    
+	
     if(vel_fun && CONTINUOUS)
     {
 		double time = vel_fun->get_compute_time() + vel_fun->get_deform_time();
@@ -171,7 +171,9 @@ void UI::display()
 			cout << "avg time: " << sum_time/ (vel_fun->get_time_step()-100) << endl;
 			cout << "total time: " << sum_time << endl;
 		}
-		
+		std::chrono::duration<real> delta_time = std::chrono::system_clock::now() - last_time;
+		last_time = std::chrono::system_clock::now();
+		sph->update(delta_time.count());
         basic_log->write_timestep(*vel_fun);
         if (vel_fun->is_motion_finished(*dsc))
         {
@@ -211,9 +213,13 @@ void UI::keyboard(unsigned char key, int x, int y) {
         case '0':
             stop();
             break;
+		case '1':
+			create_fluid_domain();
+			break;
         case ' ':
             if(!CONTINUOUS)
             {
+				last_time = std::chrono::system_clock::now();
                 std::cout << "MOTION STARTED" << std::endl;
             }
             else {
@@ -221,6 +227,12 @@ void UI::keyboard(unsigned char key, int x, int y) {
             }
             CONTINUOUS = !CONTINUOUS;
             break;
+		case 'b':
+			sph->move_collision_box(0);
+			break;
+		case 'c':
+			enter_command();
+			break;
         case 'm':
             if(vel_fun)
             {
@@ -228,6 +240,9 @@ void UI::keyboard(unsigned char key, int x, int y) {
                 vel_fun->take_time_step(*dsc);
             }
             break;
+		case 'n':
+			sph->create_collision_box_at_mouse_pos();
+			break;
         case 't':
             if(vel_fun)
             {
@@ -241,6 +256,9 @@ void UI::keyboard(unsigned char key, int x, int y) {
                 switch_display_type();
             }
             break;
+		case 'r':
+			sph->reset();
+			break;
         case 's':
             if(dsc)
             {
@@ -248,6 +266,12 @@ void UI::keyboard(unsigned char key, int x, int y) {
                 Painter::save_painting(WIN_SIZE_X, WIN_SIZE_Y, "LOG");
             }
             break;
+		case 'z':
+			sph->subtract_costum();
+			break;
+		case 'x':
+			sph->add_costum();
+			break;
         case '+':
             if(!vel_fun)
             {
@@ -293,6 +317,35 @@ void UI::keyboard(unsigned char key, int x, int y) {
     }
 }
 
+void UI::enter_command() {
+	cout << "Enter command:" << endl;
+	string command;
+	double input = 0.0;
+	cin >> command;
+	if (command == "help") {
+		cout << "Command list: " << endl;
+		cout << "    - help : Show the command list" << endl;
+		cout << "    - kernel_radius radius : Change the kernel radius to input value" << endl;
+		cout << "    - show_kernel_radius true/false : Show/hide kernel radius, input: 1=show, 0=hide" << endl;
+	}
+	else if (command == "kernel_radius") {
+		cin >> input;
+		cout << "Kernel radius changed to " << input << endl;
+		sph->set_kernel_radius(input);
+	}
+	else if (command == "show_kernel_radius") {
+		sph->change_draw_kernel_radius();
+	}
+	else if (command == "show_velocities") {
+		sph->change_draw_velocities();
+	}
+	else if(command != "done") {
+		cout << "There is no command for: " << command << endl;
+	}
+	if(command != "done")
+		enter_command();
+}
+
 void UI::visible(int v)
 {
     if(v==GLUT_VISIBLE)
@@ -304,11 +357,15 @@ void UI::visible(int v)
 void UI::draw()
 {
     Painter::begin();
-	
+
     if (dsc)
     {
         Painter::draw_complex(*dsc);
 		//Painter::draw_vertices_index(*dsc);
+		sph->draw_particles();
+		sph->draw_collision_boxes();
+		sph->draw_kernel_radius();
+		sph->draw_velocities();
         if(RECORD && CONTINUOUS)
         {
             Painter::save_painting(WIN_SIZE_X, WIN_SIZE_Y, basic_log->get_path(), vel_fun->get_time_step());
@@ -343,6 +400,32 @@ void UI::start()
     basic_log->write_log(*vel_fun);
     
     update_title();
+}
+
+void UI::create_fluid_domain()
+{
+	stop();
+
+	DISCRETIZATION = 18;
+	int width = WIN_SIZE_X - (2 * DISCRETIZATION);
+	int height = WIN_SIZE_Y - (2 * DISCRETIZATION);
+
+	std::vector<real> points;
+	std::vector<int> faces;
+
+	Trializer::trialize(width, height, DISCRETIZATION, points, faces);
+
+	DesignDomain *domain = new DesignDomain(DesignDomain::RECTANGLE, width, height, DISCRETIZATION);
+	
+	sph = std::unique_ptr<SPH>(new SPH(100));
+	sph->init();
+	dsc = std::unique_ptr<DeformableSimplicialComplex>(new DeformableSimplicialComplex(DISCRETIZATION, points, faces, domain));
+	
+	vel_fun = std::unique_ptr<VelocityFunc<>>(new track_particle_function(VELOCITY, ACCURACY));
+
+	reshape(width + 2 * DISCRETIZATION, height + 2 * DISCRETIZATION);
+
+	start();
 }
 
 using namespace DSC2D;

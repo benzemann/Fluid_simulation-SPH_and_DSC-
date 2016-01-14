@@ -19,6 +19,8 @@
 #include "velocity_function.h"
 #include "DSC.h"
 #include "log.h"
+#include "Particle_System.h"
+#include "SPH.h"
 
 #ifdef WIN32
 #include <GL/glew.h>
@@ -38,7 +40,9 @@ class UI
 {
     std::unique_ptr<DSC2D::VelocityFunc<>> vel_fun;
     std::unique_ptr<DSC2D::DeformableSimplicialComplex> dsc;
+	std::unique_ptr<SPH> sph;
     std::unique_ptr<Log> basic_log;
+	std::chrono::time_point<std::chrono::system_clock> last_time;
     
     int WIN_SIZE_X;
     int WIN_SIZE_Y;
@@ -74,6 +78,8 @@ public:
     void reshape(int width, int height);
     
     void visible(int v);
+
+	void create_fluid_domain();
     
     /**
      The keyboard is used for all inputs.
@@ -108,6 +114,7 @@ public:
      6:         Selects motion type 6.
      */
     void keyboard(unsigned char key, int x, int y);
+	void enter_command();
     
     
 private:

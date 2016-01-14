@@ -1,7 +1,6 @@
 #include "Grid.h"
 
 
-
 Grid::Grid(double cell_size, int width, int height) :
 	CELL_SIZE(cell_size),
 	GRID_WIDTH(width),
@@ -17,7 +16,8 @@ Grid::Grid(double cell_size, int width, int height) :
 void Grid::insert_particle(Particle p) {
 	// Get the grid cell coordinates of the particle and insert it into the grid
 	vec2 coords = get_grid_coords(p.pos);
-	grid[coords[0] + GRID_WIDTH * coords[1]].push_back(p);
+	if(coords[0] + GRID_WIDTH * coords[1] < grid.size() && coords[0] + GRID_WIDTH * coords[1] >= 0)
+		grid[coords[0] + GRID_WIDTH * coords[1]].push_back(p);
 }
 
 void Grid::clear_grid() {
@@ -92,5 +92,6 @@ vec2 Grid::get_grid_coords(vec2 pos) {
 	// Calculate the grid cell coordinates of the input position
 	int x = (int)floor(pos[0] / CELL_SIZE);
 	int y = (int)floor(pos[1] / CELL_SIZE);
+	
 	return vec2(x, y);
 }

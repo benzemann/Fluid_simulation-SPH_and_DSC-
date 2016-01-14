@@ -1,9 +1,47 @@
-﻿Build started 04-01-2016 18:51:31.
+﻿Build started 14-01-2016 20:58:55.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DSC\DSC.vcxproj" on node 2 (Build target(s)).
-     1>Lib:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\DSC.pdb" /Gd /TP /analyze- /errorReport:prompt ..\src\design_domain.cpp ..\src\DSC.cpp ..\src\object_generator.cpp ..\src\trializer.cpp
+         design_domain.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\design_domain.cpp(27): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\design_domain.cpp(63): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\design_domain.cpp(89): warning C4018: '<': signed/unsigned mismatch
+         DSC.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\DSC.cpp(962): warning C4018: '<': signed/unsigned mismatch
+         object_generator.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\object_generator.cpp(70): warning C4018: '<': signed/unsigned mismatch
+         trializer.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(45): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(52): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(56): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(61): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(65): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(80): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(84): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(92): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(96): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(100): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(104): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(119): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(123): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(130): warning C4018: '<': signed/unsigned mismatch
+     1>..\src\trializer.cpp(134): warning C4018: '<': signed/unsigned mismatch
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\DSC.lib" /NOLOGO /LTCG Release\design_domain.obj
+         Release\DSC.obj
+         Release\object_generator.obj
+         Release\trializer.obj
          DSC.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\DSC.lib
      1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DSC\DSC.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.06
+Time Elapsed 00:00:03.53
