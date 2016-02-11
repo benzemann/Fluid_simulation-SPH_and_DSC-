@@ -1,16 +1,30 @@
 #include "Grid.h"
 
-
 Grid::Grid(double cell_size, int width, int height) :
 	CELL_SIZE(cell_size),
 	GRID_WIDTH(width),
 	GRID_HEIGHT(height)
 {
+	init_grid();
+}
+Grid::Grid() 
+{
+	
+}
+
+void Grid::init_grid() {
 	// Initialize the grid
-	for (int i = 0; i < width*height; i++) {
+	for (int i = 0; i < GRID_WIDTH*GRID_HEIGHT; i++) {
 		vector<Particle> new_list;
 		grid.push_back(new_list);
 	}
+}
+
+void Grid::create_grid(int width, int height, double cell_size) {
+	CELL_SIZE = cell_size;
+	GRID_WIDTH = width;
+	GRID_HEIGHT = height;
+	init_grid();
 }
 
 void Grid::insert_particle(Particle p) {
@@ -18,16 +32,16 @@ void Grid::insert_particle(Particle p) {
 	vec2 coords = get_grid_coords(p.pos);
 	if(coords[0] + GRID_WIDTH * coords[1] < grid.size() && coords[0] + GRID_WIDTH * coords[1] >= 0)
 		grid[coords[0] + GRID_WIDTH * coords[1]].push_back(p);
-}
+	}
 
 void Grid::clear_grid() {
 	// Go over all grid cells and clear all vectors for particles
-	for each(vector<Particle> list in grid) {
-		list.clear();
+	for (int i = 0; i < grid.size(); i++) {
+		grid[i].clear();
 	}
 }
 
-vector<Particle> Grid::get_particles_in_circle(Particle p, double radius, vector<double> &distances) {
+vector<Particle> Grid::get_particles_in_circle(Particle p, double radius) {
 	// Get the grid coordinates of the particle
 	vec2 p_coords = get_grid_coords(p.pos);
 	// Get the number of cells to search depending on the radius of the circle
@@ -48,7 +62,6 @@ vector<Particle> Grid::get_particles_in_circle(Particle p, double radius, vector
 					if (distance <= radius && par.id != p.id) {
 						// Store the particle and distance
 						particles.push_back(par);
-						distances.push_back(distance);
 					}	
 				}
 			}	
@@ -63,8 +76,7 @@ bool Grid::get_closest_particle(Particle p, Particle &closest, double max_dist) 
 	vector<Particle> close_particles;
 	// Search for close particles by expanding the radius for every iteration
 	while (current_radius < max_dist) {
-		vector<double> dis; // not used
-		close_particles = get_particles_in_circle(p, current_radius, dis);
+		close_particles = get_particles_in_circle(p, current_radius);
 		if (close_particles.size() != 0) {
 			break;
 		} 

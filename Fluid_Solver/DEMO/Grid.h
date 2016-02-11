@@ -16,6 +16,7 @@ public:
 	of cells horisontal and vertical.
 	*/
 	Grid(double cell_size, int width, int height);
+	Grid();
 	/*
 		Inserts a particle into the grid.
 	*/
@@ -31,9 +32,13 @@ public:
 	bool get_closest_particle(Particle p, Particle &closest, double max_dist = 10.0);
 	/*
 		Returns a list of pointers to all particles in the circle with radius around the
-		given particle. Optionally one can provide a list to get all the distances.
+		given particle.
 	*/
-	vector<Particle> get_particles_in_circle(Particle p, double radius,vector<double> &distances);
+	vector<Particle> get_particles_in_circle(Particle p, double radius);
+
+	void init_grid();
+
+	void create_grid(int width, int height, double cell_size);
 
 private:
 	/* 
@@ -43,11 +48,10 @@ private:
 
 private:
 
-	const double CELL_SIZE;
-	const int GRID_WIDTH;
-	const int GRID_HEIGHT;
+	double CELL_SIZE;
+	int GRID_WIDTH;
+	int GRID_HEIGHT;
 
 	vector<vector<Particle>> grid;
-
 };
 

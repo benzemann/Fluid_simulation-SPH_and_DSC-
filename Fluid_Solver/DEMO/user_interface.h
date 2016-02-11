@@ -43,7 +43,7 @@ class UI
 	std::unique_ptr<SPH> sph;
     std::unique_ptr<Log> basic_log;
 	std::chrono::time_point<std::chrono::system_clock> last_time;
-    
+
     int WIN_SIZE_X;
     int WIN_SIZE_Y;
     
@@ -55,6 +55,15 @@ class UI
     double DISCRETIZATION;
     double ACCURACY;
     static UI* instance;
+
+	// DEBUG RELATED 
+	vector<double*> user_variables_ptr;
+	vector<bool*> user_flags_ptr;
+	const int number_of_user_variables = 6;
+	const int number_of_user_flags = 6;
+	bool show_compute_time = false;
+	int frames_compute_time = 0;
+	double dt_compute_time = 0.0;
     
 public:
     
@@ -114,12 +123,23 @@ public:
      6:         Selects motion type 6.
      */
     void keyboard(unsigned char key, int x, int y);
-	void enter_command();
-    
+	void show_debug_ui();
+	void change_selection(double value);
+	void set_selection() {
+		if (selection < number_of_user_variables) {
+			cout << "Change value to: ";
+			double input;
+			cin >> input;
+			*user_variables_ptr[selection] = input;
+		}
+		else {
+			cout << "Cannot manually change value, use 'a' or 'd' instead" << endl;
+		}
+	}
     
 private:
 
-    
+	int selection = 0;
     /**
      Updates the window title.
      */

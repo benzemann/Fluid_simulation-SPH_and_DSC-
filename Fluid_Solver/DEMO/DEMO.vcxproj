@@ -48,8 +48,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>../GEL;../src;D:\Programmering\DSC + SPH\DEMO\Eigen\src;$(IncludePath)</IncludePath>
-    <LibraryPath>../Release;D:\Programmering\DSC + SPH\DEMO\src;$(LibraryPath)</LibraryPath>
+    <IncludePath>../GEL;../src;D:\Programmering\DSC + SPH\DEMO\Eigen\src;$(GTKDIR)\lib\gtk-2.0\include;$(GTKDIR)\lib\glib-2.0\include;$(GTKDIR)\include;$(IncludePath)</IncludePath>
+    <LibraryPath>../Release;D:\Programmering\DSC + SPH\DEMO\src;$(GTKDIR)\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -75,19 +75,24 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>D:\Programmering\DSC + SPH\DEMO\DEMO\Eigen\src;$(SolutionPath)\..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-mms-bitfields -ID:/Programmering/GTK/include/gtk-2.0 -ID:/Programmering/GTK/lib/gtk-2.0/include -ID:/Programmering/GTK/include/atk-1.0 -ID:/Programmering/GTK/include/cairo -ID:/Programmering/GTK/include/gdk-pixbuf-2.0 -ID:/Programmering/GTK/include/pango-1.0 -ID:/Programmering/GTK/include/glib-2.0 -ID:/Programmering/GTK/lib/glib-2.0/include -ID:/Programmering/GTK/include -ID:/Programmering/GTK/include/freetype2 -ID:/Programmering/GTK/include/libpng14  
+ %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glew32.lib;GEL.lib;DSC.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;GEL.lib;odbc32.lib;DSC.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/libpath:D:/Programmering/GTK/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib gdk_pixbuf-2.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib gthread-2.0.lib glib-2.0.lib intl.lib  
+/ENTRY:mainCRTStartup %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Debug_GUI.h" />
     <ClInclude Include="draw.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="log.h" />
@@ -98,6 +103,7 @@
     <ClInclude Include="user_interface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Debug_GUI.cpp" />
     <ClCompile Include="demo.cpp" />
     <ClCompile Include="draw.cpp" />
     <ClCompile Include="Grid.cpp" />

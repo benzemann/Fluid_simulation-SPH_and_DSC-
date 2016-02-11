@@ -22,11 +22,13 @@ class SPH
 			height(h),
 			width(w),
 			color(vec3(0.0,0.0,1.0))
-		{}
+		{
+		}
 		vec2 pos;
 		float height;
 		float width;
 		vec3 color;
+		vector<int> ghost_particles;
 		void set_color(vec3 c) {
 			color = c;
 		}
@@ -61,10 +63,15 @@ public:
 	vec2 calculate_pressure(Particle p, vector<Particle> close_particles);
 	vec2 calculate_viscocity(Particle p, vector<Particle> close_particles);
 	vec2 calculate_external_forces(Particle p);
+	vec2 calculate_surface_tension(Particle p, vector<Particle> close_particles);
+
+	vector<Particle> get_close_particles(Particle* p_ptr);
 	/*
 	Draws all particles as red dots
 	*/
 	void draw_particles();
+
+	void create_particle_at_mouse_pos();
 	/*
 	Calculates new velocities and apply it to position
 	*/
@@ -81,6 +88,9 @@ public:
 	void draw_collision_boxes();
 	void draw_kernel_radius();
 	void draw_velocities();
+	void draw_pressure();
+	void draw_viscocity();
+	void draw_surface_tension();
 	/*
 	Check if particle is colliding with a collision box.
 	The particle are then moved to the point of collision and
@@ -95,18 +105,6 @@ public:
 
 	vector<double> signed_distance_to_walls(vec2 p, Collision_Box c_b);
 
-	void set_kernel_radius(double radius) {
-		KERNEL_RADIUS = radius;
-	}
-
-	void change_draw_kernel_radius() {
-		is_drawing_kernel = !is_drawing_kernel;
-	}
-
-	void change_draw_velocities() {
-		is_drawing_velocities = !is_drawing_velocities;
-	}
-
 	void move_collision_box(int id);
 	/*
 	The three different smoothing kernels
@@ -117,28 +115,43 @@ public:
 
 	float laplacian_kernel(float r, float d);
 
-	void add_costum() {
-		GAS_CONSTANT += 0.1;
-		cout << GAS_CONSTANT << endl;
+	vector<double*> get_user_variables_ptr();
+
+	vector<bool*> get_user_flags_ptr() {
+		vector<bool*> user_flags;
+		user_flags.push_back(&is_drawing_kernel);
+		user_flags.push_back(&is_drawing_velocities);
+		user_flags.push_back(&is_drawing_viscocity);
+		user_flags.push_back(&is_drawing_pressure);
+		user_flags.push_back(&is_drawing_surface_tension);
+		user_flags.push_back(&enabled_grid);
+		return user_flags;
 	}
-	void subtract_costum() {
-		GAS_CONSTANT -= 0.1;
-		cout << GAS_CONSTANT << endl;
+
+	bool is_it_drawing_kernel() {
+		return is_drawing_kernel;
+	}
+	bool is_it_drawing_velocities() {
+		return is_drawing_velocities;
 	}
 private:
 	vector<Collision_Box> collision_boxes;
 	bool is_drawing_kernel = false;
 	bool is_drawing_velocities = false;
+	bool is_drawing_pressure = false;
+	bool is_drawing_viscocity = false;
+	bool is_drawing_surface_tension = false;
+	bool enabled_grid = false;
 	/*
 	These are user controlled constant to get the desired fluid
 	*/
 	float MAX_VELOCITY = 1.0;
-	double COEFFICIENT_OF_RESTITUTION = 0.4;
-	double COEFFICIENT_OF_FRICTION = 0.03;
-	double KERNEL_RADIUS = 35.0;
-	double GAS_CONSTANT = 0.85;
-	double REST_DENSITY = 0.02;
-	double VISCOCITY_TERM = 25;
+	double COEFFICIENT_OF_RESTITUTION = 0.0;//0.4
+	double COEFFICIENT_OF_FRICTION = 0.0;//0.03
+	double KERNEL_RADIUS = 30.0;
+	double GAS_CONSTANT = 5500000;
+	double REST_DENSITY = 0.000103;
+	double VISCOCITY_TERM = 10.0;
 
 };
 

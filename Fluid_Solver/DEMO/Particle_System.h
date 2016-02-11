@@ -27,7 +27,8 @@ namespace particlesystem {
 			pressure(vec2(0)),
 			viscocity(vec2(0)),
 			external_forces(vec2(0)),
-			surface_tension(vec2(0))
+			surface_tension(vec2(0)),
+			is_fixed(false)
 		{}
 		// id to refer to a single particles in the particle system
 		int id;
@@ -43,6 +44,7 @@ namespace particlesystem {
 		vec2 viscocity;
 		vec2 external_forces;
 		vec2 surface_tension;
+		bool is_fixed;
 	};
 
 	class Particle_System
@@ -52,7 +54,7 @@ namespace particlesystem {
 		/*
 		Creates a new particle with a position
 		*/
-		void create_particle(vec2 p);
+		int create_particle(vec2 p);
 		/*
 		Returns the number of particles in the system.
 		*/
@@ -78,9 +80,9 @@ namespace particlesystem {
 		bool get_closest_particle(Particle p, Particle &closest, double max_dist = 10.0);
 		/*
 		Returns a list of all particles in the circle with radius around the
-		given particle. Optionally one can provide a list to get all the distances.
+		given particle.
 		*/
-		vector<Particle> get_particles_in_circle(Particle p, double radius, vector<double> &distances);
+		vector<Particle> get_particles_in_circle(Particle p, double radius);
 		/*
 		Renders all particles as small red dots
 		*/
@@ -99,6 +101,8 @@ namespace particlesystem {
 		Update grid
 		*/
 		void update_grid();
+
+		void create_grid(int width, int height, double cell_size);
 	private:
 
 		vector<Particle> particles;

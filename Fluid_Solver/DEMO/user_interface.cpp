@@ -22,6 +22,7 @@
 #include "trializer.h"
 #include "object_generator.h"
 #include "draw.h"
+#include "Debug_GUI.h"
 #include <iostream>
 #include <chrono>
 
@@ -135,7 +136,6 @@ UI::UI(int &argc, char** argv)
     check_gl_error();
 
 	track_particle_function* instance = static_cast<track_particle_function*>(vel_fun.get());
-	
 }
 
 void UI::update_title()
@@ -173,7 +173,20 @@ void UI::display()
 		}
 		std::chrono::duration<real> delta_time = std::chrono::system_clock::now() - last_time;
 		last_time = std::chrono::system_clock::now();
+		if (show_compute_time) {
+			frames_compute_time++;
+			dt_compute_time += delta_time.count();
+			if (frames_compute_time > 100) {
+				double ms_per_frame = (dt_compute_time * 1000.0) / frames_compute_time;
+				cout << ms_per_frame << " ms per frame";
+				dt_compute_time = 0.0;
+				frames_compute_time = 0;
+				double FPS = 1000.0 / ms_per_frame;
+				cout << " [" << FPS << " FPS]" << endl;
+			}
+		}
 		sph->update(delta_time.count());
+		
         basic_log->write_timestep(*vel_fun);
         if (vel_fun->is_motion_finished(*dsc))
         {
@@ -210,10 +223,10 @@ void UI::keyboard(unsigned char key, int x, int y) {
             stop();
             exit(0);
             break;
-        case '0':
+        case 'g':
             stop();
             break;
-		case '1':
+		case 'h':
 			create_fluid_domain();
 			break;
         case ' ':
@@ -231,17 +244,22 @@ void UI::keyboard(unsigned char key, int x, int y) {
 			sph->move_collision_box(0);
 			break;
 		case 'c':
-			enter_command();
+			if (dsc)
+				show_debug_ui();
 			break;
         case 'm':
             if(vel_fun)
             {
                 std::cout << "MOVE" << std::endl;
+				sph->update(0.1);
                 vel_fun->take_time_step(*dsc);
             }
             break;
 		case 'n':
 			sph->create_collision_box_at_mouse_pos();
+			break;
+		case 'p':
+			sph->create_particle_at_mouse_pos();
 			break;
         case 't':
             if(vel_fun)
@@ -260,17 +278,43 @@ void UI::keyboard(unsigned char key, int x, int y) {
 			sph->reset();
 			break;
         case 's':
-            if(dsc)
+			selection++;
+			if (selection > (number_of_user_flags+number_of_user_variables)) {
+				selection = 0;
+			}
+			if(dsc)
+				show_debug_ui();
+            /*if(dsc)
             {
                 std::cout << "TAKING SCREEN SHOT" << std::endl;
                 Painter::save_painting(WIN_SIZE_X, WIN_SIZE_Y, "LOG");
-            }
+            }*/
             break;
-		case 'z':
-			sph->subtract_costum();
+		case 'w':
+			selection--;
+			if (selection < 0) {
+				selection = (number_of_user_flags + number_of_user_variables);
+			}
+			if (dsc)
+				show_debug_ui();
 			break;
-		case 'x':
-			sph->add_costum();
+		case 'd':
+			if (dsc) {
+				change_selection(1);
+				show_debug_ui();
+			}	
+			break;
+		case 'a':
+			if (dsc) {
+				change_selection(-1);
+				show_debug_ui();
+			}
+			break;
+		case 'e':
+			if (dsc) {
+				set_selection();
+				show_debug_ui();
+			}
 			break;
         case '+':
             if(!vel_fun)
@@ -316,34 +360,72 @@ void UI::keyboard(unsigned char key, int x, int y) {
             break;
     }
 }
+#define SHOW(a) std::cout << #a << ": " << (a) << std::endl
+void UI::show_debug_ui() {
+	system("cls");
+	cout << "##### DEBUG SCREEN #####" << endl;
+	cout << endl;
+	cout << "CHANGE USER VARIABLES:" << endl;
+	cout << " - Use 'w' and 's' to select variable" << endl;
+	cout << " - Use 'd' to increase value and 'a' to decrease" << endl;
+	cout << endl;
+	string var_names[6] = {
+		"COEFFICIENT_OF_RESTITUTION",
+		"COEFFICIENT_OF_FRICTION",
+		"KERNEL_RADIUS",
+		"GAS_CONSTANT",
+		"REST_DENSITY",
+		"VISCOCITY_TERM"
+	};
+	
+	for (int i = 0; i < number_of_user_variables; i++) {
+		cout << var_names[i] << ": " << *user_variables_ptr[i];
+		if (selection == i) {
+			cout << "      <<";
+		}
+		cout << endl;
+	}
 
-void UI::enter_command() {
-	cout << "Enter command:" << endl;
-	string command;
-	double input = 0.0;
-	cin >> command;
-	if (command == "help") {
-		cout << "Command list: " << endl;
-		cout << "    - help : Show the command list" << endl;
-		cout << "    - kernel_radius radius : Change the kernel radius to input value" << endl;
-		cout << "    - show_kernel_radius true/false : Show/hide kernel radius, input: 1=show, 0=hide" << endl;
+	string flag_names[6] = {
+		"Draw kernel",
+		"Draw velocities",
+		"Draw viscocity",
+		"Draw pressure",
+		"Draw surface tension",
+		"Using spatial data grid"
+	};
+	for (int i = 0; i < number_of_user_flags; i++) {
+		cout << flag_names[i] << ": " << *user_flags_ptr[i];
+		if (selection == i + number_of_user_variables) {
+			cout << "      <<";
+		}
+		cout << endl;
 	}
-	else if (command == "kernel_radius") {
-		cin >> input;
-		cout << "Kernel radius changed to " << input << endl;
-		sph->set_kernel_radius(input);
+	cout << "Show ms per frame and FPS: " << show_compute_time;
+	if (selection == number_of_user_flags+ number_of_user_variables) {
+		cout << "    <<";
 	}
-	else if (command == "show_kernel_radius") {
-		sph->change_draw_kernel_radius();
+	cout << endl;
+	cout << endl;
+	cout << "OTHER COMMANDS: " << endl;
+	cout << " - SPACE : Start/Stop simulation" << endl;
+	cout << " - r : Reset simulation" << endl;
+	cout << " - b : Move brown collision box to mouse position" << endl;
+	cout << " - n : Create new collision box at mouse position" << endl;
+	cout << " - ESC : Quit program" << endl;
+	cout << " - c : Show this information" << endl;
+}
+
+void UI::change_selection(double value) {
+	if (selection < number_of_user_variables) {
+		*user_variables_ptr[selection] += (*user_variables_ptr[selection]*0.1)*value;
 	}
-	else if (command == "show_velocities") {
-		sph->change_draw_velocities();
+	else if (selection >= number_of_user_variables && selection < (number_of_user_variables+ number_of_user_flags)) {
+		*user_flags_ptr[selection - number_of_user_variables] = !*user_flags_ptr[selection-number_of_user_variables];
 	}
-	else if(command != "done") {
-		cout << "There is no command for: " << command << endl;
+	else {
+		show_compute_time = !show_compute_time;
 	}
-	if(command != "done")
-		enter_command();
 }
 
 void UI::visible(int v)
@@ -366,6 +448,9 @@ void UI::draw()
 		sph->draw_collision_boxes();
 		sph->draw_kernel_radius();
 		sph->draw_velocities();
+		sph->draw_pressure();
+		sph->draw_viscocity();
+		sph->draw_surface_tension();
         if(RECORD && CONTINUOUS)
         {
             Painter::save_painting(WIN_SIZE_X, WIN_SIZE_Y, basic_log->get_path(), vel_fun->get_time_step());
@@ -420,7 +505,8 @@ void UI::create_fluid_domain()
 	sph = std::unique_ptr<SPH>(new SPH(100));
 	sph->init();
 	dsc = std::unique_ptr<DeformableSimplicialComplex>(new DeformableSimplicialComplex(DISCRETIZATION, points, faces, domain));
-	
+	user_variables_ptr = sph->get_user_variables_ptr();
+	user_flags_ptr = sph->get_user_flags_ptr();
 	vel_fun = std::unique_ptr<VelocityFunc<>>(new track_particle_function(VELOCITY, ACCURACY));
 
 	reshape(width + 2 * DISCRETIZATION, height + 2 * DISCRETIZATION);

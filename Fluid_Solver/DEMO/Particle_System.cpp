@@ -2,19 +2,18 @@
 #include "Grid.h"
 
 using namespace particlesystem;
-
-Grid grid(10.0,50.0,50.0);
-
+Grid grid;
 Particle_System::Particle_System(int max):
 	MAX_NUMBER_OF_PARTICLES(max)
 {
-	
+
 }
 
-void Particle_System::create_particle(vec2 p) {
+int Particle_System::create_particle(vec2 p) {
 	Particle new_particle = Particle(p, particles.size());
 	particles.push_back(new_particle);
 	grid.insert_particle(new_particle);
+	return new_particle.id;
 }
 
 void Particle_System::update_grid() {
@@ -24,6 +23,10 @@ void Particle_System::update_grid() {
 	}
 }
 
+void Particle_System::create_grid(int width, int height, double cell_size) {
+	grid.create_grid(width, height, cell_size);
+}
+
 bool Particle_System::get_closest_particle(Particle p, Particle &closest, double max_dist) {
 	if (grid.get_closest_particle(p, closest, max_dist)) {
 		return true;
@@ -31,8 +34,8 @@ bool Particle_System::get_closest_particle(Particle p, Particle &closest, double
 	return false;
 }
 
-vector<Particle> Particle_System::get_particles_in_circle(Particle p, double radius, vector<double> &distances) {
-	return grid.get_particles_in_circle(p, radius, distances);
+vector<Particle> Particle_System::get_particles_in_circle(Particle p, double radius) {
+	return grid.get_particles_in_circle(p, radius);
 };
 
 void Particle_System::draw() {

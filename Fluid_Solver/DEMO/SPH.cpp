@@ -9,20 +9,47 @@ SPH::SPH(int tmp)
 
 void SPH::init() {
 	// Create all particles in a square
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			vec2 particle_pos = vec2(75 + (i * 15), 250 + (j * 15));
+	int indx = 0;
+	/*for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 1; j++) {
+			vec2 particle_pos = vec2(75 + (i * 5), 250 + (j * 5));
 			particle_system.create_particle(particle_pos);
+			indx++;
 		}
 	}
+	/*for (int i = 0; i < 100; i++) {
+		vec2 particle_pos = vec2(15.0, i*5.0);
+		particle_system.create_particle(particle_pos);
+		Particle* p_ptr = particle_system.get_particle_ptr(indx);
+		indx++;
+		p_ptr->is_fixed = true;
+	}
+	for (int i = 0; i < 100; i++) {
+		vec2 particle_pos = vec2(485.0, i*5.0);
+		particle_system.create_particle(particle_pos);
+		Particle* p_ptr = particle_system.get_particle_ptr(indx);
+		indx++;
+		p_ptr->is_fixed = true;
+	}
+	for (int i = 0; i < 100; i++) {
+		vec2 particle_pos = vec2(i*5.0, 107.5);
+		particle_system.create_particle(particle_pos);
+		Particle* p_ptr = particle_system.get_particle_ptr(indx);
+		indx++;
+		p_ptr->is_fixed = true;
+	}*/
+	// Create grid (width, height, cell size)
+	particle_system.create_grid(10.0, 10.0, 50.0);
 	// Create collision boxes, the first is always the movable one!
-	vec3 grey = vec3(100, 100, 100);
-	vec3 brown = vec3(122, 88, 37);
-	create_collision_box(vec2(350.0, 250.0), 100.0, 100.0, brown);
-	create_collision_box(vec2(250.0, 50.0), 125.0, 500.0, grey);
-	create_collision_box(vec2(250.0, 450.0), 100.0, 500.0, grey);
-	create_collision_box(vec2(500.0, 250.0), 500.0, 50.0, grey);
-	create_collision_box(vec2(0.0, 250.0), 500.0, 50.0, grey);
+	if (collision_boxes.size() == 0) {
+		vec3 grey = vec3(100, 100, 100);
+		vec3 brown = vec3(122, 88, 37);
+		create_collision_box(vec2(350.0, 250.0), 100.0, 100.0, brown);
+		create_collision_box(vec2(250.0, 50.0), 125.0, 500.0, grey);
+		create_collision_box(vec2(250.0, 500.0), 100.0, 500.0, grey);
+		create_collision_box(vec2(525.0, 250.0), 500.0, 100.0, grey);
+		create_collision_box(vec2(-25.0, 250.0), 500.0, 100.0, grey);
+	}
 }
 
 void SPH::reset() {
@@ -32,33 +59,60 @@ void SPH::reset() {
 }
 
 void SPH::update(double delta_time) {
-	particle_system.update_grid();
+	//cout << gradient_kernel(10.0, vec2(1.0,0.0), KERNEL_RADIUS) << endl;
+	if(enabled_grid)
+		particle_system.update_grid();
 	// First loop calculate density and local pressure
 	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 		Particle* p_ptr = particle_system.get_particle_ptr(i);
 		vector<double> distances;
-		//vector<Particle> close_particles = particle_system.get_particles_in_circle(*p_ptr, KERNEL_RADIUS, distances);
-		//p_ptr->density = calculate_density(*p_ptr, close_particles);
+		vector<Particle> close_particles = get_close_particles(p_ptr);
+		p_ptr->density = calculate_density(*p_ptr, close_particles);
 		p_ptr->local_pressure = calculate_local_pressure(*p_ptr);
+		//cout << p_ptr->density << " " << p_ptr->local_pressure << endl;
 	}
 	// Second loop to calculate Viscocity, pressure, and external forces
 	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 		Particle* p_ptr = particle_system.get_particle_ptr(i);
 		vector<double> distances;
-		//vector<Particle> close_particles = particle_system.get_particles_in_circle(*p_ptr, KERNEL_RADIUS, distances);
-		//p_ptr->pressure = calculate_pressure(*p_ptr, close_particles);
-		//p_ptr->viscocity = calculate_viscocity(*p_ptr, close_particles);
+		vector<Particle> close_particles = get_close_particles(p_ptr);
+		p_ptr->pressure = calculate_pressure(*p_ptr, close_particles);
+		p_ptr->viscocity = calculate_viscocity(*p_ptr, close_particles);
+		p_ptr->surface_tension = calculate_surface_tension(*p_ptr, close_particles);
+		//cout << p_ptr->viscocity << " " << p_ptr->pressure << endl;
+		
 		p_ptr->external_forces = calculate_external_forces(*p_ptr);
 	}
 	update_velocity(delta_time);
 	update_position(delta_time);
 }
 
+vector<Particle> SPH::get_close_particles(Particle* p_ptr) {
+	
+	if (enabled_grid) {
+		// Use spatial data grid
+		return particle_system.get_particles_in_circle(*p_ptr, KERNEL_RADIUS);
+	}
+	else {
+		// Loop over all particle
+		vector<Particle> close_particles;
+		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+			Particle p = particle_system.get_particle(i);
+			vec2 p_to_p = p.pos - p_ptr->pos;
+			double distance = p_to_p.length();
+			if (distance <= KERNEL_RADIUS && p.id != p_ptr->id) {
+				close_particles.push_back(p);
+			}
+		}
+		return close_particles;
+	}
+}
+
 double SPH::calculate_density(Particle p, vector<Particle> close_particles) {
 	double density = 0.0;
 	for each(Particle close_particle in close_particles) {
 		vec2 p_to_p = p.pos - close_particle.pos;
-		density += p.mass * poly6_kernel(p_to_p.length(), KERNEL_RADIUS);
+		density += (p.mass * poly6_kernel(p_to_p.length(), KERNEL_RADIUS));
 	}
 	return density;
 }
@@ -67,13 +121,29 @@ double SPH::calculate_local_pressure(Particle p) {
 	return GAS_CONSTANT * (p.density - REST_DENSITY);
 }
 
+vec2 SPH::calculate_surface_tension(Particle p, vector<Particle> close_particles) {
+	vec2 inward_normal = vec2(0.0);
+	double lap_c = 0.0;
+	for each(Particle close_particle in close_particles) {
+		vec2 p_to_p = p.pos - close_particle.pos;
+		inward_normal += (close_particle.mass / close_particle.density) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+		lap_c += (close_particle.mass / close_particle.density) * laplacian_kernel(p_to_p.length(), KERNEL_RADIUS);
+	}
+	vec2 surface_tension = vec2(0.0);
+	if (inward_normal.length() > 0.035) {
+		inward_normal.normalize();
+		surface_tension = -400.0 * inward_normal * lap_c;
+	}
+	return surface_tension;
+}
+
 vec2 SPH::calculate_pressure(Particle p, vector<Particle> close_particles) {
 
 	vec2 pressure = vec2(0.0);
 	for each(Particle close_particle in close_particles) {
 		vec2 p_to_p = p.pos - close_particle.pos;
 		if (close_particle.density != 0.0) {
-			pressure += p.mass * ((p.local_pressure + close_particle.local_pressure) / close_particle.density) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+			pressure += close_particle.mass * ((p.local_pressure + close_particle.local_pressure) / (2.0 * close_particle.density)) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
 		}
 	}
 	return -pressure;
@@ -84,24 +154,37 @@ vec2 SPH::calculate_viscocity(Particle p, vector<Particle> close_particles) {
 	vec2 viscocity = vec2(0.0);
 	for each(Particle close_particle in close_particles) {
 		vec2 p_to_p = p.pos - close_particle.pos;
-		viscocity += p.mass * ((close_particle.vel - p.vel) / close_particle.local_pressure) * laplacian_kernel(p_to_p.length(), KERNEL_RADIUS);
+		if(close_particle.density != 0.0)
+			viscocity += p.mass * ((close_particle.vel - p.vel) / close_particle.density) * laplacian_kernel(p_to_p.length(), KERNEL_RADIUS);
 	}
 	return VISCOCITY_TERM * viscocity;
 
 }
 
 vec2 SPH::calculate_external_forces(Particle p) {
-	vec2 gravity = vec2(0.0, -0.4);
+	vec2 gravity = vec2(0.0, -9.4);
 	return gravity;
 }
 
 void SPH::update_velocity(double delta_time) {
 	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 		Particle* p_ptr = particle_system.get_particle_ptr(i);
-		vec2 acceleration = p_ptr->pressure + p_ptr->viscocity + p_ptr->external_forces;
-		vec2 velocity = p_ptr->vel + acceleration;
-		p_ptr->vel = velocity;
-		p_ptr->vel += check_collision(*p_ptr, delta_time);
+		if (!p_ptr->is_fixed) {
+			/*if (p_ptr->pressure.length() > 100.0)
+				p_ptr->pressure = vec2(0.0);*/
+			vec2 acceleration = p_ptr->pressure + p_ptr->viscocity + p_ptr->external_forces + p_ptr->surface_tension;
+			/*if (p_ptr->density != 0.0)
+				acceleration = acceleration / p_ptr->density;*/
+			//cout << p_ptr->density << endl;
+			vec2 velocity = p_ptr->vel + acceleration;
+			
+			p_ptr->vel = velocity; 
+			
+			p_ptr->vel += check_collision(*p_ptr, delta_time);
+			if (p_ptr->vel.length() > 150.0)
+				p_ptr->vel = normalize(p_ptr->vel) * 150.0;
+		}
+		
 	}
 }
 
@@ -109,7 +192,8 @@ void SPH::update_position(double delta_time) {
 	
 	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 		Particle* p_ptr = particle_system.get_particle_ptr(i);
-		p_ptr->pos += p_ptr->vel * delta_time;	
+		if(!p_ptr->is_fixed)
+			p_ptr->pos += p_ptr->vel * delta_time;	
 	}
 }
 
@@ -135,9 +219,66 @@ void SPH::draw_particles() {
 	particle_system.draw();
 }
 
+void SPH::create_particle_at_mouse_pos() {
+	POINT curPos;
+	BOOL result = GetCursorPos(&curPos);
+	if (result)
+	{
+		RECT rect;
+		HWND hwnd = GetForegroundWindow();
+
+		if (GetWindowRect(hwnd, &rect)) {
+			int x = abs(rect.left - curPos.x);
+			int y = rect.bottom - curPos.y;
+			particle_system.create_particle(vec2(x, y));
+		}
+	}
+}
+
 void SPH::create_collision_box(vec2 pos, float height, float width, vec3 c) {
 	Collision_Box new_collision_box(pos, height, width);
 	new_collision_box.set_color(c);
+	// top layer of ghost particles
+	/*for (int i = 0; i < ((width - (KERNEL_RADIUS / 2.0)) / 10.0); i++) {
+
+		vec2 p_pos = vec2(pos[0] - (width / 2.0) + (KERNEL_RADIUS / 4.0) + (i * 10.0) + 15.0,
+			pos[1] + (height / 2.0) - 15.0);
+		int indx = particle_system.create_particle(p_pos);
+		Particle* p_ptr = particle_system.get_particle_ptr(indx);
+		p_ptr->is_fixed = true;
+		new_collision_box.ghost_particles.push_back(indx);
+	}*/
+	for (int j = 0; j < 1; j++) {
+		for (int i = 0; i < ((width - (KERNEL_RADIUS / 2.0)) / 10.0); i++) {
+
+			vec2 p_pos = vec2(pos[0] - (width / 2.0) + (KERNEL_RADIUS / 4.0) + (i * 10.0),
+				pos[1] + (height / 2.0) - (7.5));
+			int indx = particle_system.create_particle(p_pos);
+			Particle* p_ptr = particle_system.get_particle_ptr(indx);
+			p_ptr->is_fixed = true;
+			new_collision_box.ghost_particles.push_back(indx);
+		}
+		for (int i = 0; i < ((height - (KERNEL_RADIUS / 2.0)) / 10.0); i++) {
+			vec2 p_pos = vec2(pos[0] + (width / 2.0) - (7.5),
+				pos[1] - (height / 2.0) + (KERNEL_RADIUS / 4.0) + (i * 10.0));
+			int indx = particle_system.create_particle(p_pos);
+			Particle* p_ptr = particle_system.get_particle_ptr(indx);
+			p_ptr->is_fixed = true;
+			new_collision_box.ghost_particles.push_back(indx);
+		}
+		// left layer of ghost particles
+		for (int i = 0; i < ((height - (KERNEL_RADIUS / 2.0)) / 10.0); i++) {
+			vec2 p_pos = vec2(pos[0] - (width / 2.0) + (7.5),
+				pos[1] - (height / 2.0) + (KERNEL_RADIUS / 4.0) + (i * 10.0));
+			int indx = particle_system.create_particle(p_pos);
+			Particle* p_ptr = particle_system.get_particle_ptr(indx);
+			p_ptr->is_fixed = true;
+			new_collision_box.ghost_particles.push_back(indx);
+		}
+	}
+	
+	// Right layer of ghost particles
+
 	collision_boxes.push_back(new_collision_box);
 }
 
@@ -161,9 +302,10 @@ void SPH::create_collision_box_at_mouse_pos() {
 vec2 SPH::check_collision(Particle p, double delta_time) {
 	vec2 new_pos = p.pos + (p.vel * delta_time);
 	vec2 impulse = vec2(0.0);
+	
 	for each(Collision_Box c_b in collision_boxes) {
 	
-		if (c_b.is_inside(new_pos)) {
+		if (c_b.is_inside(p.pos)) {
 			// particle is inside collision box
 			vec2 wall_normal = vec2(0.0, 0.0);
 			// Check distance to closest collision wall
@@ -195,29 +337,82 @@ vec2 SPH::check_collision(Particle p, double delta_time) {
 			default:
 				break;
 			}
-			// teleport to edge of box if 
+
 			if (c_b.is_inside(p.pos)) {
+				vec2 tmp = (wall_normal) * (c_b.height*0.5) + c_b.pos;
+				Particle* p_ptr = particle_system.get_particle_ptr(p.id);
+				//cout << wall_normal << endl;
+				if (wall_id == 1 || wall_id == 3) {
+					tmp = wall_normal * (c_b.width*0.5) + c_b.pos;
+					
+					p_ptr->pos[0] = tmp[0];
+					/*if (p_ptr->pressure[0] > 0 && wall_id == 1) {
+						p_ptr->vel = vec2(0.0);
+						p_ptr->pressure = vec2(0.0);
+					}
+					
+					if (p_ptr->pressure[0] < 0 && wall_id == 2) {
+						p_ptr->vel = vec2(0.0);
+						p_ptr->pressure = vec2(0.0);
+					}*/
+				}
+				else {
+					//p_ptr->vel[1] = tmp[1] - p_ptr->pos[1];
+					//impulse += tmp[1] - p_ptr->pos[1];
+					p_ptr->pos[1] = tmp[1];
+					/*if (p_ptr->pressure[1] < 0 && wall_id == 0) {
+						p_ptr->vel = vec2(0.0);
+						p_ptr->pressure = vec2(0.0);
+					}
+					if (p_ptr->pressure[1] > 0 && wall_id == 3) {
+						p_ptr->vel = vec2(0.0);
+						p_ptr->pressure = vec2(0.0);
+					}*/
+				}	
+			}
+
+			// teleport to edge of box if 
+			if (c_b.is_inside(new_pos)) {
 				vec2 tmp = wall_normal * (c_b.height*0.5) + c_b.pos;
 				Particle* p_ptr = particle_system.get_particle_ptr(p.id);
 				if (wall_id == 1 || wall_id == 3) {
 					tmp = wall_normal * (c_b.width*0.5) + c_b.pos;
-					p_ptr->pos[0] = tmp[0];
+					p_ptr->vel[0] = tmp[0] - p_ptr->pos[0];
+					//impulse += tmp[0] - p_ptr->pos[0];
+					//if (p_ptr->pressure.length() > 30.0) {
+						//p_ptr->vel[0] = 0;
+					//}
+					//p_ptr->pos[0] = tmp[0];
+					/*if (p_ptr->pressure[0] > 0 && wall_id == 1)
+						p_ptr->vel *= 0.1;
+					if (p_ptr->pressure[0] < 0 && wall_id == 2)
+						p_ptr->vel *= 0.1;*/
 				}
 				else {
-					p_ptr->pos[1] = tmp[1];
+					p_ptr->vel[1] = tmp[1] - p_ptr->pos[1];
+					//impulse += tmp[1] - p_ptr->pos[1];
+					/*if (p_ptr->pressure.length() > 30.0) {
+						p_ptr->vel[1] = 1;
+					}*/
+					//p_ptr->pos[1] = tmp[1];
+					/*if (p_ptr->pressure[1] < 0 && wall_id == 0)
+						p_ptr->vel *= 0.1;
+					if (p_ptr->pressure[1] > 0 && wall_id == 3)
+						p_ptr->vel *= 0.1;*/
 				}
 				//impulse += calculate_collision_impulse(p, wall_normal);
 			}
-			if (closest_distance > 0.01 || wall_id != 0) {
-				impulse += calculate_collision_impulse(p, wall_normal);
+			
+			if (closest_distance > 5.0 || wall_id != 0) {
+				//impulse += calculate_collision_impulse(p, wall_normal);
 			}
 			else {
 				// If particle very close to collider, slow it down
-				impulse -= p.vel * 0.05;
+				//impulse -= p.vel * 0.1;
 			}
 		}
 	}
-	return impulse;
+	return impulse * 0.25;
 }
 
 vec2 SPH::calculate_collision_impulse(Particle p, vec2 wall_normal) {
@@ -277,19 +472,65 @@ void SPH::draw_kernel_radius() {
 		
 		const float DEG2RAD = 3.14159 / 180;
 		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
-			glBegin(GL_LINE_LOOP);
-			glColor3f(0.0f, 0.0f, 1.0f);
 			Particle p = particle_system.get_particle(i);
-			for (int j = 0; j < 360; j++)
-			{
-				float degInRad = j*DEG2RAD;
-				glVertex2f(p.pos[0] + cos(degInRad)*KERNEL_RADIUS, p.pos[1] + sin(degInRad)*KERNEL_RADIUS);
+			if (!p.is_fixed) {
+				glBegin(GL_LINE_LOOP);
+				glColor3f(0.0f, 0.0f, 1.0f);
+				for (int j = 0; j < 360; j++)
+				{
+					float degInRad = j*DEG2RAD;
+					glVertex2f(p.pos[0] + cos(degInRad)*KERNEL_RADIUS, p.pos[1] + sin(degInRad)*KERNEL_RADIUS);
+				}
+				glEnd();
 			}
-			glEnd();
 		}
+	}
+}
 
+void SPH::draw_pressure() {
+	if (is_drawing_pressure) {
+		glBegin(GL_LINES);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+			Particle p = particle_system.get_particle(i);
+			if (!p.is_fixed) {
+				glVertex2f(p.pos[0], p.pos[1]);
+				glVertex2f(p.pos[0] + p.pressure[0], p.pos[1] + p.pressure[1]);
+			}
+		}
+		glEnd();
+	}
+}
 
+void SPH::draw_viscocity() {
+	if (is_drawing_viscocity) {
+		glBegin(GL_LINES);
+		
+		glColor3f(0.0f, 0.0f, 1.0f);
+		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+			Particle p = particle_system.get_particle(i);
+			if (!p.is_fixed) {
+				glVertex2f(p.pos[0], p.pos[1]);
+				glVertex2f(p.pos[0] + p.viscocity[0], p.pos[1] + p.viscocity[1]);
+			}
+		}
+		glEnd();
+	}
+}
 
+void SPH::draw_surface_tension() {
+	if (is_drawing_surface_tension) {
+		glBegin(GL_LINES);
+
+		glColor3f(0.0f, 1.0f, 1.0f);
+		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+			Particle p = particle_system.get_particle(i);
+			if (!p.is_fixed) {
+				glVertex2f(p.pos[0], p.pos[1]);
+				glVertex2f(p.pos[0] + p.surface_tension[0], p.pos[1] + p.surface_tension[1]);
+			}
+		}
+		glEnd();
 	}
 }
 
@@ -299,10 +540,10 @@ void SPH::draw_velocities() {
 		glColor3f(0.0f, 1.0f, 0.0f);
 		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 			Particle p = particle_system.get_particle(i);
-
-			glVertex2f(p.pos[0], p.pos[1]);
-			glVertex2f(p.pos[0] + p.vel[0], p.pos[1] + p.vel[1]);
-
+			if (!p.is_fixed) {
+				glVertex2f(p.pos[0], p.pos[1]);
+				glVertex2f(p.pos[0] + p.vel[0], p.pos[1] + p.vel[1]);
+			}
 		}
 		glEnd();
 	}
@@ -319,7 +560,12 @@ void SPH::move_collision_box(int id) {
 		if (GetWindowRect(hwnd, &rect)) {
 			int x = abs(rect.left - curPos.x);
 			int y = rect.bottom - curPos.y;
+			vec2 translation = vec2(x, y) - collision_boxes[id].pos;
 			collision_boxes[id].pos = vec2(x, y);
+			for (int i = 0; i < collision_boxes[id].ghost_particles.size(); i++) {
+				Particle* p_ptr = particle_system.get_particle_ptr(collision_boxes[id].ghost_particles[i]);
+				p_ptr->pos += translation;
+			}
 		}
 	}
 }
@@ -338,7 +584,9 @@ vec2 SPH::gradient_kernel(float r, DSC2D::vec2 v, float d) {
 		return vec2(0);
 	}
 	else {
-		return (-45 / (M_PI*pow(d, 6)))*pow(d - r, 2) * normalize(v);
+		//return -(945 / (32 * M_PI * pow(d, 9))) * v * pow(pow(d, 2) - pow(r, 2), 2);
+		return -(45 / (M_PI*pow(d, 6))) * normalize(v) *pow(d - r, 2);
+		//return ((15 / (M_PI*pow(d, 6))) * pow(d-r,3)) * normalize(v);
 	}
 }
 
@@ -347,6 +595,19 @@ float SPH::laplacian_kernel(float r, float d) {
 		return 0;
 	}
 	else {
+		//return -(945 / (32 * M_PI * pow(d, 9))) * (pow(d, 2) - pow(r, 2)) * (3 * pow(d, 2) - 7 * pow(r, 2));
 		return (45 / (M_PI*pow(d, 6)))*(d - r);
+		//return (15 / (2.0*M_PI*pow(d, 3))) - (pow(r, 3) / (2 * pow(d, 3))) + (pow(r, 2) / pow(d, 2)) + (d / (2 * r)) - 1;
 	}
+}
+
+vector<double*> SPH::get_user_variables_ptr() {
+	vector<double*> out_vector;
+	out_vector.push_back(&COEFFICIENT_OF_RESTITUTION);
+	out_vector.push_back(&COEFFICIENT_OF_FRICTION);
+	out_vector.push_back(&KERNEL_RADIUS);
+	out_vector.push_back(&GAS_CONSTANT);
+	out_vector.push_back(&REST_DENSITY);
+	out_vector.push_back(&VISCOCITY_TERM);
+	return out_vector;
 }
