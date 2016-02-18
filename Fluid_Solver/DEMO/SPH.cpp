@@ -16,35 +16,37 @@ void SPH::init() {
 			particle_system.create_particle(particle_pos);
 			indx++;
 		}
-	}
+	}*/
 	/*for (int i = 0; i < 100; i++) {
-		vec2 particle_pos = vec2(15.0, i*5.0);
+		vec2 particle_pos = vec2(5.0 * i, 200.0);
 		particle_system.create_particle(particle_pos);
 		Particle* p_ptr = particle_system.get_particle_ptr(indx);
 		indx++;
 		p_ptr->is_fixed = true;
 	}
 	for (int i = 0; i < 100; i++) {
-		vec2 particle_pos = vec2(485.0, i*5.0);
+		vec2 particle_pos = vec2(100.0, i * 5.0);
 		particle_system.create_particle(particle_pos);
 		Particle* p_ptr = particle_system.get_particle_ptr(indx);
 		indx++;
 		p_ptr->is_fixed = true;
 	}
 	for (int i = 0; i < 100; i++) {
-		vec2 particle_pos = vec2(i*5.0, 107.5);
+		vec2 particle_pos = vec2(200.0, i * 5.0);
 		particle_system.create_particle(particle_pos);
 		Particle* p_ptr = particle_system.get_particle_ptr(indx);
 		indx++;
 		p_ptr->is_fixed = true;
 	}*/
 	// Create grid (width, height, cell size)
-	particle_system.create_grid(10.0, 10.0, 50.0);
+
+	particle_system.create_grid(34.0, 34.0, 15.0);
 	// Create collision boxes, the first is always the movable one!
 	if (collision_boxes.size() == 0) {
 		vec3 grey = vec3(100, 100, 100);
 		vec3 brown = vec3(122, 88, 37);
-		create_collision_box(vec2(350.0, 250.0), 100.0, 100.0, brown);
+
+		create_collision_box(vec2(350.0, 250.0), 200.0, 100.0, brown);
 		create_collision_box(vec2(250.0, 50.0), 125.0, 500.0, grey);
 		create_collision_box(vec2(250.0, 500.0), 100.0, 500.0, grey);
 		create_collision_box(vec2(525.0, 250.0), 500.0, 100.0, grey);
@@ -87,6 +89,33 @@ void SPH::update(double delta_time) {
 	update_position(delta_time);
 }
 
+void SPH::update_tmp(double delta_time) {
+	//cout << gradient_kernel(10.0, vec2(1.0,0.0), KERNEL_RADIUS) << endl;
+	if (enabled_grid)
+		particle_system.update_grid();
+	// First loop calculate density and local pressure
+	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+		Particle* p_ptr = particle_system.get_particle_ptr(i);
+		vector<double> distances;
+		vector<Particle> close_particles = get_close_particles(p_ptr);
+		p_ptr->density = calculate_density(*p_ptr, close_particles);
+		p_ptr->local_pressure = calculate_local_pressure(*p_ptr);
+		//cout << p_ptr->density << " " << p_ptr->local_pressure << endl;
+	}
+	// Second loop to calculate Viscocity, pressure, and external forces
+	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+		Particle* p_ptr = particle_system.get_particle_ptr(i);
+		vector<double> distances;
+		vector<Particle> close_particles = get_close_particles(p_ptr);
+		p_ptr->pressure = calculate_pressure(*p_ptr, close_particles);
+		p_ptr->viscocity = calculate_viscocity(*p_ptr, close_particles);
+		p_ptr->surface_tension = calculate_surface_tension(*p_ptr, close_particles);
+		//cout << p_ptr->viscocity << " " << p_ptr->pressure << endl;
+
+		p_ptr->external_forces = calculate_external_forces(*p_ptr);
+	}
+}
+
 vector<Particle> SPH::get_close_particles(Particle* p_ptr) {
 	
 	if (enabled_grid) {
@@ -112,9 +141,11 @@ double SPH::calculate_density(Particle p, vector<Particle> close_particles) {
 	double density = 0.0;
 	for each(Particle close_particle in close_particles) {
 		vec2 p_to_p = p.pos - close_particle.pos;
-		density += (p.mass * poly6_kernel(p_to_p.length(), KERNEL_RADIUS));
+		density += (close_particle.mass * poly6_kernel(p_to_p.length(), KERNEL_RADIUS));
 	}
-	return density;
+	/*if (!p.is_fixed)
+		cout << poly6_kernel(KERNEL_RADIUS - 0.1, KERNEL_RADIUS) << endl;*/
+	return density + p.mass * poly6_kernel(0.0, KERNEL_RADIUS);
 }
 
 double SPH::calculate_local_pressure(Particle p) {
@@ -143,7 +174,8 @@ vec2 SPH::calculate_pressure(Particle p, vector<Particle> close_particles) {
 	for each(Particle close_particle in close_particles) {
 		vec2 p_to_p = p.pos - close_particle.pos;
 		if (close_particle.density != 0.0) {
-			pressure += close_particle.mass * ((p.local_pressure + close_particle.local_pressure) / (2.0 * close_particle.density)) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+			pressure += close_particle.mass * ((p.local_pressure + close_particle.local_pressure) / (2.0 * close_particle.density)) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);		
+			//pressure += close_particle.mass * ((p.local_pressure/pow(p.density,2.0)) + (close_particle.local_pressure / pow(close_particle.density, 2.0))) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
 		}
 	}
 	return -pressure;
@@ -172,20 +204,55 @@ void SPH::update_velocity(double delta_time) {
 		if (!p_ptr->is_fixed) {
 			/*if (p_ptr->pressure.length() > 100.0)
 				p_ptr->pressure = vec2(0.0);*/
-			vec2 acceleration = p_ptr->pressure + p_ptr->viscocity + p_ptr->external_forces + p_ptr->surface_tension;
+			
+			//vec2 v_minus_half_t = p_ptr->vel - delta_time * 0.5 * p_ptr->a_0;
+			vec2 acceleration = p_ptr->pressure + p_ptr->viscocity + p_ptr->external_forces;
 			/*if (p_ptr->density != 0.0)
 				acceleration = acceleration / p_ptr->density;*/
+			//p_ptr->a_0 = acceleration;
+			//vec2 v_plus_half_t = v_minus_half_t + delta_time * acceleration;
+			
 			//cout << p_ptr->density << endl;
 			vec2 velocity = p_ptr->vel + acceleration;
+			//p_ptr->vel_0 = p_ptr->vel;
+			//p_ptr->vel_0 = v_plus_half_t;
+			//p_ptr->vel = (v_minus_half_t + v_plus_half_t) / 2.0;
+			p_ptr->vel = velocity;
+			p_ptr->vel += check_collision(*p_ptr, delta_time);
+			/*if (p_ptr->vel.length() > 150.0)
+				p_ptr->vel = normalize(p_ptr->vel) * 150.0;*/
+
 			
-			p_ptr->vel = velocity; 
+		}
+	}
+	/*for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+		Particle* p_ptr = particle_system.get_particle_ptr(i);
+		p_ptr->pos_0 = p_ptr->pos;
+		if (!p_ptr->is_fixed)
+			p_ptr->pos += p_ptr->vel * delta_time;
+		
+	}
+	update_tmp(delta_time);
+	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+		Particle* p_ptr = particle_system.get_particle_ptr(i);
+		if (!p_ptr->is_fixed) {
 			
+			vec2 acceleration = p_ptr->pressure + p_ptr->viscocity + p_ptr->external_forces;
+			
+			vec2 velocity = p_ptr->vel + acceleration;
+
+			p_ptr->vel = velocity;
+
 			p_ptr->vel += check_collision(*p_ptr, delta_time);
 			if (p_ptr->vel.length() > 150.0)
 				p_ptr->vel = normalize(p_ptr->vel) * 150.0;
 		}
-		
 	}
+	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+		Particle* p_ptr = particle_system.get_particle_ptr(i);
+		if (!p_ptr->is_fixed)
+			p_ptr->pos = p_ptr->pos_0;
+	}*/
 }
 
 void SPH::update_position(double delta_time) {
@@ -193,7 +260,7 @@ void SPH::update_position(double delta_time) {
 	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 		Particle* p_ptr = particle_system.get_particle_ptr(i);
 		if(!p_ptr->is_fixed)
-			p_ptr->pos += p_ptr->vel * delta_time;	
+			p_ptr->pos += p_ptr->vel * delta_time;
 	}
 }
 
@@ -222,14 +289,20 @@ void SPH::draw_particles() {
 void SPH::create_particle_at_mouse_pos() {
 	POINT curPos;
 	BOOL result = GetCursorPos(&curPos);
+	static int step = -15;
 	if (result)
 	{
 		RECT rect;
 		HWND hwnd = GetForegroundWindow();
 
 		if (GetWindowRect(hwnd, &rect)) {
-			int x = abs(rect.left - curPos.x);
-			int y = rect.bottom - curPos.y;
+			int range = 15 - (-15) + 1;
+			int num = rand() % range - 15;
+			int x = abs(rect.left - curPos.x) + step + (num-10);
+			step += 15;
+			if (step > 15)
+				step = -15;
+			int y = rect.bottom - curPos.y + num;
 			particle_system.create_particle(vec2(x, y));
 		}
 	}
@@ -248,18 +321,19 @@ void SPH::create_collision_box(vec2 pos, float height, float width, vec3 c) {
 		p_ptr->is_fixed = true;
 		new_collision_box.ghost_particles.push_back(indx);
 	}*/
-	for (int j = 0; j < 1; j++) {
+
+	/*for (int j = 0; j < 1; j++) {
 		for (int i = 0; i < ((width - (KERNEL_RADIUS / 2.0)) / 10.0); i++) {
 
 			vec2 p_pos = vec2(pos[0] - (width / 2.0) + (KERNEL_RADIUS / 4.0) + (i * 10.0),
-				pos[1] + (height / 2.0) - (7.5));
+				pos[1] + (height / 2.0));
 			int indx = particle_system.create_particle(p_pos);
 			Particle* p_ptr = particle_system.get_particle_ptr(indx);
 			p_ptr->is_fixed = true;
 			new_collision_box.ghost_particles.push_back(indx);
 		}
 		for (int i = 0; i < ((height - (KERNEL_RADIUS / 2.0)) / 10.0); i++) {
-			vec2 p_pos = vec2(pos[0] + (width / 2.0) - (7.5),
+			vec2 p_pos = vec2(pos[0] + (width / 2.0),
 				pos[1] - (height / 2.0) + (KERNEL_RADIUS / 4.0) + (i * 10.0));
 			int indx = particle_system.create_particle(p_pos);
 			Particle* p_ptr = particle_system.get_particle_ptr(indx);
@@ -268,14 +342,14 @@ void SPH::create_collision_box(vec2 pos, float height, float width, vec3 c) {
 		}
 		// left layer of ghost particles
 		for (int i = 0; i < ((height - (KERNEL_RADIUS / 2.0)) / 10.0); i++) {
-			vec2 p_pos = vec2(pos[0] - (width / 2.0) + (7.5),
+			vec2 p_pos = vec2(pos[0] - (width / 2.0),
 				pos[1] - (height / 2.0) + (KERNEL_RADIUS / 4.0) + (i * 10.0));
 			int indx = particle_system.create_particle(p_pos);
 			Particle* p_ptr = particle_system.get_particle_ptr(indx);
 			p_ptr->is_fixed = true;
 			new_collision_box.ghost_particles.push_back(indx);
 		}
-	}
+	}*/
 	
 	// Right layer of ghost particles
 
@@ -302,7 +376,27 @@ void SPH::create_collision_box_at_mouse_pos() {
 vec2 SPH::check_collision(Particle p, double delta_time) {
 	vec2 new_pos = p.pos + (p.vel * delta_time);
 	vec2 impulse = vec2(0.0);
-	
+	Particle* p_ptr = particle_system.get_particle_ptr(p.id);
+	/*if (new_pos[0] < 100.0) {
+		p_ptr->pos[0] = 101.0;
+		p_ptr->pressure = vec2(0.0);
+		p_ptr->vel[0] = 0.0;
+		p_ptr->vel[1] = 0.0;
+	}
+	else if (new_pos[0] > 200.0) {
+		p_ptr->pos[0] = 199.0;
+		p_ptr->pressure = vec2(0.0);
+		p_ptr->vel[0] = 0.0;
+		p_ptr->vel[1] = 0.0;
+	}
+
+	if (new_pos[1] < 200.0) {
+		p_ptr->pressure = vec2(0.0);
+		p_ptr->pos[1] = 201.0;
+		p_ptr->vel[1] = 0.0;
+		p_ptr->vel[0] = 0.0;
+	}*/
+
 	for each(Collision_Box c_b in collision_boxes) {
 	
 		if (c_b.is_inside(p.pos)) {
@@ -339,11 +433,12 @@ vec2 SPH::check_collision(Particle p, double delta_time) {
 			}
 
 			if (c_b.is_inside(p.pos)) {
-				vec2 tmp = (wall_normal) * (c_b.height*0.5) + c_b.pos;
+
+				vec2 tmp = (wall_normal) * ((c_b.height)*0.5) + c_b.pos;
 				Particle* p_ptr = particle_system.get_particle_ptr(p.id);
 				//cout << wall_normal << endl;
 				if (wall_id == 1 || wall_id == 3) {
-					tmp = wall_normal * (c_b.width*0.5) + c_b.pos;
+					tmp = wall_normal * ((c_b.width)*0.5) + c_b.pos;
 					
 					p_ptr->pos[0] = tmp[0];
 					/*if (p_ptr->pressure[0] > 0 && wall_id == 1) {
@@ -377,7 +472,7 @@ vec2 SPH::check_collision(Particle p, double delta_time) {
 				Particle* p_ptr = particle_system.get_particle_ptr(p.id);
 				if (wall_id == 1 || wall_id == 3) {
 					tmp = wall_normal * (c_b.width*0.5) + c_b.pos;
-					p_ptr->vel[0] = tmp[0] - p_ptr->pos[0];
+					//p_ptr->vel[0] = tmp[0] - p_ptr->pos[0];
 					//impulse += tmp[0] - p_ptr->pos[0];
 					//if (p_ptr->pressure.length() > 30.0) {
 						//p_ptr->vel[0] = 0;
@@ -389,7 +484,7 @@ vec2 SPH::check_collision(Particle p, double delta_time) {
 						p_ptr->vel *= 0.1;*/
 				}
 				else {
-					p_ptr->vel[1] = tmp[1] - p_ptr->pos[1];
+					//p_ptr->vel[1] = tmp[1] - p_ptr->pos[1];
 					//impulse += tmp[1] - p_ptr->pos[1];
 					/*if (p_ptr->pressure.length() > 30.0) {
 						p_ptr->vel[1] = 1;
@@ -400,19 +495,20 @@ vec2 SPH::check_collision(Particle p, double delta_time) {
 					if (p_ptr->pressure[1] > 0 && wall_id == 3)
 						p_ptr->vel *= 0.1;*/
 				}
-				//impulse += calculate_collision_impulse(p, wall_normal);
+				impulse += calculate_collision_impulse(p, wall_normal);
 			}
 			
-			if (closest_distance > 5.0 || wall_id != 0) {
+			if (closest_distance > 5.0) {
 				//impulse += calculate_collision_impulse(p, wall_normal);
 			}
 			else {
 				// If particle very close to collider, slow it down
-				//impulse -= p.vel * 0.1;
+
+				impulse -= p.vel * 0.1;
 			}
 		}
 	}
-	return impulse * 0.25;
+	return impulse;
 }
 
 vec2 SPH::calculate_collision_impulse(Particle p, vec2 wall_normal) {
@@ -542,7 +638,7 @@ void SPH::draw_velocities() {
 			Particle p = particle_system.get_particle(i);
 			if (!p.is_fixed) {
 				glVertex2f(p.pos[0], p.pos[1]);
-				glVertex2f(p.pos[0] + p.vel[0], p.pos[1] + p.vel[1]);
+				glVertex2f(p.pos[0] + (p.vel[0] * 0.25), p.pos[1] + (p.vel[1] * 0.25));
 			}
 		}
 		glEnd();

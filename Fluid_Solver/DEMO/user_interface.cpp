@@ -185,7 +185,11 @@ void UI::display()
 				cout << " [" << FPS << " FPS]" << endl;
 			}
 		}
-		sph->update(delta_time.count());
+		//cout << delta_time.count() << endl;
+		double d_t = delta_time.count();
+		if (d_t > 0.008)
+			d_t = 0.008;
+		sph->update(d_t);
 		
         basic_log->write_timestep(*vel_fun);
         if (vel_fun->is_motion_finished(*dsc))

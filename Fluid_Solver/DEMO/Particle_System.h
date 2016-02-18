@@ -20,7 +20,10 @@ namespace particlesystem {
 		Particle(vec2 p, int id) :
 			id(id),
 			pos(p),
+			pos_0(vec2(0.0)),
 			vel(vec2(0.0)),
+			vel_0(vec2(0.0)),
+			a_0(vec2(0.0)),
 			mass(1.0),
 			density(0.0),
 			local_pressure(0.0),
@@ -35,6 +38,9 @@ namespace particlesystem {
 		// Position and velocity of one particle
 		vec2 pos;
 		vec2 vel;
+		vec2 pos_0;
+		vec2 vel_0;
+		vec2 a_0;
 		// Mass, density, and local pressure
 		double mass;
 		double density;

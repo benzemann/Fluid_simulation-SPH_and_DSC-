@@ -55,6 +55,7 @@ public:
 	Update all particles in SPH, the input delta time is the time since last update in ms
 	*/
 	void update(double delta_time);
+	void update_tmp(double delta_time);
 	/*
 	Calculate the density for the input particle
 	*/
@@ -147,12 +148,11 @@ private:
 	*/
 	float MAX_VELOCITY = 1.0;
 	double COEFFICIENT_OF_RESTITUTION = 0.0;//0.4
-	double COEFFICIENT_OF_FRICTION = 0.0;//0.03
+	double COEFFICIENT_OF_FRICTION = 0.03;//0.03
 	double KERNEL_RADIUS = 30.0;
-	double GAS_CONSTANT = 5500000;
+	double GAS_CONSTANT = 18900000;
 	double REST_DENSITY = 0.000103;
-	double VISCOCITY_TERM = 10.0;
-
+	double VISCOCITY_TERM = 10.0; // 5.0 water and 100.0 sirup
 };
 
 
