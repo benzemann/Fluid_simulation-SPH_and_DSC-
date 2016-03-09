@@ -35,7 +35,7 @@
 /*
 A default user interface which utilize OpenGL, GLEW and GLUT.At least some of the motion functions should be overridden.
 */
-
+using namespace DSC2D;
 class UI
 {
     std::unique_ptr<DSC2D::VelocityFunc<>> vel_fun;
@@ -60,7 +60,7 @@ class UI
 	vector<double*> user_variables_ptr;
 	vector<bool*> user_flags_ptr;
 	const int number_of_user_variables = 6;
-	const int number_of_user_flags = 6;
+	const int number_of_user_flags = 10;
 	bool show_compute_time = false;
 	int frames_compute_time = 0;
 	double dt_compute_time = 0.0;
@@ -89,6 +89,8 @@ public:
     void visible(int v);
 
 	void create_fluid_domain();
+
+	void identify_fluid(float threshold);
     
     /**
      The keyboard is used for all inputs.

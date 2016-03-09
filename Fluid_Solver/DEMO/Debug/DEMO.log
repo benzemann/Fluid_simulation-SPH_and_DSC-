@@ -1,9 +1,878 @@
-﻿Build started 02-09-2015 15:52:48.
-     1>Project "D:\Programmering\Source code\DEMO\DEMO\DEMO.vcxproj" on node 2 (Build target(s)).
-     1>Link:
-         DEMO.vcxproj -> D:\Programmering\Source code\DEMO\Debug\DEMO.exe
-     1>Done Building Project "D:\Programmering\Source code\DEMO\DEMO\DEMO.vcxproj" (Build target(s)).
+﻿Build started 24-02-2016 12:07:15.
+     1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (DEMO.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Debug_GUI.cpp demo.cpp draw.cpp Grid.cpp log.cpp Particle_System.cpp SPH.cpp track_particle_function.cpp user_interface.cpp
+         user_interface.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\user_interface.cpp(196): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\user_interface.cpp(519): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\velocity_function.h(168): warning C4018: '<': signed/unsigned mismatch
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\velocity_function.h(160): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
+                 with
+                 [
+                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\user_interface.cpp(198): note: see reference to function template instantiation 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)' being compiled
+                 with
+                 [
+                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\track_particle_function.h(7): note: see reference to class template instantiation 'DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>' being compiled
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1224): warning C4996: 'std::_Transform2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(345): note: see reference to function template instantiation '_OutIt std::transform<const T*,const T*,T*,std::minus<T>>(_InIt1,_InIt1,_InIt2,_OutIt,_Fn2)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn2=std::minus<double>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(343): note: while compiling class template member function 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\hmesh\mesh_optimization.h(55): note: see reference to function template instantiation 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec3float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec3d.h(27): note: see reference to class template instantiation 'CGLA::ArithVec3Float<double,CGLA::Vec3d>' being compiled
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1087): warning C4996: 'std::_Transform1': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(374): note: see reference to function template instantiation '_OutIt std::transform<const T*,T*,std::binder2nd<std::divides<T>>>(_InIt,_InIt,_OutIt,_Fn1)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt=const double *,
+                     _Fn1=std::binder2nd<std::divides<double>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(372): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(139): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec2float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec2d.h(24): note: see reference to class template instantiation 'CGLA::ArithVec2Float<double,CGLA::Vec2d>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(115): warning C4996: 'std::_Inner_product2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(92): note: see declaration of 'std::_Inner_product2'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(144): note: see reference to function template instantiation '_Ty std::inner_product<_InIt1,_InIt2,_Ty,std::plus<void>,std::multiplies<void>>(_InIt1,_InIt1,_InIt2,_Ty,_Fn21,_Fn22)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn21=std::plus<void>,
+                     _Fn22=std::multiplies<void>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(425): note: see reference to function template instantiation '_Ty std::inner_product<const T*,const T*,T>(_InIt1,_InIt1,_InIt2,_Ty)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(86): note: see reference to function template instantiation 'T CGLA::dot<T,V,2>(const CGLA::ArithVec<T,V,2> &,const CGLA::ArithVec<T,V,2> &)' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         track_particle_function.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\velocity_function.h(168): warning C4018: '<': signed/unsigned mismatch
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\velocity_function.h(160): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
+                 with
+                 [
+                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\track_particle_function.h(7): note: see reference to class template instantiation 'DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>' being compiled
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1224): warning C4996: 'std::_Transform2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(345): note: see reference to function template instantiation '_OutIt std::transform<const T*,const T*,T*,std::minus<T>>(_InIt1,_InIt1,_InIt2,_OutIt,_Fn2)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn2=std::minus<double>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(343): note: while compiling class template member function 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\hmesh\mesh_optimization.h(55): note: see reference to function template instantiation 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec3float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec3d.h(27): note: see reference to class template instantiation 'CGLA::ArithVec3Float<double,CGLA::Vec3d>' being compiled
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1087): warning C4996: 'std::_Transform1': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(374): note: see reference to function template instantiation '_OutIt std::transform<const T*,T*,std::binder2nd<std::divides<T>>>(_InIt,_InIt,_OutIt,_Fn1)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt=const double *,
+                     _Fn1=std::binder2nd<std::divides<double>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(372): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(139): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec2float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec2d.h(24): note: see reference to class template instantiation 'CGLA::ArithVec2Float<double,CGLA::Vec2d>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(115): warning C4996: 'std::_Inner_product2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(92): note: see declaration of 'std::_Inner_product2'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(144): note: see reference to function template instantiation '_Ty std::inner_product<_InIt1,_InIt2,_Ty,std::plus<void>,std::multiplies<void>>(_InIt1,_InIt1,_InIt2,_Ty,_Fn21,_Fn22)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn21=std::plus<void>,
+                     _Fn22=std::multiplies<void>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(425): note: see reference to function template instantiation '_Ty std::inner_product<const T*,const T*,T>(_InIt1,_InIt1,_InIt2,_Ty)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(86): note: see reference to function template instantiation 'T CGLA::dot<T,V,2>(const CGLA::ArithVec<T,V,2> &,const CGLA::ArithVec<T,V,2> &)' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         SPH.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\sph.cpp(576): warning C4305: 'initializing': truncation from 'double' to 'float'
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\sph.cpp(684): warning C4018: '<': signed/unsigned mismatch
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1224): warning C4996: 'std::_Transform2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(345): note: see reference to function template instantiation '_OutIt std::transform<const T*,const T*,T*,std::minus<T>>(_InIt1,_InIt1,_InIt2,_OutIt,_Fn2)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn2=std::minus<double>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(343): note: while compiling class template member function 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\hmesh\mesh_optimization.h(55): note: see reference to function template instantiation 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec3float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec3d.h(27): note: see reference to class template instantiation 'CGLA::ArithVec3Float<double,CGLA::Vec3d>' being compiled
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1087): warning C4996: 'std::_Transform1': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(374): note: see reference to function template instantiation '_OutIt std::transform<const T*,T*,std::binder2nd<std::divides<T>>>(_InIt,_InIt,_OutIt,_Fn1)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt=const double *,
+                     _Fn1=std::binder2nd<std::divides<double>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(372): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(139): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec2float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec2d.h(24): note: see reference to class template instantiation 'CGLA::ArithVec2Float<double,CGLA::Vec2d>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(115): warning C4996: 'std::_Inner_product2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(92): note: see declaration of 'std::_Inner_product2'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(144): note: see reference to function template instantiation '_Ty std::inner_product<_InIt1,_InIt2,_Ty,std::plus<void>,std::multiplies<void>>(_InIt1,_InIt1,_InIt2,_Ty,_Fn21,_Fn22)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn21=std::plus<void>,
+                     _Fn22=std::multiplies<void>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(425): note: see reference to function template instantiation '_Ty std::inner_product<const T*,const T*,T>(_InIt1,_InIt1,_InIt2,_Ty)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(86): note: see reference to function template instantiation 'T CGLA::dot<T,V,2>(const CGLA::ArithVec<T,V,2> &,const CGLA::ArithVec<T,V,2> &)' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         Particle_System.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\particle_system.cpp(53): warning C4305: 'initializing': truncation from 'double' to 'float'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1087): warning C4996: 'std::_Transform1': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(374): note: see reference to function template instantiation '_OutIt std::transform<const T*,T*,std::binder2nd<std::divides<T>>>(_InIt,_InIt,_OutIt,_Fn1)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt=const double *,
+                     _Fn1=std::binder2nd<std::divides<double>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(372): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(139): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec2float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec2d.h(24): note: see reference to class template instantiation 'CGLA::ArithVec2Float<double,CGLA::Vec2d>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1224): warning C4996: 'std::_Transform2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(345): note: see reference to function template instantiation '_OutIt std::transform<const T*,const T*,T*,std::minus<T>>(_InIt1,_InIt1,_InIt2,_OutIt,_Fn2)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn2=std::minus<double>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(343): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator -(const V &) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(68): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator -(const V &) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(115): warning C4996: 'std::_Inner_product2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(92): note: see declaration of 'std::_Inner_product2'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(144): note: see reference to function template instantiation '_Ty std::inner_product<_InIt1,_InIt2,_Ty,std::plus<void>,std::multiplies<void>>(_InIt1,_InIt1,_InIt2,_Ty,_Fn21,_Fn22)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn21=std::plus<void>,
+                     _Fn22=std::multiplies<void>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(425): note: see reference to function template instantiation '_Ty std::inner_product<const T*,const T*,T>(_InIt1,_InIt1,_InIt2,_Ty)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(86): note: see reference to function template instantiation 'T CGLA::dot<T,V,2>(const CGLA::ArithVec<T,V,2> &,const CGLA::ArithVec<T,V,2> &)' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         log.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\velocity_function.h(168): warning C4018: '<': signed/unsigned mismatch
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\velocity_function.h(160): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
+                 with
+                 [
+                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\log.cpp(87): note: see reference to class template instantiation 'DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>' being compiled
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1224): warning C4996: 'std::_Transform2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(345): note: see reference to function template instantiation '_OutIt std::transform<const T*,const T*,T*,std::minus<T>>(_InIt1,_InIt1,_InIt2,_OutIt,_Fn2)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn2=std::minus<double>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(343): note: while compiling class template member function 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\hmesh\mesh_optimization.h(55): note: see reference to function template instantiation 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec3float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec3d.h(27): note: see reference to class template instantiation 'CGLA::ArithVec3Float<double,CGLA::Vec3d>' being compiled
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1087): warning C4996: 'std::_Transform1': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(374): note: see reference to function template instantiation '_OutIt std::transform<const T*,T*,std::binder2nd<std::divides<T>>>(_InIt,_InIt,_OutIt,_Fn1)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt=const double *,
+                     _Fn1=std::binder2nd<std::divides<double>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(372): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(139): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec2float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec2d.h(24): note: see reference to class template instantiation 'CGLA::ArithVec2Float<double,CGLA::Vec2d>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(115): warning C4996: 'std::_Inner_product2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(92): note: see declaration of 'std::_Inner_product2'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(144): note: see reference to function template instantiation '_Ty std::inner_product<_InIt1,_InIt2,_Ty,std::plus<void>,std::multiplies<void>>(_InIt1,_InIt1,_InIt2,_Ty,_Fn21,_Fn22)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn21=std::plus<void>,
+                     _Fn22=std::multiplies<void>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(425): note: see reference to function template instantiation '_Ty std::inner_product<const T*,const T*,T>(_InIt1,_InIt1,_InIt2,_Ty)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(86): note: see reference to function template instantiation 'T CGLA::dot<T,V,2>(const CGLA::ArithVec<T,V,2> &,const CGLA::ArithVec<T,V,2> &)' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         Grid.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\grid.cpp(39): warning C4018: '<': signed/unsigned mismatch
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1087): warning C4996: 'std::_Transform1': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(374): note: see reference to function template instantiation '_OutIt std::transform<const T*,T*,std::binder2nd<std::divides<T>>>(_InIt,_InIt,_OutIt,_Fn1)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt=const double *,
+                     _Fn1=std::binder2nd<std::divides<double>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(372): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(139): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec2float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec2d.h(24): note: see reference to class template instantiation 'CGLA::ArithVec2Float<double,CGLA::Vec2d>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1224): warning C4996: 'std::_Transform2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(345): note: see reference to function template instantiation '_OutIt std::transform<const T*,const T*,T*,std::minus<T>>(_InIt1,_InIt1,_InIt2,_OutIt,_Fn2)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn2=std::minus<double>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(343): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator -(const V &) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(68): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator -(const V &) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(115): warning C4996: 'std::_Inner_product2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(92): note: see declaration of 'std::_Inner_product2'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(144): note: see reference to function template instantiation '_Ty std::inner_product<_InIt1,_InIt2,_Ty,std::plus<void>,std::multiplies<void>>(_InIt1,_InIt1,_InIt2,_Ty,_Fn21,_Fn22)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn21=std::plus<void>,
+                     _Fn22=std::multiplies<void>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(425): note: see reference to function template instantiation '_Ty std::inner_product<const T*,const T*,T>(_InIt1,_InIt1,_InIt2,_Ty)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(86): note: see reference to function template instantiation 'T CGLA::dot<T,V,2>(const CGLA::ArithVec<T,V,2> &,const CGLA::ArithVec<T,V,2> &)' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         draw.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\draw.cpp(97): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1224): warning C4996: 'std::_Transform2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(345): note: see reference to function template instantiation '_OutIt std::transform<const T*,const T*,T*,std::minus<T>>(_InIt1,_InIt1,_InIt2,_OutIt,_Fn2)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn2=std::minus<double>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(343): note: while compiling class template member function 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\hmesh\mesh_optimization.h(55): note: see reference to function template instantiation 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec3float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec3d.h(27): note: see reference to class template instantiation 'CGLA::ArithVec3Float<double,CGLA::Vec3d>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(115): warning C4996: 'std::_Inner_product2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(92): note: see declaration of 'std::_Inner_product2'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(199): note: see reference to function template instantiation '_Ty std::inner_product<const T*,const T*,bool,std::logical_or<_Ty>,std::not_equal_to<T>>(_InIt1,_InIt1,_InIt2,_Ty,_Fn21,_Fn22)' being compiled
+                 with
+                 [
+                     _Ty=bool,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn21=std::logical_or<bool>,
+                     _Fn22=std::not_equal_to<double>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(197): note: while compiling class template member function 'bool CGLA::ArithVec<T,V,3>::operator !=(const V &) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\draw.cpp(264): note: see reference to function template instantiation 'bool CGLA::ArithVec<T,V,3>::operator !=(const V &) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1087): warning C4996: 'std::_Transform1': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(374): note: see reference to function template instantiation '_OutIt std::transform<const T*,T*,std::binder2nd<std::divides<T>>>(_InIt,_InIt,_OutIt,_Fn1)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt=const double *,
+                     _Fn1=std::binder2nd<std::divides<double>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(372): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(139): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec2float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec2d.h(24): note: see reference to class template instantiation 'CGLA::ArithVec2Float<double,CGLA::Vec2d>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(92): note: see declaration of 'std::_Inner_product2'
+         demo.cpp
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
+     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\velocity_function.h(168): warning C4018: '<': signed/unsigned mismatch
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\velocity_function.h(160): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
+                 with
+                 [
+                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
+                 ]
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\memory(1199): note: see reference to class template instantiation 'DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\memory(1198): note: while compiling class template member function 'void std::default_delete<_Ty>::operator ()(_Ty *) noexcept const'
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\memory(1403): note: see reference to function template instantiation 'void std::default_delete<_Ty>::operator ()(_Ty *) noexcept const' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\memory(1233): note: see reference to class template instantiation 'std::default_delete<_Ty>' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\memory(1242): note: see reference to class template instantiation 'std::_Get_deleter_pointer_type<_Ty,std::default_delete<_Ty>>' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\memory(1285): note: see reference to class template instantiation 'std::_Unique_ptr_base<_Ty,_Dx>' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>,
+                     _Dx=std::default_delete<DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\user_interface.h(41): note: see reference to class template instantiation 'std::unique_ptr<DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>,std::default_delete<_Ty>>' being compiled
+                 with
+                 [
+                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
+                 ]
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1224): warning C4996: 'std::_Transform2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(345): note: see reference to function template instantiation '_OutIt std::transform<const T*,const T*,T*,std::minus<T>>(_InIt1,_InIt1,_InIt2,_OutIt,_Fn2)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn2=std::minus<double>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(343): note: while compiling class template member function 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\hmesh\mesh_optimization.h(55): note: see reference to function template instantiation 'const CGLA::Vec3d CGLA::ArithVec<T,V,3>::operator -(const V &) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec3float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,3>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec3d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec3d.h(27): note: see reference to class template instantiation 'CGLA::ArithVec3Float<double,CGLA::Vec3d>' being compiled
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1087): warning C4996: 'std::_Transform1': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(374): note: see reference to function template instantiation '_OutIt std::transform<const T*,T*,std::binder2nd<std::divides<T>>>(_InIt,_InIt,_OutIt,_Fn1)' being compiled
+                 with
+                 [
+                     _OutIt=double *,
+                     T=double,
+                     _InIt=const double *,
+                     _Fn1=std::binder2nd<std::divides<double>>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(372): note: while compiling class template member function 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const'
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(139): note: see reference to function template instantiation 'const CGLA::Vec2d CGLA::ArithVec<T,V,2>::operator /(T) const' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvecfloat.h(20): note: see reference to class template instantiation 'CGLA::ArithVec<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec2float.h(21): note: see reference to class template instantiation 'CGLA::ArithVecFloat<T,V,2>' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\vec2d.h(24): note: see reference to class template instantiation 'CGLA::ArithVec2Float<double,CGLA::Vec2d>' being compiled
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1070): note: see declaration of 'std::_Transform1'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\algorithm(1203): note: see declaration of 'std::_Transform2'
+     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(115): warning C4996: 'std::_Inner_product2': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(92): note: see declaration of 'std::_Inner_product2'
+         c:\program files (x86)\microsoft visual studio 14.0\vc\include\numeric(144): note: see reference to function template instantiation '_Ty std::inner_product<_InIt1,_InIt2,_Ty,std::plus<void>,std::multiplies<void>>(_InIt1,_InIt1,_InIt2,_Ty,_Fn21,_Fn22)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *,
+                     _Fn21=std::plus<void>,
+                     _Fn22=std::multiplies<void>
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\gel\cgla\arithvec.h(425): note: see reference to function template instantiation '_Ty std::inner_product<const T*,const T*,T>(_InIt1,_InIt1,_InIt2,_Ty)' being compiled
+                 with
+                 [
+                     _Ty=double,
+                     T=double,
+                     _InIt1=const double *,
+                     _InIt2=const double *
+                 ]
+         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(86): note: see reference to function template instantiation 'T CGLA::dot<T,V,2>(const CGLA::ArithVec<T,V,2> &,const CGLA::ArithVec<T,V,2> &)' being compiled
+                 with
+                 [
+                     T=double,
+                     V=CGLA::Vec2d
+                 ]
+         Debug_GUI.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Debug\Fluid_Solver.exe" /INCREMENTAL /NOLOGO GEL.lib DSC.lib freeglut.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Debug\Fluid_Solver.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Debug\Fluid_Solver.lib" /MACHINE:X86 Debug\Debug_GUI.obj
+         Debug\demo.obj
+         Debug\draw.obj
+         Debug\Grid.obj
+         Debug\log.obj
+         Debug\Particle_System.obj
+         Debug\SPH.obj
+         Debug\track_particle_function.obj
+         Debug\user_interface.obj
+         DEMO.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Debug\Fluid_Solver.exe
+     1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.09
+Time Elapsed 00:00:13.74

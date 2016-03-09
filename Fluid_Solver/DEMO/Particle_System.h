@@ -11,45 +11,45 @@
 #include <GEL/GLGraphics/SOIL.h>
 #endif
 
-using namespace DSC2D;
+//using namespace DSC2D;
 using namespace std;
 
 namespace particlesystem {
 	struct Particle
 	{
-		Particle(vec2 p, int id) :
+		Particle(DSC2D::vec2 p, int id) :
 			id(id),
 			pos(p),
-			pos_0(vec2(0.0)),
-			vel(vec2(0.0)),
-			vel_0(vec2(0.0)),
-			a_0(vec2(0.0)),
+			pos_0(DSC2D::vec2(0.0)),
+			vel(DSC2D::vec2(0.0)),
+			vel_0(DSC2D::vec2(0.0)),
+			a_0(DSC2D::vec2(0.0)),
 			mass(1.0),
 			density(0.0),
 			local_pressure(0.0),
-			pressure(vec2(0)),
-			viscocity(vec2(0)),
-			external_forces(vec2(0)),
-			surface_tension(vec2(0)),
+			pressure(DSC2D::vec2(0)),
+			viscocity(DSC2D::vec2(0)),
+			external_forces(DSC2D::vec2(0)),
+			surface_tension(DSC2D::vec2(0)),
 			is_fixed(false)
 		{}
 		// id to refer to a single particles in the particle system
 		int id;
 		// Position and velocity of one particle
-		vec2 pos;
-		vec2 vel;
-		vec2 pos_0;
-		vec2 vel_0;
-		vec2 a_0;
+		DSC2D::vec2 pos;
+		DSC2D::vec2 vel;
+		DSC2D::vec2 pos_0;
+		DSC2D::vec2 vel_0;
+		DSC2D::vec2 a_0;
 		// Mass, density, and local pressure
 		double mass;
 		double density;
 		double local_pressure;
 		// The different forces applied to a particle
-		vec2 pressure;
-		vec2 viscocity;
-		vec2 external_forces;
-		vec2 surface_tension;
+		DSC2D::vec2 pressure;
+		DSC2D::vec2 viscocity;
+		DSC2D::vec2 external_forces;
+		DSC2D::vec2 surface_tension;
 		bool is_fixed;
 	};
 
@@ -60,7 +60,7 @@ namespace particlesystem {
 		/*
 		Creates a new particle with a position
 		*/
-		int create_particle(vec2 p);
+		int create_particle(DSC2D::vec2 p);
 		/*
 		Returns the number of particles in the system.
 		*/

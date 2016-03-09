@@ -52,8 +52,8 @@ namespace DSC2D {
             create_object(dsc, corners, label);
         }
 
-		static void set_water(DeformableSimplicialComplex& dsc, HMesh::FaceID fi){
-			dsc.update_attributes(fi, 1);
+		static void set_water(DeformableSimplicialComplex& dsc, HMesh::FaceID fi, int label){
+			dsc.update_attributes(fi,label);
 		}
 
 		static void create_water(DeformableSimplicialComplex& dsc, std::vector<vec2> particle_pos){ // not used

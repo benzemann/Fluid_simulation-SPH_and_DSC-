@@ -152,7 +152,9 @@ namespace DSC2D {
             deform(complex);
             time_step++;
         }
-        
+		virtual void done(DeformableSimplicialComplex& complex) {
+			return;
+		}
         /**
          Returns whether the motion has finished.
          */

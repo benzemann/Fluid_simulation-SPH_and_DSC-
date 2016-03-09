@@ -9,7 +9,7 @@ Particle_System::Particle_System(int max):
 
 }
 
-int Particle_System::create_particle(vec2 p) {
+int Particle_System::create_particle(DSC2D::vec2 p) {
 	Particle new_particle = Particle(p, particles.size());
 	particles.push_back(new_particle);
 	grid.insert_particle(new_particle);

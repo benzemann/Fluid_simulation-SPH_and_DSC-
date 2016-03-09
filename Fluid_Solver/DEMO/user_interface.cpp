@@ -166,11 +166,6 @@ void UI::display()
     {
 		double time = vel_fun->get_compute_time() + vel_fun->get_deform_time();
 		
-		if (vel_fun->get_time_step() >= 100) {
-			sum_time += time;
-			cout << "avg time: " << sum_time/ (vel_fun->get_time_step()-100) << endl;
-			cout << "total time: " << sum_time << endl;
-		}
 		std::chrono::duration<real> delta_time = std::chrono::system_clock::now() - last_time;
 		last_time = std::chrono::system_clock::now();
 		if (show_compute_time) {
@@ -182,15 +177,42 @@ void UI::display()
 				dt_compute_time = 0.0;
 				frames_compute_time = 0;
 				double FPS = 1000.0 / ms_per_frame;
-				cout << " [" << FPS << " FPS]" << endl;
+				int particle_count = sph->get_no_of_particle();
+				cout << " [" << FPS << " FPS] [" << particle_count << " particles]" << endl;
 			}
 		}
 		//cout << delta_time.count() << endl;
 		double d_t = delta_time.count();
-		if (d_t > 0.008)
-			d_t = 0.008;
-		sph->update(d_t);
+		if (d_t > 0.015)
+			d_t = 0.015;
 		
+		sph->update(0.015);
+		sph->update_velocity(d_t);
+		sph->update_position(d_t);
+		
+
+		if (sph->is_it_projecting()) {
+			sph->project_velocities(*dsc);
+		}
+		
+		//sph->draw_dsc_velocities(*dsc);
+
+
+		
+		if (sph->is_dsc_tracking()) {
+			if (sph->is_fluid_detection())
+				identify_fluid(100.0);
+			vel_fun->take_time_step(*dsc);
+		}
+		
+		if (sph->is_it_projecting()) {
+			sph->project_velocities_to_particles(*dsc);
+		}
+		
+		
+		if(sph->is_dsc_tracking())
+			vel_fun->done(*dsc);
+
         basic_log->write_timestep(*vel_fun);
         if (vel_fun->is_motion_finished(*dsc))
         {
@@ -256,7 +278,7 @@ void UI::keyboard(unsigned char key, int x, int y) {
             {
                 std::cout << "MOVE" << std::endl;
 				sph->update(0.1);
-                vel_fun->take_time_step(*dsc);
+               // vel_fun->take_time_step(*dsc);
             }
             break;
 		case 'n':
@@ -319,6 +341,9 @@ void UI::keyboard(unsigned char key, int x, int y) {
 				set_selection();
 				show_debug_ui();
 			}
+			break;
+		case 'f':
+			identify_fluid(20.0);
 			break;
         case '+':
             if(!vel_fun)
@@ -390,13 +415,17 @@ void UI::show_debug_ui() {
 		cout << endl;
 	}
 
-	string flag_names[6] = {
+	string flag_names[10] = {
 		"Draw kernel",
 		"Draw velocities",
 		"Draw viscocity",
 		"Draw pressure",
 		"Draw surface tension",
-		"Using spatial data grid"
+		"Draw dsc velocity",
+		"Using spatial data grid",
+		"Project velocities to dsc",
+		"Enabled dsc tracking",
+		"Enable fluid detection"
 	};
 	for (int i = 0; i < number_of_user_flags; i++) {
 		cout << flag_names[i] << ": " << *user_flags_ptr[i];
@@ -416,6 +445,7 @@ void UI::show_debug_ui() {
 	cout << " - r : Reset simulation" << endl;
 	cout << " - b : Move brown collision box to mouse position" << endl;
 	cout << " - n : Create new collision box at mouse position" << endl;
+	cout << " - f : Identy fluid" << endl;
 	cout << " - ESC : Quit program" << endl;
 	cout << " - c : Show this information" << endl;
 }
@@ -455,6 +485,7 @@ void UI::draw()
 		sph->draw_pressure();
 		sph->draw_viscocity();
 		sph->draw_surface_tension();
+		sph->draw_dsc_velocities(*dsc);
         if(RECORD && CONTINUOUS)
         {
             Painter::save_painting(WIN_SIZE_X, WIN_SIZE_Y, basic_log->get_path(), vel_fun->get_time_step());
@@ -495,7 +526,9 @@ void UI::create_fluid_domain()
 {
 	stop();
 
-	DISCRETIZATION = 18;
+	
+	DISCRETIZATION = 18; // super high res: 5, high res 10, normal 18, coarse 25
+
 	int width = WIN_SIZE_X - (2 * DISCRETIZATION);
 	int height = WIN_SIZE_Y - (2 * DISCRETIZATION);
 
@@ -508,15 +541,68 @@ void UI::create_fluid_domain()
 	
 	sph = std::unique_ptr<SPH>(new SPH(100));
 	sph->init();
-	dsc = std::unique_ptr<DeformableSimplicialComplex>(new DeformableSimplicialComplex(DISCRETIZATION, points, faces, domain));
+	dsc = std::unique_ptr<DSC2D::DeformableSimplicialComplex>(new DSC2D::DeformableSimplicialComplex(DISCRETIZATION, points, faces, domain));
 	user_variables_ptr = sph->get_user_variables_ptr();
 	user_flags_ptr = sph->get_user_flags_ptr();
-	vel_fun = std::unique_ptr<VelocityFunc<>>(new track_particle_function(VELOCITY, ACCURACY));
-
+	vel_fun = std::unique_ptr<VelocityFunc<>>(new track_particle_function(VELOCITY, ACCURACY, *sph));
+	identify_fluid(20.0);
 	reshape(width + 2 * DISCRETIZATION, height + 2 * DISCRETIZATION);
 
 	start();
 }
+
+void UI::identify_fluid(float treshold) {
+	
+	/*int no_of_particles = sph->get_no_of_particle();
+	float volume = 0.0;
+	float mass = 0.0;
+	for (auto fi = dsc->faces_begin(); fi != dsc->faces_end(); ++fi) {
+		volume += dsc->area(*fi);
+	}
+	for (int i = 0; i < sph->get_no_of_particle(); i++) {
+		mass += 1.0;
+	}
+	float V = mass / volume;*/
+
+	for (auto fi = dsc->faces_begin(); fi != dsc->faces_end(); ++fi) {
+		//if (dsc->is_outside(*fi)) {
+		std::vector<DSC2D::vec2> vertices = dsc->get_pos(*fi);
+		DSC2D::vec2 center = DSC2D::vec2((vertices[0][0] + vertices[1][0] + vertices[2][0]) / 3.0, (vertices[0][1] + vertices[1][1] + vertices[2][1]) / 3.0);
+		Particle tmp_particle = Particle(center, -1);
+		tmp_particle.mass = 0.0;
+		vector<Particle> close_particles = sph->get_close_particles_to_pos(tmp_particle.pos);
+		if (close_particles.size() > 0) {
+			float mass_at_point = sph->calculate_density(tmp_particle, close_particles) * 1000000.0;
+			// if mass is greater than the threshold value it is marked as inside the fluid
+			if (mass_at_point > treshold) {
+				ObjectGenerator::set_water(*dsc, *fi, 1); // Sets the face with the face id to inside the water
+			}
+		}
+		else {
+			//float mass_at_point = sph->calculate_density(tmp_particle, close_particles) * 1000000.0;
+			//ObjectGenerator::set_water(*dsc, *fi, 0);
+		}
+			
+			/*std::vector<DSC2D::vec2> vertices = dsc->get_pos(*fi);
+			DSC2D::vec2 center = DSC2D::vec2((vertices[0][0] + vertices[1][0] + vertices[2][0]) / 3.0, (vertices[0][1] + vertices[1][1] + vertices[2][1]) / 3.0);
+			Particle tmp_particle = Particle(center, -1);
+			vector<Particle> close_particles = sph->get_close_particles_to_pos(tmp_particle.pos);
+			for (int i = 0; i < close_particles.size(); i++) {
+				vector<HMesh::VertexID> verts = dsc->get_verts(*fi);
+				DSC2D::vec2 p0 = dsc->get_pos(verts[0]);
+				DSC2D::vec2 p1 = dsc->get_pos(verts[1]);
+				DSC2D::vec2 p2 = dsc->get_pos(verts[2]);
+				vec2 p = close_particles[i].pos;
+				if (sph->in_triangle(p, p0, p1, p2)) {
+					ObjectGenerator::set_water(*dsc, *fi);
+				}
+			}*/
+			
+
+		//}
+	}
+}
+
 
 using namespace DSC2D;
 

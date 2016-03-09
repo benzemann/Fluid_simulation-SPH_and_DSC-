@@ -215,9 +215,9 @@ namespace DSC2D
             work = false;
             for (auto vi = vertices_begin(); vi != vertices_end(); vi++)
             {
-                if(is_movable(*vi))
-                {
-				//if(!is_outside(*vi))
+                //if(is_movable(*vi))
+               // {
+				if(!is_outside(*vi) || is_interface(*vi)){
 					work = work | !move_vertex(*vi);
                 }
             }
@@ -401,12 +401,12 @@ namespace DSC2D
 
     void DeformableSimplicialComplex::set_destination(const node_key& vid, const vec2& dest)
     {
-        if(is_movable(vid))
-        {
-			vec2 vec = dest - get_pos(vid);
-			clamp_vector(vid, vec);
-			destination[vid] = get_pos(vid) + vec;
-        }
+       // if(is_movable(vid))
+       // {
+		vec2 vec = dest - get_pos(vid);
+		clamp_vector(vid, vec);
+		destination[vid] = get_pos(vid) + vec;
+      //  }
     }
     
     void DeformableSimplicialComplex::init_attributes()
