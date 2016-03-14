@@ -109,18 +109,20 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc){
 		vec2 pos = dsc_ptr->get_pos(*vi);
 		dsc_ptr->set_destination(*vi, pos + (velocities[*vi] * 0.015));
 	}
-	if (tmp == 50)
+	if (tmp == 0)
 		m_V0 = get_curent_volume(dsc);
-	//done(dsc);
-	/*if(tmp>50)
-		solve_for_incompressibility_test(velocities, dsc);*/
+	done(dsc);
+	double volume = get_curent_volume(dsc);
+	//cout << volume / m_V0 << endl;
+	if( tmp > 0)
+		solve_for_incompressibility_test(velocities, dsc);
 	//sph_ptr->set_dsc_vert_velocities(velocities);
 	//done(dsc);
-	double volume = get_curent_volume(dsc);
+	
 	vol_log.push_back(volume);
 	if (tmp == 500) {
 		ofstream file;
-		file.open("volume_log_med.txt");
+		file.open("par_vel_v0.txt");
 		for (double v : vol_log) {
 			file << v << endl;
 		}

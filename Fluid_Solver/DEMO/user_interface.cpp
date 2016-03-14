@@ -197,21 +197,19 @@ void UI::display()
 		
 		//sph->draw_dsc_velocities(*dsc);
 
-
-		
 		if (sph->is_dsc_tracking()) {
 			if (sph->is_fluid_detection())
-				identify_fluid(100.0);
+				identify_fluid(70.0);
 			vel_fun->take_time_step(*dsc);
 		}
 		
 		if (sph->is_it_projecting()) {
-			sph->project_velocities_to_particles(*dsc);
+			//sph->project_velocities_to_particles(*dsc);
 		}
 		
 		
-		if(sph->is_dsc_tracking())
-			vel_fun->done(*dsc);
+		//if(sph->is_dsc_tracking())
+			//vel_fun->done(*dsc);
 
         basic_log->write_timestep(*vel_fun);
         if (vel_fun->is_motion_finished(*dsc))

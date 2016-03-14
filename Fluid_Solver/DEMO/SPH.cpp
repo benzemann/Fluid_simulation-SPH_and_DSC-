@@ -10,13 +10,13 @@ SPH::SPH(int tmp)
 void SPH::init() {
 	// Create all particles in a square
 	int indx = 0;
-	/*for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			DSC2D::vec2 particle_pos = DSC2D::vec2(70 + (i * 15), 150 + (j * 15));
+	for (int i = 0; i < 7; i++) {
+		for (int j = 0; j < 35; j++) {
+			DSC2D::vec2 particle_pos = DSC2D::vec2(51 + (i * 12), 110 + (j * 10));
 			particle_system.create_particle(particle_pos);
 			indx++;
 		}
-	}*/
+	}
 
 	particle_system.create_grid(34.0, 34.0, 15.0);
 	// Create collision boxes, the first is always the movable one!
@@ -24,7 +24,7 @@ void SPH::init() {
 		DSC2D::vec3 grey = DSC2D::vec3(100, 100, 100);
 		DSC2D::vec3 brown = DSC2D::vec3(122, 88, 37);
 
-		create_collision_box(DSC2D::vec2(280.0, 200.0), 500.0, 100.0, brown);
+		create_collision_box(DSC2D::vec2(210.0, 250.0), 500.0, 100.0, brown);
 		create_collision_box(DSC2D::vec2(250.0, 50.0), 125.0, 500.0, grey);
 		create_collision_box(DSC2D::vec2(250.0, 500.0), 100.0, 500.0, grey);
 		create_collision_box(DSC2D::vec2(525.0, 250.0), 500.0, 150.0, grey);
@@ -39,7 +39,6 @@ void SPH::reset() {
 }
 
 void SPH::update(double delta_time) {
-	
 	if(enabled_grid)
 		particle_system.update_grid();
 	// First loop calculate density and local pressure
