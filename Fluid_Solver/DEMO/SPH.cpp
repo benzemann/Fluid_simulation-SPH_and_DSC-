@@ -10,13 +10,13 @@ SPH::SPH(int tmp)
 void SPH::init() {
 	// Create all particles in a square
 	int indx = 0;
-	for (int i = 0; i < 7; i++) {
-		for (int j = 0; j < 35; j++) {
+	/*for (int i = 0; i < 1; i++) {
+		for (int j = 0; j < 2; j++) {
 			DSC2D::vec2 particle_pos = DSC2D::vec2(51 + (i * 12), 110 + (j * 10));
 			particle_system.create_particle(particle_pos);
 			indx++;
 		}
-	}
+	}*/
 
 	particle_system.create_grid(34.0, 34.0, 15.0);
 	// Create collision boxes, the first is always the movable one!
@@ -41,12 +41,15 @@ void SPH::reset() {
 void SPH::update(double delta_time) {
 	if(enabled_grid)
 		particle_system.update_grid();
+	avg_density = 0.0;
 	// First loop calculate density and local pressure
 	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 		Particle* p_ptr = particle_system.get_particle_ptr(i);
 		vector<double> distances;
 		vector<Particle> close_particles = get_close_particles(p_ptr);
+		p_ptr->old_density = p_ptr->density;
 		p_ptr->density = calculate_density(*p_ptr, close_particles);
+		avg_density += p_ptr->density;
 		p_ptr->local_pressure = calculate_local_pressure(*p_ptr);
 	}
 	// Second loop to calculate Viscocity, pressure, and external forces
@@ -54,11 +57,14 @@ void SPH::update(double delta_time) {
 		Particle* p_ptr = particle_system.get_particle_ptr(i);
 		vector<double> distances;
 		vector<Particle> close_particles = get_close_particles(p_ptr);
+		p_ptr->a = calculate_a(*p_ptr, close_particles);
 		p_ptr->pressure = calculate_pressure(*p_ptr, close_particles);
 		p_ptr->viscocity = calculate_viscocity(*p_ptr, close_particles);
-		p_ptr->surface_tension = calculate_surface_tension(*p_ptr, close_particles);
+		//p_ptr->surface_tension = calculate_surface_tension(*p_ptr, close_particles);
+		p_ptr->surface_tension = calculate_inward_normal(p_ptr->pos) * 2000.0;
 		p_ptr->external_forces = calculate_external_forces(*p_ptr);
 	}
+	//cout << (avg_density / get_no_of_particle()) - REST_DENSITY << endl;
 }
 
 vector<Particle> SPH::get_close_particles(Particle* p_ptr, double radius) {
@@ -89,6 +95,14 @@ vector<Particle> SPH::get_close_particles_to_pos(DSC2D::vec2 pos, double radius)
 	return close_particles;
 }
 
+Particle SPH::get_particle(int id) {
+	return particle_system.get_particle(id);
+}
+
+Particle* SPH::get_particle_ptr(int id) {
+	return particle_system.get_particle_ptr(id);
+}
+
 double SPH::calculate_density(Particle p, vector<Particle> close_particles) {
 	double density = 0.0;
 	for each(Particle close_particle in close_particles) {
@@ -96,6 +110,23 @@ double SPH::calculate_density(Particle p, vector<Particle> close_particles) {
 		density += (close_particle.mass * poly6_kernel(p_to_p.length(), KERNEL_RADIUS));
 	}
 	return density + p.mass * poly6_kernel(0.0, KERNEL_RADIUS);
+}
+
+double SPH::calculate_a(Particle p, vector<Particle> close_particles) {
+	DSC2D::vec2 v = DSC2D::vec2(0.0);
+	double l = 0.0;
+	for each(Particle close_particle in close_particles) {
+		DSC2D::vec2 p_to_p = p.pos - close_particle.pos;
+		DSC2D::vec2 tmp = close_particle.mass * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+		v += tmp;
+		l += tmp.length() * tmp.length();
+	}
+	//cout << ((v.length()*v.length()) + l) << endl;
+	double a = ((v.length()*v.length()) + l);
+	if (a < 0.000001) {
+		return 0.0;
+	}
+	return a;
 }
 
 double SPH::calculate_local_pressure(Particle p) {
@@ -118,16 +149,110 @@ DSC2D::vec2 SPH::calculate_surface_tension(Particle p, vector<Particle> close_pa
 	return surface_tension;
 }
 
+void SPH::correct_density_error() {
+
+	double density_error = avg_density - REST_DENSITY;
+	int max_iterations = 10;
+	int iterations = 0;
+	while (density_error > 0.00006 && iterations <= max_iterations) {
+		double sum_density = 0.0;
+		for (int i = 0; i < get_no_of_particle(); i++) {
+			Particle* p_ptr = get_particle_ptr(i);
+			DSC2D::vec2 next_pos = p_ptr->pos * (p_ptr->vel * get_delta());
+			vector<Particle> close_particles = get_close_particles_to_pos(next_pos, KERNEL_RADIUS);
+			double d = calculate_density(*p_ptr, close_particles);
+			sum_density += d;
+			p_ptr->density = d;
+		}
+
+		for (int i = 0; i < get_no_of_particle(); i++) {
+			Particle* p_ptr = get_particle_ptr(i);
+			double k_i = (p_ptr->density - REST_DENSITY) * (1 / (get_delta()*get_delta())) * p_ptr->a;
+			vector<Particle> close_particles = get_close_particles(p_ptr, KERNEL_RADIUS);
+			DSC2D::vec2 tmp = DSC2D::vec2(0.0);
+			for each(Particle close_particle in close_particles) {
+				DSC2D::vec2 p_to_p = p_ptr->pos - close_particle.pos;
+				double k_j = (close_particle.density - REST_DENSITY) * (1 / get_delta() * get_delta()) * close_particle.a;
+				if( p_ptr->density != 0.0 && close_particle.density != 0.0)
+					tmp += close_particle.mass * (( k_i / p_ptr->density ) + (k_j / close_particle.density)) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+			}
+			p_ptr->vel = p_ptr->vel - get_delta() * tmp;
+		}
+
+		avg_density = sum_density / get_no_of_particle();
+		//cout << avg_density << endl;
+		density_error = avg_density - REST_DENSITY;
+		iterations++;
+	}
+}
+
+void SPH::correct_divergence_error() {
+	int max_iterations = 10;
+	int iterations = 0;
+	DSC2D::vec2 divergence_avg = DSC2D::vec2(0.0);
+
+
+	for (int i = 0; i < get_no_of_particle(); i++) {
+		Particle* p_ptr = get_particle_ptr(i);
+		double density_change = -abs(p_ptr->density - p_ptr->old_density);
+		p_ptr->density_divergence = density_change * p_ptr->vel;
+		
+		divergence_avg += density_change * p_ptr->vel;
+		
+	}
+	if(get_no_of_particle() > 0)
+		divergence_avg = divergence_avg / get_no_of_particle();
+	
+	while (divergence_avg.length() > 0.00001 && iterations <= max_iterations) {
+		divergence_avg = DSC2D::vec2(0.0);
+		for (int i = 0; i < get_no_of_particle(); i++) {
+			Particle* p_ptr = get_particle_ptr(i);
+			double density_change = -abs(p_ptr->density - p_ptr->old_density);
+			p_ptr->density_divergence = density_change * p_ptr->vel;
+			divergence_avg += p_ptr->density_divergence;
+		}
+		if (get_no_of_particle() > 0)
+			divergence_avg = divergence_avg / get_no_of_particle();
+		DSC2D::vec2 tmp = DSC2D::vec2(0.0);
+		for (int i = 0; i < get_no_of_particle(); i++) {
+			Particle* p_ptr = get_particle_ptr(i);
+			DSC2D::vec2 k_i = (1.0 / get_delta()) * p_ptr->density_divergence * p_ptr->a;
+			vector<Particle> close_particles = get_close_particles(p_ptr, KERNEL_RADIUS);
+			for each(Particle close_particle in close_particles) {
+				DSC2D::vec2 p_to_p = p_ptr->pos - close_particle.pos;
+				
+				DSC2D::vec2 k_j = (1.0 / get_delta()) * close_particle.density_divergence * close_particle.a;
+				
+				if (p_ptr->density != 0.0 && close_particle.density != 0.0) {
+					tmp += close_particle.mass * ((k_i / p_ptr->density) + (k_j / close_particle.density)) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+				}
+					
+			}
+			if (!isnan(tmp[0]) && !isnan(tmp[1])) {
+				p_ptr->vel = p_ptr->vel - get_delta() * tmp;
+			}
+		}
+
+		iterations++;
+	}
+	//cout << divergence_avg.length() << endl;
+}
+
 DSC2D::vec2 SPH::calculate_inward_normal(DSC2D::vec2 pos) {
 	DSC2D::vec2 inward_normal = DSC2D::vec2(0.0);
+
 	vector<Particle> close_particles = get_close_particles_to_pos(pos, 60.0);
 	double lap_c = 0.0;
 	for each(Particle close_particle in close_particles) {
 		DSC2D::vec2 p_to_p = pos - close_particle.pos;
-		inward_normal += (close_particle.mass / close_particle.density) * gradient_kernel(p_to_p.length(), p_to_p, 60.0);
-		lap_c += (close_particle.mass / close_particle.density) * laplacian_kernel(p_to_p.length(), 60.0);
+		if (close_particle.density != 0.0 && p_to_p.length() != 0.0) {
+			inward_normal += (close_particle.mass / close_particle.density) * gradient_kernel(p_to_p.length(), p_to_p, 60.0);
+			lap_c += (close_particle.mass / close_particle.density) * laplacian_kernel(p_to_p.length(), 60.0);
+		}
 	}
-	inward_normal.normalize();
+
+	//inward_normal.normalize();
+	//cout << inward_normal << endl;
 	return inward_normal;
 }
 
@@ -228,6 +353,12 @@ void SPH::create_particle_at_mouse_pos() {
 			particle_system.create_particle(DSC2D::vec2(x, y));
 		}
 	}
+}
+
+int SPH::create_particle(DSC2D::vec2 pos) {
+
+	return particle_system.create_particle(pos);
+
 }
 
 void SPH::create_collision_box(DSC2D::vec2 pos, float height, float width, DSC2D::vec3 c) {

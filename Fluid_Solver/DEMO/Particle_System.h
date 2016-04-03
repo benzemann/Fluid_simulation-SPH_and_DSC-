@@ -17,6 +17,26 @@ using namespace std;
 namespace particlesystem {
 	struct Particle
 	{
+		Particle() :
+			id(-1),
+			pos(DSC2D::vec2(0.0)),
+			pos_0(DSC2D::vec2(0.0)),
+			vel(DSC2D::vec2(0.0)),
+			vel_0(DSC2D::vec2(0.0)),
+			a_0(DSC2D::vec2(0.0)),
+			mass(1.0),
+			density(0.0),
+			local_pressure(0.0),
+			pressure(DSC2D::vec2(0)),
+			viscocity(DSC2D::vec2(0)),
+			external_forces(DSC2D::vec2(0)),
+			surface_tension(DSC2D::vec2(0)),
+			is_fixed(false),
+			is_inside(true),
+			a(0.0),
+			old_density(0.0),
+			density_divergence(DSC2D::vec2(0))
+		{}
 		Particle(DSC2D::vec2 p, int id) :
 			id(id),
 			pos(p),
@@ -31,7 +51,11 @@ namespace particlesystem {
 			viscocity(DSC2D::vec2(0)),
 			external_forces(DSC2D::vec2(0)),
 			surface_tension(DSC2D::vec2(0)),
-			is_fixed(false)
+			is_fixed(false),
+			is_inside(true),
+			a(0.0),
+			old_density(0.0),
+			density_divergence(DSC2D::vec2(0))
 		{}
 		// id to refer to a single particles in the particle system
 		int id;
@@ -51,6 +75,10 @@ namespace particlesystem {
 		DSC2D::vec2 external_forces;
 		DSC2D::vec2 surface_tension;
 		bool is_fixed;
+		bool is_inside;
+		double a;
+		double old_density;
+		DSC2D::vec2 density_divergence;
 	};
 
 	class Particle_System

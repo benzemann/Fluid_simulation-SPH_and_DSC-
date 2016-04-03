@@ -90,7 +90,7 @@ bool Grid::get_closest_particle(Particle p, Particle &closest, double max_dist) 
 	double dis = max_dist;
 	for each(Particle par in close_particles) {
 		vec2 v = par.pos - p.pos;
-		if (v.length() < dis) {
+		if (v.length() < dis && p.is_inside) {
 			closest_particle = par;
 			dis = v.length();
 		}

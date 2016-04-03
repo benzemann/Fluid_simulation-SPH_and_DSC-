@@ -1,4 +1,4 @@
-﻿Build started 10-03-2016 19:26:44.
+﻿Build started 24-03-2016 14:49:51.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\GEL\GEL.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(936,5): warning MSB8027: Two or more files with the name of load.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Geometry\load.cpp, HMesh\load.cpp.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(936,5): warning MSB8027: Two or more files with the name of obj_load.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are Geometry\obj_load.cpp, HMesh\obj_load.cpp.
@@ -170,4 +170,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:42.18
+Time Elapsed 00:00:42.21

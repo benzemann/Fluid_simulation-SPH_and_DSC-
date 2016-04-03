@@ -217,7 +217,7 @@ namespace DSC2D
             {
                 //if(is_movable(*vi))
                // {
-				if(!is_outside(*vi) || is_interface(*vi)){
+				if(!is_outside(*vi)){
 					work = work | !move_vertex(*vi);
                 }
             }

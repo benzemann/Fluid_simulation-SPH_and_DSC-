@@ -13,7 +13,207 @@ using namespace DSC2D;
 using EigMat = MatrixXd;
 using EigVec = VectorXd;
 
-void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc){
+HMesh::VertexAttributeVector<int> particle_vertices;
+
+void track_particle_function::init(DSC2D::DeformableSimplicialComplex& dsc) {
+	cout << "init" << endl;
+
+	
+	// initialize particles at all vertices marked "inside"
+	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
+		//Particle* tmp_par = new Particle();
+		//tmp_par->id = -1;
+		//particle_vertices[*vi] = tmp_par;
+		if (!dsc.is_outside(*vi)) {
+			int i = sph.create_particle(dsc.get_pos(*vi));
+			//particle_vertices[*vi] = sph.get_particle_ptr(i);
+			p_verts.push_back(i);
+			Particle* p_ptr = sph.get_particle_ptr(i);
+			
+			p_ptr->pos = dsc.get_pos(*vi);
+			particle_vertices[*vi] = i;
+			dsc.set_destination(*vi, dsc.get_pos(*vi));
+			
+		}
+	}
+
+}
+
+void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
+
+	HMesh::VertexAttributeVector<DSC2D::vec2> velocities;
+	HMesh::VertexAttributeVector<DSC2D::vec2> velocities_2;
+	std::vector<HMesh::FaceID> face_ids;
+	std::vector<HMesh::VertexID> verts_ids;
+	for (auto fi = dsc.faces_begin(); fi != dsc.faces_end(); ++fi) {
+		auto vis = dsc.get_verts(*fi);
+		if (dsc.get_label(*fi) == 1) {
+			face_ids.push_back(*fi);
+		}
+	}
+	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
+		if (!dsc.is_outside(*vi)) {
+			verts_ids.push_back(*vi);
+			velocities[*vi] = vec2(0.0, 0.0);
+			velocities_2[*vi] = vec2(0.0, 0.0);
+		}
+	}
+
+
+	// ReMapping!
+	/*int j = 0;
+	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
+	if (!dsc.is_outside(*vi)) {
+	if (particle_vertices[*vi] != NULL) {
+
+	}
+	else {
+	//cout << "need map" << endl;
+	Particle p = sph.get_closest_particle(dsc.get_pos(*vi));
+	//particle_vertices[*vi] = p.id;
+	}
+
+	j++;
+	}
+	}*/
+
+	//int tmp = 0;
+	//int i = 0;
+	/*for (int i = 0; i < sph.get_no_of_particle(); i++) {
+	Particle* p_ptr = sph.get_particle_ptr(i);
+
+	if (p_ptr->vel.length() < 150.0) {
+	p_ptr->is_inside = true;
+	}
+	else {
+	p_ptr->is_inside = false;
+	}
+	}*/
+	//cout << get_curent_volume(dsc) / m_V0 << endl;
+	for (int i = 0; i < sph.get_no_of_particle(); i++) {
+		Particle* p_ptr = sph.get_particle_ptr(i);
+		p_ptr->is_inside = false;
+		/*
+		if ( volume_d > 1.0 ) {
+			vec2 n = p_ptr->surface_tension;
+			n.normalize();
+
+			p_ptr->vel += (n * 100.0);
+		}
+		else if (volume_d < 1.0) {
+			vec2 n = p_ptr->surface_tension;
+			n.normalize();
+			p_ptr->vel += (-n * 100.0);
+		}*/
+	}
+	/*for (auto fi = dsc.faces_begin(); fi != dsc.faces_end(); fi++) {
+	for (int i = 0; i < sph.get_no_of_particle(); i++) {
+	if (!dsc.is_outside(*fi)) {
+	Particle* p_ptr = sph.get_particle_ptr(i);
+	vector<DSC2D::vec2> verts = dsc.get_pos(*fi);
+	if (sph.in_triangle(p_ptr->pos, verts[0], verts[1], verts[2]) && p_ptr->vel.length() < 150.0) {
+	p_ptr->is_inside = true;
+	}
+	}
+	}
+	}*/
+	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
+		particle_vertices[*vi] = -1;
+		velocities[*vi] = vec2(0.0, 0.0);
+		if (!dsc.is_outside(*vi)) {
+
+			//if (particle_vertices[*vi] != NULL) {
+			/*Particle closest_particle = Particle();
+			closest_particle.pos = DSC2D::vec2(1000.0, 1000.0);
+			double closest_dis = 10000.0;
+			vector<Particle> close_particles = sph.get_close_particles_to_pos(dsc.get_pos(*vi));
+			for each (Particle par in close_particles)
+			{
+			DSC2D::vec2 par_to_vert = par.pos - dsc.get_pos(*vi);
+			double dis = par_to_vert.length();
+			if (dis < closest_dis) {
+			closest_dis = dis;
+			closest_particle = par;
+			}
+			}*/
+			Particle p = sph.get_closest_particle(dsc.get_pos(*vi));
+			Particle* p_ptr = sph.get_particle_ptr(p.id);
+			vec2 vert_to_p = p_ptr->pos - dsc.get_pos(*vi);
+			velocities[*vi] = vec2(0.0);
+
+			//if ((p_ptr->vel.length() < 300.0) && p_ptr->is_inside == false) {
+				velocities[*vi] = p_ptr->vel;
+				particle_vertices[*vi] = p_ptr->id;
+				velocities_2[*vi] = p_ptr->pos - dsc.get_pos(*vi);
+				p_ptr->is_inside = true;
+				//velocities[*vi] = sph.calculate_inward_normal(p_ptr->pos) * 100.0;
+			//}
+			//cout << p_ptr->vel.length() << endl;
+			//}
+			//i++;
+			//if (tmp == 0) {
+			/*Particle* p_ptr = sph.get_particle_ptr(p_verts[i]);
+			//cout << p_ptr->id << endl;
+			if (p_ptr->id != -1 ) {
+			if (!isnan(p_ptr->pos[0])) {
+			dsc.set_destination(*vi, p_ptr->pos);
+			}
+			}
+
+			//}
+			i++;
+			tmp++;*/
+			//cout << p_ptr->pos << endl;
+		}
+
+	}
+	//cout << c << " " << sph.get_no_of_particle() << endl;
+	if (verts_ids.size() > 0) {
+		//solve_for_incompressibility(face_ids, verts_ids, velocities, dsc);
+	}
+
+	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
+		if (!dsc.is_outside(*vi)) {
+			//dsc.set_destination(*vi, dsc.get_pos(*vi) + velocities[*vi]);
+			if (particle_vertices[*vi] != -1) {
+				Particle* p_ptr = sph.get_particle_ptr(particle_vertices[*vi]);
+				//p_ptr->vel = velocities[*vi];
+				dsc.set_destination(*vi, p_ptr->pos + (velocities[*vi] * sph.get_delta()));
+			}
+		}
+	}
+	dsc.deform();
+	//sph.set_dsc_vert_velocities(velocities);
+	if (tmp == 0) {
+		m_V0 = get_curent_volume(dsc);
+
+		sph.set_delta(0.004);
+	}
+	double volume_d = get_curent_volume(dsc) / m_V0;
+	if (tmp > 0 && ( volume_d > 1.03 || volume_d < 0.97)) {
+		//solve_for_incompressibility_test(velocities_2, dsc);
+		//dsc.deform();
+	}
+	//cout << get_curent_volume(dsc) / m_V0 << endl;
+	/*for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
+		if (!dsc.is_outside(*vi)) {
+			//dsc.set_destination(*vi, dsc.get_pos(*vi) + velocities[*vi]);
+			if (particle_vertices[*vi] != -1) {
+				Particle* p_ptr = sph.get_particle_ptr(particle_vertices[*vi]);
+			//	p_ptr->pos = dsc.get_pos(*vi);
+				p_ptr->vel += velocities_2[*vi];
+				//dsc.set_destination(*vi, dsc.get_pos(*vi) + (p_ptr->vel*sph.get_delta()));
+			}
+		}
+	}*/
+	
+	//sph.set_volume_diff(m_V0);
+	done(dsc);
+	tmp++;
+}
+
+
+void track_particle_function::deform_old(DSC2D::DeformableSimplicialComplex& dsc) {
 	DeformableSimplicialComplex* dsc_ptr = &dsc;
 	SPH* sph_ptr = &sph;
 
@@ -31,7 +231,7 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc){
 			verts_ids.push_back(*vi);
 		}
 	}
-	
+
 
 	for (auto vi = dsc_ptr->vertices_begin(); vi != dsc_ptr->vertices_end(); ++vi) {
 		if (dsc_ptr->is_interface(*vi)) {
@@ -41,11 +241,11 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc){
 			vec2 closest_pos = sph_ptr->get_closest_particle(pos).pos;
 			//double closest_distance = 1000000.0;
 			/*for (int i = 0; i < sph_ptr->get_no_of_particle(); i++) {
-				vec2 r = pos - sph_ptr->get_particle_pos(i);
-				if (r.length() < closest_distance) {
-					closest_distance = r.length();
-					closest_pos = sph_ptr->get_particle_pos(i);
-				}
+			vec2 r = pos - sph_ptr->get_particle_pos(i);
+			if (r.length() < closest_distance) {
+			closest_distance = r.length();
+			closest_pos = sph_ptr->get_particle_pos(i);
+			}
 			}*/
 			vec2 v = closest_pos - pos;
 			double dist = v.length();
@@ -61,8 +261,8 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc){
 			if (pos[1] < 102.5) {
 				vec2 vec_to_border = vec2(pos[0], 102.5) - pos;
 				velocities[*vi] = vec_to_border * 10.0;
-				if (pos[0] > r+10.0) {
-					vec2 vec_to_border = vec2(r+10.0, pos[1]) - pos;
+				if (pos[0] > r + 10.0) {
+					vec2 vec_to_border = vec2(r + 10.0, pos[1]) - pos;
 					velocities[*vi] += vec_to_border * 10.0;
 				}
 				if (pos[0] < 40.0) {
@@ -114,25 +314,28 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc){
 	done(dsc);
 	double volume = get_curent_volume(dsc);
 	//cout << volume / m_V0 << endl;
-	if( tmp > 0)
-		solve_for_incompressibility_test(velocities, dsc);
+	//if( tmp > 0)
+	//solve_for_incompressibility_test(velocities, dsc);
 	//sph_ptr->set_dsc_vert_velocities(velocities);
 	//done(dsc);
-	
-	vol_log.push_back(volume);
+
+	tmp++;
+}
+
+void track_particle_function::done(DSC2D::DeformableSimplicialComplex& dsc) {
+	double volume = get_curent_volume(dsc);
+	sph.set_volume_diff(m_V0);
+	if (tmp > 0)
+		vol_log.push_back(volume);
 	if (tmp == 500) {
 		ofstream file;
-		file.open("par_vel_v0.txt");
+		file.open("without.txt");
 		for (double v : vol_log) {
 			file << v << endl;
 		}
 		file.close();
 	}
-	tmp++;
-}
 
-void track_particle_function::done(DSC2D::DeformableSimplicialComplex& dsc) {
-	dsc.deform();
 }
 
 void track_particle_function::solve_for_incompressibility(std::vector<HMesh::FaceID> face_ids,
@@ -205,8 +408,8 @@ void track_particle_function::solve_for_incompressibility_test(HMesh::VertexAttr
 	Volume lost compensation
 	*/
 	static int t = 0;
-	if (t < 10)
-		m_V0 = get_curent_volume(dsc);
+	/*if (t < 10)
+		m_V0 = get_curent_volume(dsc);*/
 	t++;
 	double volumeLost = get_curent_volume(dsc) - m_V0;
 
@@ -310,11 +513,19 @@ void track_particle_function::solve_for_incompressibility_test(HMesh::VertexAttr
 		{
 			DSC2D::vec2 dis(X[2 * idx], X[2 * idx + 1]);
 			velocities[*vit] = dis;
-			dsc_ptr->set_destination(vkey, dsc_ptr->get_pos(vkey) + dis);
+			DSC2D::vec2 v = dsc_ptr->get_pos(vkey) + dis;
+			v = v - dsc.get_pos(vkey);
+
+			if (v.length() > 5.0) {
+				v.normalize();
+				v = v * 5.0;
+			}
+			
+			dsc_ptr->set_destination(vkey, dsc_ptr->get_pos(vkey) + v);
 		}
 	}
 
-	dsc_ptr->deform();
+	//dsc_ptr->deform();
 
 	/*
 	Project back to boundary

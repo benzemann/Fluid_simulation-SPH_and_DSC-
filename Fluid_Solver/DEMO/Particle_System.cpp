@@ -44,6 +44,13 @@ void Particle_System::draw() {
 	glBegin(GL_POINTS);
 	glColor3d(1.0, 0.0, 0.0);
 	for each(Particle p in particles) {
+		if (p.is_inside) {
+			glColor3d(1.0, 0.0, 0.0);
+		}
+		else {
+
+			glColor3d(1.0, 0.0, 0.0);
+		}
 		glVertex3d(p.pos[0], p.pos[1], 0.0);
 	}
 	glEnd();

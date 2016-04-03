@@ -152,7 +152,7 @@ void UI::update_title()
     glutSetWindowTitle(str.c_str());
 }
 double sum_time = 0.0;
-
+int tmp = 0;
 void UI::display()
 {
     if (glutGet(GLUT_WINDOW_WIDTH) != WIN_SIZE_X || glutGet(GLUT_WINDOW_HEIGHT) != WIN_SIZE_Y) {
@@ -183,26 +183,45 @@ void UI::display()
 		}
 		//cout << delta_time.count() << endl;
 		double d_t = delta_time.count();
-		if (d_t > 0.015)
-			d_t = 0.015;
-		
-		sph->update(0.015);
-		sph->update_velocity(d_t);
-		sph->update_position(d_t);
-		
+		if (d_t > 0.008)
+			d_t = 0.008;
 
+		//d_t = sph->get_delta();
+
+		sph->update(d_t);
+		
+		sph->update_velocity(d_t);
+		
 		if (sph->is_it_projecting()) {
 			sph->project_velocities(*dsc);
 		}
 		
 		//sph->draw_dsc_velocities(*dsc);
-
+		if (sph->is_fluid_detection())
+			identify_fluid(125.0);
 		if (sph->is_dsc_tracking()) {
-			if (sph->is_fluid_detection())
-				identify_fluid(70.0);
-			vel_fun->take_time_step(*dsc);
+			if(tmp % 2 == 0)
+				vel_fun->take_time_step(*dsc);
 		}
+		if (sph->is_density_correction()) {
+			sph->correct_divergence_error();
+			sph->correct_density_error();
+		}
+		/*if (tmp % 100 == 0)
+			cout << "Time step: " << tmp << endl;*/
+		if (tmp == 2500) {
+			sph->write_volume_file();
+		}
+		else if (tmp > 1000) {
+			sph->log_volume();
+		}
+
+		sph->update_position(d_t);
+
+
+		tmp++;
 		
+
 		if (sph->is_it_projecting()) {
 			//sph->project_velocities_to_particles(*dsc);
 		}
@@ -341,7 +360,7 @@ void UI::keyboard(unsigned char key, int x, int y) {
 			}
 			break;
 		case 'f':
-			identify_fluid(20.0);
+			identify_fluid(50.0);
 			break;
         case '+':
             if(!vel_fun)
@@ -413,7 +432,7 @@ void UI::show_debug_ui() {
 		cout << endl;
 	}
 
-	string flag_names[10] = {
+	string flag_names[11] = {
 		"Draw kernel",
 		"Draw velocities",
 		"Draw viscocity",
@@ -423,7 +442,8 @@ void UI::show_debug_ui() {
 		"Using spatial data grid",
 		"Project velocities to dsc",
 		"Enabled dsc tracking",
-		"Enable fluid detection"
+		"Enable fluid detection",
+		"Enable density correction"
 	};
 	for (int i = 0; i < number_of_user_flags; i++) {
 		cout << flag_names[i] << ": " << *user_flags_ptr[i];
@@ -525,7 +545,7 @@ void UI::create_fluid_domain()
 	stop();
 
 	
-	DISCRETIZATION = 18; // super high res: 5, high res 10, normal 18, coarse 25
+	DISCRETIZATION = 16; // super high res: 5, high res 10, normal 18, coarse 25
 
 	int width = WIN_SIZE_X - (2 * DISCRETIZATION);
 	int height = WIN_SIZE_Y - (2 * DISCRETIZATION);
@@ -549,19 +569,26 @@ void UI::create_fluid_domain()
 	start();
 }
 
+struct face_density {
+	HMesh::FaceID face_id;
+	double density;
+	int par_count;
+};
+
+struct by_density {
+	bool operator()(face_density const &a, face_density const &b) {
+		return a.density > b.density;
+	}
+};
+
+struct by_count {
+	bool operator()(face_density const &a, face_density const &b) {
+		return a.par_count > b.par_count;
+	}
+};
 void UI::identify_fluid(float treshold) {
 	
-	/*int no_of_particles = sph->get_no_of_particle();
-	float volume = 0.0;
-	float mass = 0.0;
-	for (auto fi = dsc->faces_begin(); fi != dsc->faces_end(); ++fi) {
-		volume += dsc->area(*fi);
-	}
-	for (int i = 0; i < sph->get_no_of_particle(); i++) {
-		mass += 1.0;
-	}
-	float V = mass / volume;*/
-
+	// IDENTIFY FLUID BY PARTICLE DENSITY //
 	for (auto fi = dsc->faces_begin(); fi != dsc->faces_end(); ++fi) {
 		//if (dsc->is_outside(*fi)) {
 		std::vector<DSC2D::vec2> vertices = dsc->get_pos(*fi);
@@ -573,31 +600,20 @@ void UI::identify_fluid(float treshold) {
 			float mass_at_point = sph->calculate_density(tmp_particle, close_particles) * 1000000.0;
 			// if mass is greater than the threshold value it is marked as inside the fluid
 			if (mass_at_point > treshold) {
-				ObjectGenerator::set_water(*dsc, *fi, 1); // Sets the face with the face id to inside the water
+				Particle p = sph->get_closest_particle(center);
+				DSC2D::vec2 p_to_center = center - p.pos;
+				p_to_center.normalize();
+				DSC2D::vec2 n = p.surface_tension;
+				n.normalize();
+
+				double d = CGLA::dot(n, p_to_center);
+				//cout << d << endl;
+
+				if (d >= 0.0 || p.surface_tension.length() < 20.0) {
+					ObjectGenerator::set_water(*dsc, *fi, 1); // Sets the face with the face id to inside the water
+				}
 			}
 		}
-		else {
-			//float mass_at_point = sph->calculate_density(tmp_particle, close_particles) * 1000000.0;
-			//ObjectGenerator::set_water(*dsc, *fi, 0);
-		}
-			
-			/*std::vector<DSC2D::vec2> vertices = dsc->get_pos(*fi);
-			DSC2D::vec2 center = DSC2D::vec2((vertices[0][0] + vertices[1][0] + vertices[2][0]) / 3.0, (vertices[0][1] + vertices[1][1] + vertices[2][1]) / 3.0);
-			Particle tmp_particle = Particle(center, -1);
-			vector<Particle> close_particles = sph->get_close_particles_to_pos(tmp_particle.pos);
-			for (int i = 0; i < close_particles.size(); i++) {
-				vector<HMesh::VertexID> verts = dsc->get_verts(*fi);
-				DSC2D::vec2 p0 = dsc->get_pos(verts[0]);
-				DSC2D::vec2 p1 = dsc->get_pos(verts[1]);
-				DSC2D::vec2 p2 = dsc->get_pos(verts[2]);
-				vec2 p = close_particles[i].pos;
-				if (sph->in_triangle(p, p0, p1, p2)) {
-					ObjectGenerator::set_water(*dsc, *fi);
-				}
-			}*/
-			
-
-		//}
 	}
 }
 

@@ -5,7 +5,8 @@
 #ifdef WIN32
 #include <GL/glew.h>
 #include <GL/glut.h>
-
+#include <iostream>
+#include <fstream>
 #else
 #include <GEL/GL/glew.h>
 #include <GLUT/glut.h>
@@ -114,7 +115,10 @@ public:
 	void create_collision_box(DSC2D::vec2 pos, float height, float width, DSC2D::vec3 c=DSC2D::vec3(0.0,0.0,1.0));
 	void create_collision_box_at_mouse_pos();
 	void create_particle_at_mouse_pos();
+	int create_particle(DSC2D::vec2 pos);
 	void move_collision_box(int id);
+	Particle get_particle(int id);
+	Particle* get_particle_ptr(int id);
 	/*
 	Check if particle is colliding with a collision box.
 	The particle are then moved to the point of collision and
@@ -170,6 +174,7 @@ public:
 		user_flags.push_back(&project_velocities_to_dsc);
 		user_flags.push_back(&enabled_dsc_tracking);
 		user_flags.push_back(&enabled_fluid_detection);
+		user_flags.push_back(&enabled_density_correstion);
 		return user_flags;
 	}
 	bool is_it_projecting() {
@@ -187,6 +192,44 @@ public:
 
 
 	DSC2D::vec2 calculate_inward_normal(DSC2D::vec2 pos);
+
+	void set_particle_vel(int id, DSC2D::vec2 vel) {
+		Particle* p_ptr = get_particle_ptr(id);
+		p_ptr->vel = vel;
+	}
+	void set_delta(double d) {
+		delta = d;
+	}
+	double get_delta() {
+		return delta;
+	}
+	void set_volume_diff(double diff) {
+		volume_diff = diff;
+	}
+	double get_volume_diff() {
+		return volume_diff;
+	}
+	double calculate_a(Particle p, vector<Particle> close_particles);
+	void correct_density_error();
+	void correct_divergence_error();
+	void write_volume_file() {
+		ofstream file;
+		file.open("particles_volume3.txt");
+		for (double v : vol_log) {
+			file << v << endl;
+		}
+		file.close();
+	}
+	void log_volume() {
+		avg_density = 0.0;
+		for (int i = 0; i < get_no_of_particle(); i++) {
+			avg_density += get_particle(i).density;
+		}
+		vol_log.push_back((avg_density / get_no_of_particle()) - REST_DENSITY);
+	}
+	bool is_density_correction() {
+		return enabled_density_correstion;
+	}
 private:
 	vector<Collision_Box> collision_boxes;
 	HMesh::VertexAttributeVector<DSC2D::vec2> dsc_vert_velocities;
@@ -200,6 +243,7 @@ private:
 	bool project_velocities_to_dsc = false;
 	bool enabled_dsc_tracking = false;
 	bool enabled_fluid_detection = false;
+	bool enabled_density_correstion = false;
 	/*
 	These are user controlled constant to get the desired fluid
 	*/
@@ -209,8 +253,13 @@ private:
 	double KERNEL_RADIUS = 30.0;
 	double GAS_CONSTANT = 18900000;
 	double REST_DENSITY = 0.000103;
+	double delta = 0.012;
 	double VISCOCITY_TERM = 10.0; 
-	
+
+	double volume_diff = 500000.0;
+
+	double avg_density = 0.0;
+	vector<double> vol_log;
 };
 
 

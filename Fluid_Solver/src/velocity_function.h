@@ -117,7 +117,8 @@ namespace DSC2D {
         {
             return total_compute_time;
         }
-        
+		virtual void init(DSC2D::DeformableSimplicialComplex& dsc) {
+		}
     protected:
         /**
          Updates the time it took to compute new positions for the interface vertices.
