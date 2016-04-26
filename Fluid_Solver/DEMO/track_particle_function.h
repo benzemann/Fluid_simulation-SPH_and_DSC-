@@ -22,6 +22,7 @@ public:
 	*/
 	virtual void init(DSC2D::DeformableSimplicialComplex& dsc);
 	virtual void deform_old(DSC2D::DeformableSimplicialComplex& dsc);
+	virtual void deform_old_old(DSC2D::DeformableSimplicialComplex& dsc);
 	virtual void deform(DSC2D::DeformableSimplicialComplex& dsc);
 	virtual void done(DSC2D::DeformableSimplicialComplex& dsc);
 	void solve_for_incompressibility(std::vector<HMesh::FaceID> face_ids,

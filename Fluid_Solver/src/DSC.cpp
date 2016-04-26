@@ -215,9 +215,9 @@ namespace DSC2D
             work = false;
             for (auto vi = vertices_begin(); vi != vertices_end(); vi++)
             {
-                //if(is_movable(*vi))
-               // {
-				if(!is_outside(*vi)){
+                if(is_movable(*vi))
+                {
+				//if(!is_outside(*vi)){
 					work = work | !move_vertex(*vi);
                 }
             }

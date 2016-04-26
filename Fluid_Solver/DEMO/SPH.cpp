@@ -17,18 +17,25 @@ void SPH::init() {
 			indx++;
 		}
 	}*/
+	// create grid for of isosurface nodes
+	for (int i = 0; i < 67; i++) {
+		vector<Node*> tmp;
+		for (int j = 0; j < 67; j++) {
+			tmp.push_back(new Node(DSC2D::vec2(i*15.0, j*15.0), 0.0));
+		}
+		isosurface_nodes.push_back(tmp);
+	}
 
-	particle_system.create_grid(34.0, 34.0, 15.0);
+	particle_system.create_grid(67.0, 67.0, 15.0);
 	// Create collision boxes, the first is always the movable one!
 	if (collision_boxes.size() == 0) {
 		DSC2D::vec3 grey = DSC2D::vec3(100, 100, 100);
 		DSC2D::vec3 brown = DSC2D::vec3(122, 88, 37);
-
 		create_collision_box(DSC2D::vec2(210.0, 250.0), 500.0, 100.0, brown);
-		create_collision_box(DSC2D::vec2(250.0, 50.0), 125.0, 500.0, grey);
-		create_collision_box(DSC2D::vec2(250.0, 500.0), 100.0, 500.0, grey);
-		create_collision_box(DSC2D::vec2(525.0, 250.0), 500.0, 150.0, grey);
-		create_collision_box(DSC2D::vec2(-25.0, 250.0), 500.0, 150.0, grey);
+		create_collision_box(DSC2D::vec2(500.0, 50.0), 125.0, 1000.0, grey);
+		create_collision_box(DSC2D::vec2(500.0, 1000.0), 100.0, 1000.0, grey);
+		create_collision_box(DSC2D::vec2(1000.0, 500.0), 1000.0, 150.0, grey);
+		create_collision_box(DSC2D::vec2(0.0, 500.0), 1000.0, 150.0, grey);
 	}
 }
 
@@ -89,6 +96,109 @@ vector<Particle> SPH::get_close_particles(Particle* p_ptr, double radius) {
 	}
 }
 
+void SPH::CFL_delta_time_update() {
+	double v_max = 0.0;
+	for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
+		if (CGLA::length(particle_system.get_particle(i).vel) > v_max) {
+			v_max = CGLA::length(particle_system.get_particle(i).vel);
+		}
+	}
+
+	double CFL = 0.05 * ((KERNEL_RADIUS*2.0) / v_max);
+	if (delta > CFL) {
+		//cout << delta;
+		delta = CFL;
+		if (delta > 0.009)
+			delta = 0.009;
+		//cout << " corrected to " << delta << endl;
+	}
+}
+
+void SPH::update_isosurface() {
+	if (get_no_of_particle() > 0) {
+		for (int i = 0; i < isosurface_nodes.size(); i++) {
+			for (int j = 0; j < isosurface_nodes.size(); j++) {
+
+				vector<Particle> close_particles = get_close_particles_to_pos(isosurface_nodes[i][j]->pos);
+				double sum = 0.0;
+				for each (Particle p in close_particles)
+				{
+					DSC2D::vec2 p_to_p = isosurface_nodes[i][j]->pos - p.pos;
+					sum += poly6_kernel(p_to_p.length(), 15);
+				}
+				isosurface_nodes[i][j]->value = sum;
+			}
+		}
+		double iso_value = 0.0000003;
+		int no_of_squares = (isosurface_nodes.size() * isosurface_nodes[0].size()) - (isosurface_nodes.size() + (isosurface_nodes[0].size() - 1));
+		lines_start.clear();
+		lines_end.clear();
+		for (int i = 0; i < isosurface_nodes.size() - 1; i++) {
+			for (int j = 0; j < isosurface_nodes.size() - 1; j++) {
+
+				Node* n00 = isosurface_nodes[i][j];
+				Node* n10 = isosurface_nodes[i + 1][j];
+				Node* n01 = isosurface_nodes[i][j + 1];
+				Node* n11 = isosurface_nodes[i + 1][j + 1];
+
+				vector<DSC2D::vec2> points;
+
+				if (n00->value > 0.0 || n10->value > 0.0) {
+					if ((n00->value <= iso_value && n10->value > iso_value) ||
+						(n00->value > iso_value && n10->value <= iso_value)) {
+
+						DSC2D::vec2 interpolated_pos = interpolate_iso_nodes(n00, n10, iso_value);
+						
+						points.push_back(interpolated_pos); // Middle point
+					}
+				}
+				if (n10->value > 0.0 || n11->value > 0.0) {
+					if ((n10->value <= iso_value && n11->value > iso_value) ||
+						(n10->value > iso_value && n11->value <= iso_value)) {
+
+						DSC2D::vec2 interpolated_pos = interpolate_iso_nodes(n10, n11, iso_value);
+
+						points.push_back(interpolated_pos); // Middle point
+					}
+				}
+				if (n00->value > 0.0 || n01->value > 0.0) {
+					if ((n00->value <= iso_value && n01->value > iso_value) ||
+						(n00->value > iso_value && n01->value <= iso_value)) {
+
+						DSC2D::vec2 interpolated_pos = interpolate_iso_nodes(n00, n01, iso_value);
+
+						points.push_back(interpolated_pos); // Middle point
+					}
+				}
+				if (n01->value > 0.0 || n11->value > 0.0) {
+					if ((n01->value <= iso_value && n11->value > iso_value) ||
+						(n01->value > iso_value && n11->value <= iso_value)) {
+
+						DSC2D::vec2 interpolated_pos = interpolate_iso_nodes(n01, n11, iso_value);
+
+						points.push_back(interpolated_pos); // Middle point
+					}
+				}
+				if (points.size() == 2 || points.size() == 3) {
+					lines_start.push_back(points[0]);
+					lines_end.push_back(points[1]);
+				}
+			}
+		}
+	}
+}
+
+DSC2D::vec2 SPH::interpolate_iso_nodes(Node* n_a, Node* n_b, double iso_value) {
+
+	double l_between_nodes = 15.0;
+	double t = l_between_nodes * ((iso_value - n_a->value) / (n_b->value - n_a->value));
+
+	DSC2D::vec2 n_a_to_n_b = n_b->pos - n_a->pos;
+	n_a_to_n_b = CGLA::normalize(n_a_to_n_b);
+	DSC2D::vec2 interpolated_pos = n_a->pos + (n_a_to_n_b * (l_between_nodes - t));
+	return interpolated_pos;
+}
+
 vector<Particle> SPH::get_close_particles_to_pos(DSC2D::vec2 pos, double radius) {
 	Particle tmp_particle = Particle(pos, -1);
 	vector<Particle> close_particles = get_close_particles(&tmp_particle, radius);
@@ -121,12 +231,13 @@ double SPH::calculate_a(Particle p, vector<Particle> close_particles) {
 		v += tmp;
 		l += tmp.length() * tmp.length();
 	}
-	//cout << ((v.length()*v.length()) + l) << endl;
 	double a = ((v.length()*v.length()) + l);
-	if (a < 0.000001) {
-		return 0.0;
+	if (a < 0.00001) {
+		a = 0.00001;
 	}
-	return a;
+	double a_m = p.density / a;
+	//cout << "a: " << a << " a_m: " << a_m << endl;
+	return a_m;
 }
 
 double SPH::calculate_local_pressure(Particle p) {
@@ -152,7 +263,7 @@ DSC2D::vec2 SPH::calculate_surface_tension(Particle p, vector<Particle> close_pa
 void SPH::correct_density_error() {
 
 	double density_error = avg_density - REST_DENSITY;
-	int max_iterations = 10;
+	int max_iterations = 2;
 	int iterations = 0;
 	while (density_error > 0.00006 && iterations <= max_iterations) {
 		double sum_density = 0.0;
@@ -180,62 +291,108 @@ void SPH::correct_density_error() {
 		}
 
 		avg_density = sum_density / get_no_of_particle();
-		//cout << avg_density << endl;
 		density_error = avg_density - REST_DENSITY;
 		iterations++;
 	}
 }
 
 void SPH::correct_divergence_error() {
-	int max_iterations = 10;
+	int max_iterations = 12;
 	int iterations = 0;
 	DSC2D::vec2 divergence_avg = DSC2D::vec2(0.0);
 
-
 	for (int i = 0; i < get_no_of_particle(); i++) {
 		Particle* p_ptr = get_particle_ptr(i);
-		double density_change = -abs(p_ptr->density - p_ptr->old_density);
-		p_ptr->density_divergence = density_change * p_ptr->vel;
-		
-		divergence_avg += density_change * p_ptr->vel;
-		
+
+		vector<Particle> close_particles = get_close_particles(p_ptr);
+
+		DSC2D::vec2 den_change = DSC2D::vec2(0.0);
+
+		for each (Particle close_particle in close_particles)
+		{
+			DSC2D::vec2 p_to_p = p_ptr->pos - close_particle.pos;
+			den_change += close_particle.mass * (p_ptr->vel - close_particle.vel) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+		}
+
+		//double density_change = -abs(p_ptr->density - p_ptr->old_density);
+		p_ptr->density_divergence = den_change;
+
+		divergence_avg += den_change;
+
 	}
-	if(get_no_of_particle() > 0)
+
+	if (get_no_of_particle() > 0)
 		divergence_avg = divergence_avg / get_no_of_particle();
-	
+
 	while (divergence_avg.length() > 0.00001 && iterations <= max_iterations) {
+
+		for (int i = 0; i < get_no_of_particle(); i++) {
+			Particle* p_ptr = get_particle_ptr(i);
+			DSC2D::vec2 k_i = (1.0 / get_delta()) * p_ptr->density_divergence * p_ptr->a;
+			vector<Particle> close_particles = get_close_particles(p_ptr);
+			DSC2D::vec2 tmp = DSC2D::vec2(0.0);
+			for each(Particle close_particle in close_particles) {
+				DSC2D::vec2 p_to_p = p_ptr->pos - close_particle.pos;
+
+				DSC2D::vec2 k_j = (1.0 / get_delta()) * close_particle.density_divergence * close_particle.a;
+
+				if (p_ptr->density != 0.0 && close_particle.density != 0.0) {
+					tmp += close_particle.mass * ((k_i / p_ptr->density) + (k_j / close_particle.density)) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+				}
+
+			}
+			if (!isnan(tmp[0]) && !isnan(tmp[1])) {
+				p_ptr->vel = p_ptr->vel - (get_delta() * tmp);
+			}
+			else {
+				cout << "NAN" << endl;
+			}
+		}
 		divergence_avg = DSC2D::vec2(0.0);
 		for (int i = 0; i < get_no_of_particle(); i++) {
 			Particle* p_ptr = get_particle_ptr(i);
-			double density_change = -abs(p_ptr->density - p_ptr->old_density);
-			p_ptr->density_divergence = density_change * p_ptr->vel;
+
+			vector<Particle> close_particles = get_close_particles(p_ptr);
+
+			DSC2D::vec2 den_change = DSC2D::vec2(0.0);
+
+			for each (Particle close_particle in close_particles)
+			{
+				DSC2D::vec2 p_to_p = p_ptr->pos - close_particle.pos;
+				den_change += close_particle.mass * (p_ptr->vel - close_particle.vel) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+			}
+
+			p_ptr->density_divergence = den_change;
+
 			divergence_avg += p_ptr->density_divergence;
 		}
 		if (get_no_of_particle() > 0)
 			divergence_avg = divergence_avg / get_no_of_particle();
-		DSC2D::vec2 tmp = DSC2D::vec2(0.0);
-		for (int i = 0; i < get_no_of_particle(); i++) {
-			Particle* p_ptr = get_particle_ptr(i);
-			DSC2D::vec2 k_i = (1.0 / get_delta()) * p_ptr->density_divergence * p_ptr->a;
-			vector<Particle> close_particles = get_close_particles(p_ptr, KERNEL_RADIUS);
-			for each(Particle close_particle in close_particles) {
-				DSC2D::vec2 p_to_p = p_ptr->pos - close_particle.pos;
-				
-				DSC2D::vec2 k_j = (1.0 / get_delta()) * close_particle.density_divergence * close_particle.a;
-				
-				if (p_ptr->density != 0.0 && close_particle.density != 0.0) {
-					tmp += close_particle.mass * ((k_i / p_ptr->density) + (k_j / close_particle.density)) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
-				}
-					
-			}
-			if (!isnan(tmp[0]) && !isnan(tmp[1])) {
-				p_ptr->vel = p_ptr->vel - get_delta() * tmp;
-			}
-		}
-
 		iterations++;
 	}
-	//cout << divergence_avg.length() << endl;
+
+	for (int i = 0; i < get_no_of_particle(); i++) {
+		Particle* p_ptr = get_particle_ptr(i);
+
+		vector<Particle> close_particles = get_close_particles(p_ptr);
+
+		DSC2D::vec2 den_change = DSC2D::vec2(0.0);
+
+		for each (Particle close_particle in close_particles)
+		{
+			DSC2D::vec2 p_to_p = p_ptr->pos - close_particle.pos;
+			den_change += close_particle.mass * (p_ptr->vel - close_particle.vel) * gradient_kernel(p_to_p.length(), p_to_p, KERNEL_RADIUS);
+		}
+		
+		den_change = den_change;
+		p_ptr->density_divergence = den_change;
+		if (den_change.length() > 0.00001) {
+			p_ptr->is_inside = false;
+		}
+		else {
+			p_ptr->is_inside = true;
+		}
+	}
 }
 
 DSC2D::vec2 SPH::calculate_inward_normal(DSC2D::vec2 pos) {
@@ -250,9 +407,6 @@ DSC2D::vec2 SPH::calculate_inward_normal(DSC2D::vec2 pos) {
 			lap_c += (close_particle.mass / close_particle.density) * laplacian_kernel(p_to_p.length(), 60.0);
 		}
 	}
-
-	//inward_normal.normalize();
-	//cout << inward_normal << endl;
 	return inward_normal;
 }
 
@@ -308,6 +462,7 @@ void SPH::update_position(double delta_time) {
 		
 		if(!p_ptr->is_fixed)
 			p_ptr->pos += p_ptr->vel * delta_time;
+		p_ptr->pos_0 = p_ptr->pos / 2.0;
 	}
 }
 
@@ -320,10 +475,10 @@ void SPH::draw_collision_boxes() {
 		float half_width = c_b.width * 0.5;
 		DSC2D::vec3 color = c_b.color;
 		glColor3f(color[0]/255.0, color[1]/255.0, color[2]/255.0);
-		glVertex2f(pos[0] - half_width, pos[1] - half_height);
-		glVertex2f(pos[0] + half_width, pos[1] - half_height);
-		glVertex2f(pos[0] + half_width, pos[1] + half_height);
-		glVertex2f(pos[0] - half_width, pos[1] + half_height);
+		glVertex2f((pos[0] - half_width)*scale, (pos[1] - half_height)*scale);
+		glVertex2f((pos[0] + half_width)*scale, (pos[1] - half_height)*scale);
+		glVertex2f((pos[0] + half_width)*scale, (pos[1] + half_height)*scale);
+		glVertex2f((pos[0] - half_width)*scale, (pos[1] + half_height)*scale);
 		
 	}
 	glEnd();
@@ -350,7 +505,7 @@ void SPH::create_particle_at_mouse_pos() {
 			if (step > 15)
 				step = -15;
 			int y = rect.bottom - curPos.y + num;
-			particle_system.create_particle(DSC2D::vec2(x, y));
+			particle_system.create_particle(DSC2D::vec2(x, y) * reverse_scale);
 		}
 	}
 }
@@ -379,7 +534,7 @@ void SPH::create_collision_box_at_mouse_pos() {
 			int x = abs(rect.left - curPos.x);
 			int y = rect.bottom - curPos.y;
 			DSC2D::vec3 grey = DSC2D::vec3(100, 100, 100);
-			create_collision_box(DSC2D::vec2(x, y), 100.0, 100.0, grey);
+			create_collision_box(DSC2D::vec2(x, y) * reverse_scale, 100.0, 100.0, grey);
 		}
 	}
 }
@@ -520,7 +675,7 @@ void SPH::draw_kernel_radius() {
 				for (int j = 0; j < 360; j++)
 				{
 					float degInRad = j*DEG2RAD;
-					glVertex2f(p.pos[0] + cos(degInRad)*KERNEL_RADIUS, p.pos[1] + sin(degInRad)*KERNEL_RADIUS);
+					glVertex2f(p.pos_0[0] + cos(degInRad)*KERNEL_RADIUS, p.pos_0[1] + sin(degInRad)*KERNEL_RADIUS);
 				}
 				glEnd();
 			}
@@ -535,8 +690,9 @@ void SPH::draw_pressure() {
 		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 			Particle p = particle_system.get_particle(i);
 			if (!p.is_fixed) {
-				glVertex2f(p.pos[0], p.pos[1]);
-				glVertex2f(p.pos[0] + p.pressure[0], p.pos[1] + p.pressure[1]);
+				DSC2D::vec2 pos = p.pos_0;
+				glVertex2f(pos[0], pos[1]);
+				glVertex2f(pos[0] + p.pressure[0], pos[1] + p.pressure[1]);
 			}
 		}
 		glEnd();
@@ -551,8 +707,9 @@ void SPH::draw_viscocity() {
 		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 			Particle p = particle_system.get_particle(i);
 			if (!p.is_fixed) {
-				glVertex2f(p.pos[0], p.pos[1]);
-				glVertex2f(p.pos[0] + p.viscocity[0], p.pos[1] + p.viscocity[1]);
+				DSC2D::vec2 pos = p.pos_0;
+				glVertex2f(pos[0], pos[1]);
+				glVertex2f(pos[0] + p.viscocity[0], pos[1] + p.viscocity[1]);
 			}
 		}
 		glEnd();
@@ -567,8 +724,9 @@ void SPH::draw_surface_tension() {
 		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 			Particle p = particle_system.get_particle(i);
 			if (!p.is_fixed) {
-				glVertex2f(p.pos[0], p.pos[1]);
-				glVertex2f(p.pos[0] + p.surface_tension[0], p.pos[1] + p.surface_tension[1]);
+				DSC2D::vec2 pos = p.pos_0;
+				glVertex2f(pos[0], pos[1]);
+				glVertex2f(pos[0] + p.surface_tension[0], pos[1] + p.surface_tension[1]);
 			}
 		}
 		glEnd();
@@ -582,12 +740,39 @@ void SPH::draw_velocities() {
 		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
 			Particle p = particle_system.get_particle(i);
 			if (!p.is_fixed) {
-				glVertex2f(p.pos[0], p.pos[1]);
-				glVertex2f(p.pos[0] + (p.vel[0] * 0.25), p.pos[1] + (p.vel[1] * 0.25));
+				DSC2D::vec2 pos = p.pos_0;
+				glVertex2f(pos[0], pos[1]);
+				glVertex2f(pos[0] + (p.vel[0] * 0.15), pos[1] + (p.vel[1] * 0.15));
 			}
 		}
 		glEnd();
 	}
+}
+
+void SPH::draw_isosurface() {
+	/*glPointSize(5.0);
+	glBegin(GL_POINTS);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	for (int i = 0; i < isosurface_nodes.size(); i++) {
+		for (int j = 0; j < isosurface_nodes[i].size(); j++) {
+			if (isosurface_nodes[i][j]->value > 0.0) {
+				DSC2D::vec2 pos = isosurface_nodes[i][j]->pos * scale;
+				glVertex2f(pos[0], pos[1]);
+			}
+		}
+	}
+	glEnd();*/
+	if (is_drawing_isosurfacee) {
+		glBegin(GL_LINES);
+		glColor3f(0.0f, 1.0f, 0.0f);
+		for (int i = 0; i < lines_start.size(); i++) {
+			glVertex2f(lines_start[i][0] * scale, lines_start[i][1] * scale);
+			glVertex2f(lines_end[i][0] * scale, lines_end[i][1] * scale);
+		}
+
+		glEnd();
+	}
+	
 }
 
 void SPH::draw_dsc_velocities(DSC2D::DeformableSimplicialComplex& dsc) {
@@ -619,8 +804,8 @@ void SPH::move_collision_box(int id) {
 		if (GetWindowRect(hwnd, &rect)) {
 			int x = abs(rect.left - curPos.x);
 			int y = rect.bottom - curPos.y;
-			DSC2D::vec2 translation = DSC2D::vec2(x, y) - collision_boxes[id].pos;
-			collision_boxes[id].pos = DSC2D::vec2(x, y);
+			DSC2D::vec2 translation = (DSC2D::vec2(x, y)*reverse_scale) - collision_boxes[id].pos;
+			collision_boxes[id].pos = DSC2D::vec2(x, y)*reverse_scale;
 			for (int i = 0; i < collision_boxes[id].ghost_particles.size(); i++) {
 				Particle* p_ptr = particle_system.get_particle_ptr(collision_boxes[id].ghost_particles[i]);
 				p_ptr->pos += translation;

@@ -41,6 +41,90 @@ void track_particle_function::init(DSC2D::DeformableSimplicialComplex& dsc) {
 
 void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
 
+	vector<vec2> isosurface_start = sph.get_lines_start();
+	vector<vec2> isosurface_end = sph.get_lines_end();
+
+	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
+
+		if (dsc.is_interface(*vi)) {
+			vec2 closest_point = vec2(-100.0);
+			double closest_dis = 10000000.0;
+			vec2 pos = dsc.get_pos(*vi);
+			for (int i = 0; i < isosurface_start.size(); i++) {
+
+				// Find closest point to each line
+				vec2 start_p = pos - (isosurface_start[i] * sph.get_scale());
+				vec2 line = (isosurface_end[i]* sph.get_scale()) - (isosurface_start[i]* sph.get_scale());
+
+				double line_line = CGLA::dot(line, line);
+				double sp_line = CGLA::dot(start_p, line);
+
+				double t = sp_line / line_line;
+
+				if (t < 0.0)
+					t = 0.0;
+				else if (t > 1.0)
+					t = 1.0;
+				
+				vec2 closest = (isosurface_start[i]* sph.get_scale()) + line * t;
+				vec2 v = closest - pos;
+				double l = v.length();
+				if (l < closest_dis) {
+					closest_dis = l;
+					closest_point = closest;
+				}
+			}
+			//cout << closest_dis << endl;
+			if (closest_point != vec2(-100.0)) {
+				vec2 vel = closest_point - dsc.get_pos(*vi);
+				//if (vel.length() > 1.5) {
+					//vel.normalize();
+					//vel = vel * 1.5;
+				//}
+				if (vel.length() > 1.5) {
+					vel.normalize();
+					vel = vel * 1.5;
+					dsc.set_destination(*vi, dsc.get_pos(*vi) + vel);
+				}
+			}
+		}
+	}
+
+	dsc.deform();
+	/*
+	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
+		if (dsc.is_interface(*vi)) {
+			HMesh::Walker w = dsc.walker(*vi);
+
+			vector<DSC2D::vec2> neighbor_pos;
+
+			while (!w.full_circle()) {
+				HMesh::VertexID v = w.next().vertex();
+
+				HMesh::HalfEdgeID he = w.halfedge();
+
+				if (dsc.is_interface(he)) {
+					neighbor_pos.push_back(dsc.get_pos(w.next().vertex()));
+				}
+
+				w = w.circulate_vertex_ccw();
+			}
+
+			DSC2D::vec2 smoothed_pos = dsc.get_pos(*vi) * 0.9;
+			for each (DSC2D::vec2 p in neighbor_pos)
+			{
+				smoothed_pos += p * 0.05;
+			}
+			//smoothed_pos = smoothed_pos / 3.0;
+			dsc.set_destination(*vi, smoothed_pos);
+		}
+	}
+
+	dsc.deform();*/
+}
+
+void track_particle_function::deform_old_old(DSC2D::DeformableSimplicialComplex& dsc) {
+
 	HMesh::VertexAttributeVector<DSC2D::vec2> velocities;
 	HMesh::VertexAttributeVector<DSC2D::vec2> velocities_2;
 	std::vector<HMesh::FaceID> face_ids;
@@ -142,10 +226,10 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
 			velocities[*vi] = vec2(0.0);
 
 			//if ((p_ptr->vel.length() < 300.0) && p_ptr->is_inside == false) {
-				velocities[*vi] = p_ptr->vel;
-				particle_vertices[*vi] = p_ptr->id;
-				velocities_2[*vi] = p_ptr->pos - dsc.get_pos(*vi);
-				p_ptr->is_inside = true;
+			velocities[*vi] = p_ptr->vel;
+			particle_vertices[*vi] = p_ptr->id;
+			velocities_2[*vi] = p_ptr->pos - dsc.get_pos(*vi);
+			p_ptr->is_inside = true;
 				//velocities[*vi] = sph.calculate_inward_normal(p_ptr->pos) * 100.0;
 			//}
 			//cout << p_ptr->vel.length() << endl;

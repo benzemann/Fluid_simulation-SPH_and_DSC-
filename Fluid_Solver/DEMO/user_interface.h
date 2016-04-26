@@ -60,7 +60,7 @@ class UI
 	vector<double*> user_variables_ptr;
 	vector<bool*> user_flags_ptr;
 	const int number_of_user_variables = 6;
-	const int number_of_user_flags = 11;
+	const int number_of_user_flags = 12;
 	bool show_compute_time = false;
 	int frames_compute_time = 0;
 	double dt_compute_time = 0.0;

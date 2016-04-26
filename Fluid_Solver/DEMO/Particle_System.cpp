@@ -48,10 +48,9 @@ void Particle_System::draw() {
 			glColor3d(1.0, 0.0, 0.0);
 		}
 		else {
-
-			glColor3d(1.0, 0.0, 0.0);
+			glColor3d(0.0, 1.0, 0.0);
 		}
-		glVertex3d(p.pos[0], p.pos[1], 0.0);
+		glVertex3d(p.pos_0[0], p.pos_0[1], 0.0);
 	}
 	glEnd();
 }

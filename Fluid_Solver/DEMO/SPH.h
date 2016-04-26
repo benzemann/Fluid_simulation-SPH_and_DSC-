@@ -47,6 +47,14 @@ class SPH
 			return false;
 		}
 	};
+	struct Node {
+		Node(DSC2D::vec2 p, double v):
+			pos(p),
+			value(v)
+		{}
+		DSC2D::vec2 pos;
+		double value;
+	};
 public:
 	SPH(int tmp);
 	/*
@@ -170,6 +178,7 @@ public:
 		user_flags.push_back(&is_drawing_pressure);
 		user_flags.push_back(&is_drawing_surface_tension);
 		user_flags.push_back(&is_drawing_dsc_vel);
+		user_flags.push_back(&is_drawing_isosurfacee);
 		user_flags.push_back(&enabled_grid);
 		user_flags.push_back(&project_velocities_to_dsc);
 		user_flags.push_back(&enabled_dsc_tracking);
@@ -214,7 +223,8 @@ public:
 	void correct_divergence_error();
 	void write_volume_file() {
 		ofstream file;
-		file.open("particles_volume3.txt");
+
+		file.open("particles_volume5.txt");
 		for (double v : vol_log) {
 			file << v << endl;
 		}
@@ -223,13 +233,26 @@ public:
 	void log_volume() {
 		avg_density = 0.0;
 		for (int i = 0; i < get_no_of_particle(); i++) {
-			avg_density += get_particle(i).density;
+			avg_density += get_particle(i).density_divergence.length();
 		}
-		vol_log.push_back((avg_density / get_no_of_particle()) - REST_DENSITY);
+		vol_log.push_back(avg_density/get_no_of_particle());
 	}
 	bool is_density_correction() {
 		return enabled_density_correstion;
 	}
+	double get_scale() {
+		return scale;
+	}
+	void update_isosurface();
+	void draw_isosurface();
+	vector<DSC2D::vec2> get_lines_start() {
+		return lines_start;
+	}
+	vector<DSC2D::vec2> get_lines_end() {
+		return lines_end;
+	}
+	void CFL_delta_time_update();
+	DSC2D::vec2 interpolate_iso_nodes(Node* n_a, Node* n_b, double iso_value);
 private:
 	vector<Collision_Box> collision_boxes;
 	HMesh::VertexAttributeVector<DSC2D::vec2> dsc_vert_velocities;
@@ -239,11 +262,12 @@ private:
 	bool is_drawing_viscocity = false;
 	bool is_drawing_surface_tension = false;
 	bool is_drawing_dsc_vel = false;
+	bool is_drawing_isosurfacee = false;
 	bool enabled_grid = true;
 	bool project_velocities_to_dsc = false;
 	bool enabled_dsc_tracking = false;
 	bool enabled_fluid_detection = false;
-	bool enabled_density_correstion = false;
+	bool enabled_density_correstion = true;
 	/*
 	These are user controlled constant to get the desired fluid
 	*/
@@ -253,13 +277,19 @@ private:
 	double KERNEL_RADIUS = 30.0;
 	double GAS_CONSTANT = 18900000;
 	double REST_DENSITY = 0.000103;
-	double delta = 0.012;
+	double delta = 0.008;
 	double VISCOCITY_TERM = 10.0; 
 
 	double volume_diff = 500000.0;
+	// Scaling of the simulation 
+	double scale = 0.5; 
+	double reverse_scale = 2.0;
 
 	double avg_density = 0.0;
 	vector<double> vol_log;
+	vector<vector<Node*> > isosurface_nodes;
+	vector<DSC2D::vec2> lines_start;
+	vector<DSC2D::vec2> lines_end;
 };
 
 

@@ -1,0 +1,14 @@
+﻿Build started 26-04-2016 09:48:08.
+     1>Project "C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\ISMesh\ISMesh.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _CRT_SECURE_NO_WARNINGS /D _SCL_SECURE_NO_WARNINGS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\ISMesh.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\is_mesh\mesh_io.cpp
+         mesh_io.cpp
+     1>..\..\is_mesh\mesh_io.cpp(169): warning C4018: '<': signed/unsigned mismatch
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\Release\ISMesh.lib" CGLA.lib /NOLOGO /LTCG Release\mesh_io.obj
+         ISMesh.vcxproj -> C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\Release\ISMesh.lib
+     1>Done Building Project "C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\ISMesh\ISMesh.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.02

@@ -181,38 +181,49 @@ void UI::display()
 				cout << " [" << FPS << " FPS] [" << particle_count << " particles]" << endl;
 			}
 		}
-		//cout << delta_time.count() << endl;
-		double d_t = delta_time.count();
-		if (d_t > 0.008)
-			d_t = 0.008;
 
-		//d_t = sph->get_delta();
+		double d_t = delta_time.count();
+
+		//if (d_t > 0.008)
+			//d_t = 0.008;
+		//d_t = 0.008;
+
+		sph->set_delta(d_t);
+		
+		sph->CFL_delta_time_update();
+
+		if (sph->get_delta() > 0.009) {
+			sph->set_delta(0.009);
+		}
+
+		d_t = sph->get_delta();
 
 		sph->update(d_t);
 		
 		sph->update_velocity(d_t);
 		
+		sph->update_isosurface();
+
 		if (sph->is_it_projecting()) {
 			sph->project_velocities(*dsc);
 		}
-		
 		//sph->draw_dsc_velocities(*dsc);
 		if (sph->is_fluid_detection())
-			identify_fluid(125.0);
+			identify_fluid(100.0);
 		if (sph->is_dsc_tracking()) {
-			if(tmp % 2 == 0)
-				vel_fun->take_time_step(*dsc);
+			//if(tmp % 2 == 0)
+			vel_fun->take_time_step(*dsc);
 		}
 		if (sph->is_density_correction()) {
-			sph->correct_divergence_error();
+			//sph->correct_divergence_error();
 			sph->correct_density_error();
 		}
-		/*if (tmp % 100 == 0)
-			cout << "Time step: " << tmp << endl;*/
-		if (tmp == 2500) {
+		if (tmp % 100 == 0)
+			cout << "Time step: " << tmp << endl;
+		if (tmp == 1500) {
 			sph->write_volume_file();
 		}
-		else if (tmp > 1000) {
+		else if (tmp > 500) {
 			sph->log_volume();
 		}
 
@@ -225,10 +236,6 @@ void UI::display()
 		if (sph->is_it_projecting()) {
 			//sph->project_velocities_to_particles(*dsc);
 		}
-		
-		
-		//if(sph->is_dsc_tracking())
-			//vel_fun->done(*dsc);
 
         basic_log->write_timestep(*vel_fun);
         if (vel_fun->is_motion_finished(*dsc))
@@ -432,13 +439,14 @@ void UI::show_debug_ui() {
 		cout << endl;
 	}
 
-	string flag_names[11] = {
+	string flag_names[12] = {
 		"Draw kernel",
 		"Draw velocities",
 		"Draw viscocity",
 		"Draw pressure",
 		"Draw surface tension",
 		"Draw dsc velocity",
+		"Draw isosurface",
 		"Using spatial data grid",
 		"Project velocities to dsc",
 		"Enabled dsc tracking",
@@ -504,6 +512,7 @@ void UI::draw()
 		sph->draw_viscocity();
 		sph->draw_surface_tension();
 		sph->draw_dsc_velocities(*dsc);
+		sph->draw_isosurface();
         if(RECORD && CONTINUOUS)
         {
             Painter::save_painting(WIN_SIZE_X, WIN_SIZE_Y, basic_log->get_path(), vel_fun->get_time_step());
@@ -593,26 +602,28 @@ void UI::identify_fluid(float treshold) {
 		//if (dsc->is_outside(*fi)) {
 		std::vector<DSC2D::vec2> vertices = dsc->get_pos(*fi);
 		DSC2D::vec2 center = DSC2D::vec2((vertices[0][0] + vertices[1][0] + vertices[2][0]) / 3.0, (vertices[0][1] + vertices[1][1] + vertices[2][1]) / 3.0);
-		Particle tmp_particle = Particle(center, -1);
+		Particle tmp_particle = Particle(center*2.0, -1);
 		tmp_particle.mass = 0.0;
 		vector<Particle> close_particles = sph->get_close_particles_to_pos(tmp_particle.pos);
 		if (close_particles.size() > 0) {
 			float mass_at_point = sph->calculate_density(tmp_particle, close_particles) * 1000000.0;
 			// if mass is greater than the threshold value it is marked as inside the fluid
 			if (mass_at_point > treshold) {
-				Particle p = sph->get_closest_particle(center);
-				DSC2D::vec2 p_to_center = center - p.pos;
-				p_to_center.normalize();
-				DSC2D::vec2 n = p.surface_tension;
-				n.normalize();
+				//Particle p = sph->get_closest_particle(center);
+				//DSC2D::vec2 p_to_center = center - (p.pos * sph->get_scale());
+				//p_to_center.normalize();
+				//DSC2D::vec2 n = p.surface_tension;
+				//n.normalize();
 
-				double d = CGLA::dot(n, p_to_center);
-				//cout << d << endl;
+				//double d = CGLA::dot(n, p_to_center);
 
-				if (d >= 0.0 || p.surface_tension.length() < 20.0) {
-					ObjectGenerator::set_water(*dsc, *fi, 1); // Sets the face with the face id to inside the water
-				}
+				//if (d >= 0.0 || p.surface_tension.length() < 20.0) {
+				ObjectGenerator::set_water(*dsc, *fi, 1); // Sets the face with the face id to inside the water
+				//}
 			}
+		}
+		else {
+			ObjectGenerator::set_water(*dsc, *fi, 0);
 		}
 	}
 }
