@@ -210,6 +210,8 @@ void UI::display()
 		//sph->draw_dsc_velocities(*dsc);
 		if (sph->is_fluid_detection())
 			identify_fluid(100.0);
+
+
 		if (sph->is_dsc_tracking()) {
 			//if(tmp % 2 == 0)
 			vel_fun->take_time_step(*dsc);
@@ -231,7 +233,6 @@ void UI::display()
 
 
 		tmp++;
-		
 
 		if (sph->is_it_projecting()) {
 			//sph->project_velocities_to_particles(*dsc);

@@ -15,7 +15,6 @@
 //  See licence.txt for a copy of the GNU General Public License.
 
 #pragma once
-
 #include "velocity_function.h"
 
 

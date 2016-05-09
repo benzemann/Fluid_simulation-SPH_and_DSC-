@@ -19,11 +19,14 @@
 #include "average_function.h"
 #include "normal_function.h"
 #include "draw_helper.h"
+#include "track_particles_function.h"
 
 #include <iostream>
 #include <iomanip>
 #include <ctime>
 #include <chrono>
+
+particlesystem::Particle_System ps;
 
 using namespace DSC;
 
@@ -51,13 +54,15 @@ UI* UI::instance = NULL;
 
 void UI::setup_light()
 {
-	vec3 center = _obj_dim / 2.0;
-	vec3 eye = center + vec3(gl_dis_max*2.0*cos(angle)*cos(angle2),
-		gl_dis_max*2.0*cos(angle)*sin(angle2),
-		gl_dis_max*2.0*sin(angle));
-
+	vec3 center = vec3(0.0,0.0,0.0);
+	vec3 eye = center + vec3(gl_dis_max*3.0*cos(angle)*cos(angle2),
+		gl_dis_max*3.0*cos(angle)*sin(angle2),
+		gl_dis_max*3.0*sin(angle));
+	eye.normalize();
+	eye = eye * 15.0;
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat mat_shininess[] = { 50.0 };
+	lightPos = vec3(-(GLfloat)eye[0], -(GLfloat)eye[1], -(GLfloat)eye[2]);
 	GLfloat light_position[] = { -(GLfloat)eye[0], -(GLfloat)eye[1], -(GLfloat)eye[2], 0.0 };
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_SMOOTH);
@@ -112,11 +117,10 @@ UI::UI(int &argc, char** argv)
 
 	glutReshapeWindow(WIN_SIZE_X, WIN_SIZE_Y);
 	check_gl_error();
-
-
-
-	load_model("C:/Users/Jeppe/Desktop/DSC_OpenGL/DSC_OpenGL/DSC.visualstudio/armadillo.dsc", 2.5);
-
+	
+	
+	load_model("C:/Users/Jeppe/Desktop/DSC_OpenGL/DSC_OpenGL/DSC.visualstudio/cube_simple.dsc", 2.5);
+	
 	real velocity = 5.;
 	real accuracy = 0.25;
 	vel_fun = std::unique_ptr<VelocityFunc<>>(new VelocityFunc<>(velocity, accuracy, 500));
@@ -134,6 +138,44 @@ UI::UI(int &argc, char** argv)
 	}
 	_obj_dim = maxc - minc;
 	gl_dis_max = std::max(std::max(_obj_dim[0], _obj_dim[1]), _obj_dim[2])*2;
+	for (int i = 0; i < 100; i++) {
+		real discretization = std::max(dsc->get_avg_edge_length() - 0.5, 1.);
+		dsc->set_avg_edge_length(discretization);
+		update_title();
+	}
+
+
+	int i = 0;
+	for (auto te = dsc->tetrahedra_begin(); te != dsc->tetrahedra_end(); te++) {
+
+		if (i < 75000) {
+			
+			is_mesh::SimplexSet<is_mesh::NodeKey> set = dsc->get_nodes(te.key());
+			bool m = false;
+			for (auto n = set.begin(); n != set.end(); n++) {
+				//std::cout << dsc->get_pos(*n) << std::endl;
+				if (dsc->get_pos(*n)[1] < 0.8 && dsc->get_pos(*n)[1] > -0.8 && dsc->get_pos(*n)[0] < 0.8 && dsc->get_pos(*n)[0] > -0.8 && dsc->get_pos(*n)[2] < 0.8 && dsc->get_pos(*n)[2] > -0.8) {
+					m = true;
+				}
+			}
+			if (m) {
+				vel_fun->set_label(*dsc, te.key(), 1);
+			}
+			else {
+				vel_fun->set_label(*dsc, te.key(), 0);
+			}
+				
+
+		}
+		else {
+
+			
+		}
+
+		i++;
+	}
+	std::cout << "Number of tets: " << i << std::endl;
+	ps = particlesystem::Particle_System();
 }
 
 void UI::load_model(const std::string& file_name, real discretization)
@@ -144,7 +186,7 @@ void UI::load_model(const std::string& file_name, real discretization)
     std::vector<int>  tets;
     std::vector<int>  tet_labels;
 	is_mesh::import_tet_mesh(file_name, points, tets, tet_labels);
-    
+	
     dsc = std::unique_ptr<DeformableSimplicialComplex<>>(new DeformableSimplicialComplex<>(points, tets, tet_labels));
     
     std::cout << "Loading done" << std::endl << std::endl;
@@ -169,17 +211,19 @@ void UI::update_gl()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	vec3 center = _obj_dim / 2.0;
+	vec3 center = vec3(0.0,0.0,0.0);
 	vec3 eye = center + vec3(gl_dis_max*3.0*cos(angle)*cos(angle2),
 		gl_dis_max*3.0*cos(angle)*sin(angle2),
 		gl_dis_max*3.0*sin(angle));
 	vec3 head = vec3(-sin(angle)*cos(angle2),
 		-sin(angle)*sin(angle2),
 		cos(angle));
+	eye.normalize();
+	eye = eye * 15.0;
 	gluLookAt(eye[0], eye[1], eye[2], /* eye is at (0,8,60) */
 		center[0], center[1], center[2],      /* center is at (0,8,0) */
 		head[0], head[1], head[2]);      /* up is in postivie Y direction */
-
+	
 	int size = std::min(WIN_SIZE_Y, WIN_SIZE_X);
 	glViewport((WIN_SIZE_X - size) / 2.0, (WIN_SIZE_Y - size) / 2.0, size, size);
 
@@ -189,7 +233,7 @@ void UI::update_gl()
 void UI::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
 	update_gl();
 	setup_light();
 
@@ -202,6 +246,8 @@ void UI::display()
 	draw_helper::dsc_draw_domain(*dsc);
 //	draw_helper::dsc_draw_edge(*dsc);
 	draw_helper::dsc_draw_interface(*dsc);
+
+	ps.draw(lightPos);
 
 	glutSwapBuffers();
 }
@@ -243,7 +289,7 @@ void UI::keyboard(unsigned char key, int x, int y) {
             stop();
             QUIT_ON_COMPLETION = true;
             RECORD = true;
-            vel_fun = std::unique_ptr<VelocityFunc<>>(new RotateFunc(vel_fun->get_velocity(), vel_fun->get_accuracy()));
+            vel_fun = std::unique_ptr<VelocityFunc<>>(new track_particles_function(vel_fun->get_velocity(), vel_fun->get_accuracy()));
             start("rotate");
             break;
         case '2':
@@ -361,6 +407,26 @@ void UI::keyboard(unsigned char key, int x, int y) {
             update_title();
         }
             break;
+		case 'b':
+		{
+			angle -= 0.1;
+		}
+			break;
+		case 'h':
+		{
+			angle += 0.1;
+		}
+			break;
+		case 'f':
+		{
+			angle2 -= 0.1;
+		}
+			break;
+		case 'g':
+		{
+			angle2 += 0.1;
+		}
+			break;
     }
 }
 

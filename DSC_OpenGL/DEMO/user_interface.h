@@ -20,13 +20,13 @@
 #include "velocity_function.h"
 #include "log.h"
 #include "draw.h"
-
+#include "ObjectGenerator.h"
 #include <CGLA/Vec2d.h>
 #include <CGLA/Vec3d.h>
 #include <CGLA/Vec4d.h>
 #include <CGLA/Mat3x3d.h>
 #include <CGLA/Mat4x4d.h>
-
+#include "Particle_System.h"
 typedef CGLA::Vec3d vec3;
 
 /**
@@ -34,6 +34,7 @@ typedef CGLA::Vec3d vec3;
  */
 class UI
 {
+	
     std::unique_ptr<DSC::VelocityFunc<>> vel_fun;
     std::unique_ptr<DSC::DeformableSimplicialComplex<>> dsc;
     std::unique_ptr<Log> basic_log;
@@ -41,8 +42,8 @@ class UI
     
     std::string model_file_name = "armadillo";
     
-    vec3 eye_pos = {70., 30., 70.};
-    vec3 camera_pos = {30., 30., 70.};
+    vec3 eye_pos = {7., 3., 7.};
+    vec3 camera_pos = {3., 3., 7.};
     vec3 light_pos = {0., 0., 70.};
     
     int WIN_SIZE_X = 1280;
@@ -87,9 +88,9 @@ public:
     void motion(int x, int y);
     
 	CGLA::Vec3d _obj_dim;
-	double gl_dis_max = 200;
-	GLfloat angle = -150;   /* in degrees */
-	GLfloat angle2 = 30;   /* in degrees */
+	double gl_dis_max = 1.0;
+	GLfloat angle = 0.4;   /* in degrees */
+	GLfloat angle2 = 0.7;   /* in degrees */
 
     /**
      The keyboard is used for all inputs. See https://github.com/asny/DSC/wiki/DEMO-instructions for up-to-date instructions on how to use the DEMO application.
@@ -117,4 +118,6 @@ private:
      Stops the motion and deletes the DSC object.
      */
     void stop();
+
+	vec3 lightPos;
 };

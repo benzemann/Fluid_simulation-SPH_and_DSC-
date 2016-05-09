@@ -81,6 +81,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\DSC.h" />
     <ClInclude Include="..\..\src\geometry.h" />
+    <ClInclude Include="..\..\src\ObjectGenerator.h" />
     <ClInclude Include="..\..\src\velocity_function.h" />
   </ItemGroup>
   <ItemGroup>

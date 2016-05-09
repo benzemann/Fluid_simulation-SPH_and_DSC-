@@ -116,8 +116,8 @@ namespace DSC {
 
         using is_mesh::ISMesh<node_att, edge_att, face_att, tet_att>::validity_check;
 
+		using is_mesh::ISMesh<node_att, edge_att, face_att, tet_att>::set_label;
     protected:
-        using is_mesh::ISMesh<node_att, edge_att, face_att, tet_att>::set_label;
 
     private:
 

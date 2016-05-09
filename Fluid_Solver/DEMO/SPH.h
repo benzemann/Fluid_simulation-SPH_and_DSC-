@@ -251,8 +251,11 @@ public:
 	vector<DSC2D::vec2> get_lines_end() {
 		return lines_end;
 	}
+
 	void CFL_delta_time_update();
+
 	DSC2D::vec2 interpolate_iso_nodes(Node* n_a, Node* n_b, double iso_value);
+
 private:
 	vector<Collision_Box> collision_boxes;
 	HMesh::VertexAttributeVector<DSC2D::vec2> dsc_vert_velocities;

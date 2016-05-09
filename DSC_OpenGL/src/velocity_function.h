@@ -170,6 +170,9 @@ namespace DSC {
         }
         
     public:
+		static void set_label(DeformableSimplicialComplex& dsc, is_mesh::TetrahedronKey tk, int label) {
+			dsc.set_label(tk, label);
+		}
         /**
          Returns wether the motion has finished.
          */

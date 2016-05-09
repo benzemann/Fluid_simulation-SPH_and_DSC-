@@ -1,41 +1,9 @@
-﻿Build started 26-04-2016 09:47:55.
-     1>Project "C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\CGLA\CGLA.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D D_SCL_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\CGLA.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\CGLA\ArithSqMat3x3Float.cpp ..\..\CGLA\ArithSqMat4x4Float.cpp ..\..\CGLA\ArithVec2Float.cpp ..\..\CGLA\ArithVec3Float.cpp ..\..\CGLA\eigensolution.cpp ..\..\CGLA\gel_rand.cpp ..\..\CGLA\Mat3x3d.cpp ..\..\CGLA\Mat3x3f.cpp ..\..\CGLA\Mat4x4d.cpp ..\..\CGLA\Mat4x4f.cpp ..\..\CGLA\statistics.cpp ..\..\CGLA\TableTrigonometry.cpp ..\..\CGLA\Vec2i.cpp ..\..\CGLA\Vec3f.cpp ..\..\CGLA\Vec3i.cpp
-         ArithSqMat3x3Float.cpp
-         ArithSqMat4x4Float.cpp
-         ArithVec2Float.cpp
-         ArithVec3Float.cpp
-         eigensolution.cpp
-         gel_rand.cpp
-         Mat3x3d.cpp
-         Mat3x3f.cpp
-         Mat4x4d.cpp
-         Mat4x4f.cpp
-         statistics.cpp
-         TableTrigonometry.cpp
-         Vec2i.cpp
-         Vec3f.cpp
-         Vec3i.cpp
-       Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\Release\CGLA.lib" /NOLOGO /LTCG Release\ArithSqMat3x3Float.obj
-         Release\ArithSqMat4x4Float.obj
-         Release\ArithVec2Float.obj
-         Release\ArithVec3Float.obj
-         Release\eigensolution.obj
-         Release\gel_rand.obj
-         Release\Mat3x3d.obj
-         Release\Mat3x3f.obj
-         Release\Mat4x4d.obj
-         Release\Mat4x4f.obj
-         Release\statistics.obj
-         Release\TableTrigonometry.obj
-         Release\Vec2i.obj
-         Release\Vec3f.obj
-         Release\Vec3i.obj
-         CGLA.vcxproj -> C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\Release\CGLA.lib
-     1>Done Building Project "C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\CGLA\CGLA.vcxproj" (Build target(s)).
+﻿Build started 04-05-2016 11:21:17.
+     1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\CGLA\CGLA.vcxproj" on node 2 (Build target(s)).
+     1>Lib:
+         CGLA.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\Release\CGLA.lib
+     1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\CGLA\CGLA.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:13.74
+Time Elapsed 00:00:00.12

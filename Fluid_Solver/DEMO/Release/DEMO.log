@@ -1,4 +1,4 @@
-﻿Build started 25-04-2016 11:14:10.
+﻿Build started 29-04-2016 11:28:22.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (DEMO.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
@@ -14,7 +14,7 @@
                  [
                      DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
                  ]
-         user_interface.cpp(241): note: see reference to function template instantiation 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)' being compiled
+         user_interface.cpp(242): note: see reference to function template instantiation 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)' being compiled
                  with
                  [
                      DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
@@ -32,13 +32,13 @@
          Release\track_particle_function.obj
          Release\user_interface.obj
          Generating code
-         4 of 5247 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+         1 of 5247 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
            0 functions were new in current compilation
-           2 functions had inline decision re-evaluated but remain unchanged
+           1 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          DEMO.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.exe
      1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:03.99
+Time Elapsed 00:00:09.26
