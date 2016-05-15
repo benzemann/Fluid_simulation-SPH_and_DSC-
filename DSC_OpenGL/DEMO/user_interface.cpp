@@ -26,8 +26,6 @@
 #include <ctime>
 #include <chrono>
 
-particlesystem::Particle_System ps;
-
 using namespace DSC;
 
 void display_(){
@@ -175,7 +173,8 @@ UI::UI(int &argc, char** argv)
 		i++;
 	}
 	std::cout << "Number of tets: " << i << std::endl;
-	ps = particlesystem::Particle_System();
+	sph = new SPH();
+	sph->init();
 }
 
 void UI::load_model(const std::string& file_name, real discretization)
@@ -203,11 +202,12 @@ void UI::update_title()
 
 void UI::update_gl()
 {
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective( /* field of view in degree */ 40.0,
 		/* aspect ratio */ 1.0,
-		/* Z near */ 10.0, /* Z far */ gl_dis_max*5.0);
+		/* Z near */ 1.0, /* Z far */ gl_dis_max*5.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -219,7 +219,7 @@ void UI::update_gl()
 		-sin(angle)*sin(angle2),
 		cos(angle));
 	eye.normalize();
-	eye = eye * 15.0;
+	eye = eye * 10.0;
 	gluLookAt(eye[0], eye[1], eye[2], /* eye is at (0,8,60) */
 		center[0], center[1], center[2],      /* center is at (0,8,0) */
 		head[0], head[1], head[2]);      /* up is in postivie Y direction */
@@ -243,11 +243,23 @@ void UI::display()
 	total_time += t.count();
 	init_time = std::chrono::system_clock::now();
 	
+	double d_t = sph->CFL_correction(0.008);
+	//cout << d_t << endl;
+	sph->update(d_t);
+
+	sph->update_velocity(d_t);
+
+	sph->correct_density_error(d_t);
+
+	sph->update_position(d_t);
+
+
 	draw_helper::dsc_draw_domain(*dsc);
 //	draw_helper::dsc_draw_edge(*dsc);
-	draw_helper::dsc_draw_interface(*dsc);
+	//draw_helper::dsc_draw_interface(*dsc);
 
-	ps.draw(lightPos);
+	sph->draw_particles(lightPos);
+	//sph->draw_collision_boxes(lightPos);
 
 	glutSwapBuffers();
 }
@@ -425,6 +437,16 @@ void UI::keyboard(unsigned char key, int x, int y) {
 		case 'g':
 		{
 			angle2 += 0.1;
+		}
+			break;
+		case 'k':
+		{
+			sph->reset();
+		}
+			break;
+		case 'w':
+		{
+			sph->move_wall();
 		}
 			break;
     }

@@ -1,9 +1,21 @@
-﻿Build started 04-05-2016 11:21:17.
+﻿Build started 11-05-2016 12:57:12.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\SOIL\SOIL.vcxproj" on node 3 (Build target(s)).
-     1>Lib:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _CRT_SECURE_NO_DEPRECATE /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\SOIL.pdb" /Gd /TC /analyze- /errorReport:prompt ..\..\SOIL\image_DXT.c ..\..\SOIL\image_helper.c ..\..\SOIL\SOIL.c ..\..\SOIL\stb_image.c ..\..\SOIL\stb_image_write.c
+         image_DXT.c
+         image_helper.c
+         SOIL.c
+         stb_image.c
+         stb_image_write.c
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\Release\SOIL.lib" /NOLOGO /LTCG Release\image_DXT.obj
+         Release\image_helper.obj
+         Release\SOIL.obj
+         Release\stb_image.obj
+         Release\stb_image_write.obj
          SOIL.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\Release\SOIL.lib
      1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\SOIL\SOIL.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.08
+Time Elapsed 00:00:03.32

@@ -3,7 +3,8 @@
 #include <CGLA/Vec3d.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
-
+//#include "Grid.h"
+class Grid;
 typedef CGLA::Vec3d vec3;
 using namespace std;
 
@@ -14,9 +15,8 @@ namespace particlesystem {
 		Particle() :
 			id(-1),
 			pos(vec3(0.0)),
-			pos_0(vec3(0.0)),
+			pos_scaled(vec3(0.0)),
 			vel(vec3(0.0)),
-			vel_0(vec3(0.0)),
 			a_0(vec3(0.0)),
 			mass(1.0),
 			density(0.0),
@@ -34,9 +34,8 @@ namespace particlesystem {
 		Particle(vec3 p, int id) :
 			id(id),
 			pos(p),
-			pos_0(vec3(0.0)),
+			pos_scaled(vec3(0.0)),
 			vel(vec3(0.0)),
-			vel_0(vec3(0.0)),
 			a_0(vec3(0.0)),
 			mass(1.0),
 			density(0.0),
@@ -56,8 +55,7 @@ namespace particlesystem {
 		// Position and velocity of one particle
 		vec3 pos;
 		vec3 vel;
-		vec3 pos_0;
-		vec3 vel_0;
+		vec3 pos_scaled;
 		vec3 a_0;
 		// Mass, density, and local pressure
 		double mass;
@@ -110,7 +108,7 @@ namespace particlesystem {
 		Returns a list of all particles in the circle with radius around the
 		given particle.
 		*/
-		vector<Particle> get_particles_in_circle(Particle p, double radius);
+		vector<Particle> get_particles_in_sphere(Particle p, double radius);
 		/*
 		Renders all particles as small red dots
 		*/
@@ -126,9 +124,10 @@ namespace particlesystem {
 		*/
 		void update_grid();
 
-		void create_grid(int width, int height, double cell_size);
+		void create_grid(int width,int length, int height, double cell_size);
 	private:
 		vector<Particle> particles;
+		Grid* grid;
 	};
 }
 

@@ -45,6 +45,9 @@
     <ClInclude Include="..\..\DEMO\Particle_System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\DEMO\SPH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\DEMO\demo.cpp">
@@ -69,6 +72,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\DEMO\Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DEMO\SPH.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

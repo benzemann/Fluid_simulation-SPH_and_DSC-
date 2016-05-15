@@ -90,6 +90,7 @@
     <ClInclude Include="..\..\DEMO\normal_function.h" />
     <ClInclude Include="..\..\DEMO\Particle_System.h" />
     <ClInclude Include="..\..\DEMO\rotate_function.h" />
+    <ClInclude Include="..\..\DEMO\SPH.h" />
     <ClInclude Include="..\..\DEMO\track_particles_function.h" />
     <ClInclude Include="..\..\DEMO\user_interface.h" />
   </ItemGroup>
@@ -100,6 +101,7 @@
     <ClCompile Include="..\..\DEMO\Grid.cpp" />
     <ClCompile Include="..\..\DEMO\log.cpp" />
     <ClCompile Include="..\..\DEMO\Particle_System.cpp" />
+    <ClCompile Include="..\..\DEMO\SPH.cpp" />
     <ClCompile Include="..\..\DEMO\track_particles_function.cpp" />
     <ClCompile Include="..\..\DEMO\user_interface.cpp" />
   </ItemGroup>

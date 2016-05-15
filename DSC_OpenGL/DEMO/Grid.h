@@ -38,7 +38,7 @@ public:
 
 	void init_grid();
 
-	void create_grid(int width, int height, double cell_size);
+	void create_grid(int width, int length, int height, double cell_size);
 
 private:
 	/*
@@ -50,7 +50,8 @@ private:
 
 	double CELL_SIZE;
 	int GRID_WIDTH;
+	int GRID_LENGTH;
 	int GRID_HEIGHT;
 
-	vector<vector<Particle>> grid;
+	vector<Particle>*** grid;
 };

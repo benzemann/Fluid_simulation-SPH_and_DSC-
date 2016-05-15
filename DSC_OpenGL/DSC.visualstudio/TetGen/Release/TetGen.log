@@ -1,18 +1,5 @@
-﻿Build started 26-04-2016 09:47:55.
-     1>Project "C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\TetGen\TetGen.vcxproj" on node 3 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl- /O2 /Oi /Oy- /GL /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\TetGen.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\TetGen\predicates.cxx ..\..\TetGen\tetgen.cxx
-         predicates.cxx
-         tetgen.cxx
-     1>..\..\TetGen\tetgen.cxx(3197): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-     1>..\..\TetGen\tetgen.cxx(10832): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-     1>..\..\TetGen\tetgen.cxx(17606): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-       Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\Release\TetGen.lib" /NOLOGO /LTCG Release\predicates.obj
-         Release\tetgen.obj
-         TetGen.vcxproj -> C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\Release\TetGen.lib
-     1>Done Building Project "C:\Users\Jeppe\Desktop\DSC_OpenGL\DSC_OpenGL\DSC.visualstudio\TetGen\TetGen.vcxproj" (Build target(s)).
+﻿Build started 11-05-2016 12:57:08.
 
 Build succeeded.
 
-Time Elapsed 00:00:03.85
+Time Elapsed 00:00:00.01

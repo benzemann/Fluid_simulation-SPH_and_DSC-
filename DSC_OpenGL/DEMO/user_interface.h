@@ -26,7 +26,7 @@
 #include <CGLA/Vec4d.h>
 #include <CGLA/Mat3x3d.h>
 #include <CGLA/Mat4x4d.h>
-#include "Particle_System.h"
+#include "SPH.h"
 typedef CGLA::Vec3d vec3;
 
 /**
@@ -120,4 +120,5 @@ private:
     void stop();
 
 	vec3 lightPos;
+	SPH* sph;
 };

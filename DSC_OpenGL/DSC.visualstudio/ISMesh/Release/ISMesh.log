@@ -1,9 +1,10 @@
-﻿Build started 04-05-2016 11:21:18.
+﻿Build started 11-05-2016 12:58:03.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\ISMesh\ISMesh.vcxproj" on node 2 (Build target(s)).
      1>Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\Release\ISMesh.lib" CGLA.lib /NOLOGO /LTCG Release\mesh_io.obj
          ISMesh.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\Release\ISMesh.lib
      1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\ISMesh\ISMesh.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.05
+Time Elapsed 00:00:00.75
