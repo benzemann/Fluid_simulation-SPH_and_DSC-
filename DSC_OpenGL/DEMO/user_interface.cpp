@@ -50,6 +50,7 @@ void animate_(){
 
 UI* UI::instance = NULL;
 
+
 void UI::setup_light()
 {
 	vec3 center = vec3(0.0,0.0,0.0);
@@ -57,7 +58,7 @@ void UI::setup_light()
 		gl_dis_max*3.0*cos(angle)*sin(angle2),
 		gl_dis_max*3.0*sin(angle));
 	eye.normalize();
-	eye = eye * 15.0;
+	eye = eye * 120.0;
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat mat_shininess[] = { 50.0 };
 	lightPos = vec3(-(GLfloat)eye[0], -(GLfloat)eye[1], -(GLfloat)eye[2]);
@@ -116,7 +117,6 @@ UI::UI(int &argc, char** argv)
 	glutReshapeWindow(WIN_SIZE_X, WIN_SIZE_Y);
 	check_gl_error();
 	
-	
 	load_model("C:/Users/Jeppe/Desktop/DSC_OpenGL/DSC_OpenGL/DSC.visualstudio/cube_simple.dsc", 2.5);
 	
 	real velocity = 5.;
@@ -142,11 +142,20 @@ UI::UI(int &argc, char** argv)
 		update_title();
 	}
 
+	dsc->scale(vec3(30.0, 60.0, 40.0));
 
 	int i = 0;
+	vector<is_mesh::TetrahedronKey> keys;
 	for (auto te = dsc->tetrahedra_begin(); te != dsc->tetrahedra_end(); te++) {
-
-		if (i < 75000) {
+		keys.push_back(te.key());
+	}
+	for each (is_mesh::TetrahedronKey key in keys)
+	{
+		dsc->split(key);
+	}
+	for (auto te = dsc->tetrahedra_begin(); te != dsc->tetrahedra_end(); te++) {
+		vel_fun->set_label(*dsc, te.key(), 0);
+		/*if (i < 75000) {
 			
 			is_mesh::SimplexSet<is_mesh::NodeKey> set = dsc->get_nodes(te.key());
 			bool m = false;
@@ -168,7 +177,7 @@ UI::UI(int &argc, char** argv)
 		else {
 
 			
-		}
+		}*/
 
 		i++;
 	}
@@ -202,12 +211,11 @@ void UI::update_title()
 
 void UI::update_gl()
 {
-
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective( /* field of view in degree */ 40.0,
 		/* aspect ratio */ 1.0,
-		/* Z near */ 1.0, /* Z far */ gl_dis_max*5.0);
+		/* Z near */ 1.0, /* Z far */ gl_dis_max*150.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -219,7 +227,7 @@ void UI::update_gl()
 		-sin(angle)*sin(angle2),
 		cos(angle));
 	eye.normalize();
-	eye = eye * 10.0;
+	eye = eye * 120.0;
 	gluLookAt(eye[0], eye[1], eye[2], /* eye is at (0,8,60) */
 		center[0], center[1], center[2],      /* center is at (0,8,0) */
 		head[0], head[1], head[2]);      /* up is in postivie Y direction */
@@ -230,6 +238,56 @@ void UI::update_gl()
 	glClearColor(0.1, 0.1, 0.1, 1.0);
 }
 
+bool screenshot(char *fileName) {
+
+	int Xres = 640*2;
+	int Yres = 360*2;
+
+	static unsigned char header[54] = {
+		0x42, 0x4D, 0x36, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x36, 0x00, 0x00, 0x00, 0x28, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x18, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0xC4, 0x0E, 0x00, 0x00, 0xC4, 0x0E, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+	unsigned char *pixels = (unsigned char *)malloc(Xres * Yres * 3);
+	((unsigned __int16 *)header)[9] = Xres;
+	((unsigned __int16 *)header)[11] = Yres;
+
+	glReadPixels(0, 0, Xres, Yres, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+
+	unsigned char temp;
+	for (unsigned int i = 0; i < Xres * Yres * 3; i += 3) {
+		temp = pixels[i];
+		pixels[i] = pixels[i + 2];
+		pixels[i + 2] = temp;
+	}
+
+	HANDLE FileHandle;
+	unsigned long Size;
+
+	if (fileName == NULL) {
+		char file[256];
+		int i = 0;
+		do {
+			sprintf(file, "Screenshot%d.bmp", i);
+			FileHandle = CreateFile(file, GENERIC_WRITE, 0, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+			i++;
+		} while (FileHandle == INVALID_HANDLE_VALUE);
+	}
+	else {
+		FileHandle = CreateFile(fileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (FileHandle == INVALID_HANDLE_VALUE)	return false;
+	}
+
+	WriteFile(FileHandle, header, sizeof(header), &Size, NULL);
+	WriteFile(FileHandle, pixels, Xres * Yres * 3, &Size, NULL);
+
+	CloseHandle(FileHandle);
+
+	free(pixels);
+	return true;
+}
+int c_tmp = 0;
 void UI::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -243,24 +301,43 @@ void UI::display()
 	total_time += t.count();
 	init_time = std::chrono::system_clock::now();
 	
+	draw_helper::dsc_draw_domain(*dsc);
+	//draw_helper::dsc_draw_edge(*dsc);
+	draw_helper::dsc_draw_interface(*dsc);
+
+
+	if (CONTINUOUS) {
+		//cout << vel_fun->get_time_step() % 10 << endl;
+
+		//if (vel_fun->get_time_step() % 2 == 0 && vel_fun->get_time_step() < 160000) {
+		string name = "C:/Users/Jeppe/Desktop/Screenshots/" + std::to_string(vel_fun->get_time_step());
+		name = name + ".BMP";
+		screenshot((char*)name.c_str());
+		//}
+	}
+	else {
+		sph->draw_particles(lightPos);
+	}
 	double d_t = sph->CFL_correction(0.008);
 	//cout << d_t << endl;
 	sph->update(d_t);
-
+	
 	sph->update_velocity(d_t);
 
 	sph->correct_density_error(d_t);
 
 	sph->update_position(d_t);
 
-
-	draw_helper::dsc_draw_domain(*dsc);
-//	draw_helper::dsc_draw_edge(*dsc);
-	//draw_helper::dsc_draw_interface(*dsc);
-
-	sph->draw_particles(lightPos);
+	//sph->draw_particles(lightPos);
 	//sph->draw_collision_boxes(lightPos);
 
+	sph->update_iso_surface();
+
+
+	string name = "C:/Users/Jeppe/Desktop/Screenshots/" + std::to_string(c_tmp);
+	name = name + ".BMP";
+	screenshot((char*)name.c_str());
+	c_tmp++;
 	glutSwapBuffers();
 }
 
@@ -279,6 +356,8 @@ void UI::animate()
 	if (CONTINUOUS)
 	{
 		std::cout << "\n***************TIME STEP " << vel_fun->get_time_step() + 1 << " START*************\n" << std::endl;
+		
+		identify_fluid(185);
 		vel_fun->take_time_step(*dsc);
 	}
     glutPostRedisplay();
@@ -301,7 +380,7 @@ void UI::keyboard(unsigned char key, int x, int y) {
             stop();
             QUIT_ON_COMPLETION = true;
             RECORD = true;
-            vel_fun = std::unique_ptr<VelocityFunc<>>(new track_particles_function(vel_fun->get_velocity(), vel_fun->get_accuracy()));
+            vel_fun = std::unique_ptr<VelocityFunc<>>(new track_particles_function(vel_fun->get_velocity(), vel_fun->get_accuracy(), sph));
             start("rotate");
             break;
         case '2':
@@ -318,6 +397,9 @@ void UI::keyboard(unsigned char key, int x, int y) {
             vel_fun = std::unique_ptr<VelocityFunc<>>(new NormalFunc(vel_fun->get_velocity(), vel_fun->get_accuracy()));
             start("expand");
             break;
+		case '4':
+			sph->reset();
+			break;
         case ' ':
             if(!CONTINUOUS)
             {
@@ -353,8 +435,9 @@ void UI::keyboard(unsigned char key, int x, int y) {
             break;
         case 's':
             std::cout << "TAKING SCREEN SHOT" << std::endl;
-            painter->set_view_position(camera_pos);
-            painter->save_painting("LOG");
+            //painter->set_view_position(camera_pos);
+            //painter->save_painting("LOG");
+			screenshot("Test.bmp");
             break;
         case 'e':
         {
@@ -449,6 +532,11 @@ void UI::keyboard(unsigned char key, int x, int y) {
 			sph->move_wall();
 		}
 			break;
+		case 'j':
+		{
+			identify_fluid(185);
+		}
+			break;
     }
 }
 
@@ -471,4 +559,30 @@ void UI::start(const std::string& log_folder_name)
 {
     update_title();
     glutPostRedisplay();
+}
+
+void UI::identify_fluid(double threshold) 
+{
+	
+	for (auto te = dsc->tetrahedra_begin(); te != dsc->tetrahedra_end(); te++) {
+
+		vec3 center = dsc->get_barycenter(dsc->get_nodes(te.key()));
+		center = vec3(center[0] + 1, center[1] + 1, center[2] + 1);
+		center = center * sph->get_down_scale();
+		vector<Particle> close_particles = sph->get_close_particles_to_pos(center);
+		if (close_particles.size() > 0) {
+			
+			Particle tmp_particle = Particle(center, -1);
+			float mass_at_point = sph->calculate_density(tmp_particle, close_particles) * 1000000.0;
+			//cout << mass_at_point << endl;
+			if (mass_at_point > threshold) {
+				vel_fun->set_label(*dsc, te.key(), 1);
+			}
+		}
+		else {
+			vel_fun->set_label(*dsc, te.key(), 0);
+		}
+
+	}
+
 }

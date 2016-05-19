@@ -223,19 +223,28 @@ public:
 	void correct_divergence_error();
 	void write_volume_file() {
 		ofstream file;
-
-		file.open("particles_volume5.txt");
+		file.open("density_error.txt");
 		for (double v : vol_log) {
 			file << v << endl;
 		}
 		file.close();
 	}
 	void log_volume() {
-		avg_density = 0.0;
+		/*avg_density = 0.0;
 		for (int i = 0; i < get_no_of_particle(); i++) {
 			avg_density += get_particle(i).density_divergence.length();
 		}
-		vol_log.push_back(avg_density/get_no_of_particle());
+		vol_log.push_back(avg_density/get_no_of_particle());*/
+		double sum_density = 0;
+		for (int i = 0; i < get_no_of_particle(); i++) {
+			Particle* p_ptr = get_particle_ptr(i);
+			vector<Particle> close_particles = get_close_particles_to_pos(p_ptr->pos, KERNEL_RADIUS);
+			double d = calculate_density(*p_ptr, close_particles);
+			sum_density += d;
+		}
+		avg_density = sum_density / get_no_of_particle();
+
+		vol_log.push_back(avg_density);
 	}
 	bool is_density_correction() {
 		return enabled_density_correstion;
@@ -251,11 +260,15 @@ public:
 	vector<DSC2D::vec2> get_lines_end() {
 		return lines_end;
 	}
-
+	vector<DSC2D::vec2> get_iso_points() {
+		return iso_points;
+	}
 	void CFL_delta_time_update();
 
 	DSC2D::vec2 interpolate_iso_nodes(Node* n_a, Node* n_b, double iso_value);
-
+	void move_coll(DSC2D::vec2 p) {
+		collision_boxes[0].pos = p;
+	}
 private:
 	vector<Collision_Box> collision_boxes;
 	HMesh::VertexAttributeVector<DSC2D::vec2> dsc_vert_velocities;
@@ -293,6 +306,7 @@ private:
 	vector<vector<Node*> > isosurface_nodes;
 	vector<DSC2D::vec2> lines_start;
 	vector<DSC2D::vec2> lines_end;
+	vector<DSC2D::vec2> iso_points;
 };
 
 

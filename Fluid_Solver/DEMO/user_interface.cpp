@@ -153,7 +153,9 @@ void UI::update_title()
 }
 double sum_time = 0.0;
 int tmp = 0;
-void UI::display()
+
+void UI
+::display()
 {
     if (glutGet(GLUT_WINDOW_WIDTH) != WIN_SIZE_X || glutGet(GLUT_WINDOW_HEIGHT) != WIN_SIZE_Y) {
         return;
@@ -189,7 +191,6 @@ void UI::display()
 		//d_t = 0.008;
 
 		sph->set_delta(d_t);
-		
 		sph->CFL_delta_time_update();
 
 		if (sph->get_delta() > 0.009) {
@@ -209,7 +210,7 @@ void UI::display()
 		}
 		//sph->draw_dsc_velocities(*dsc);
 		if (sph->is_fluid_detection())
-			identify_fluid(100.0);
+			identify_fluid(135.0);
 
 
 		if (sph->is_dsc_tracking()) {
@@ -218,19 +219,23 @@ void UI::display()
 		}
 		if (sph->is_density_correction()) {
 			//sph->correct_divergence_error();
-			sph->correct_density_error();
-		}
-		if (tmp % 100 == 0)
-			cout << "Time step: " << tmp << endl;
-		if (tmp == 1500) {
-			sph->write_volume_file();
-		}
-		else if (tmp > 500) {
-			sph->log_volume();
+			//sph->correct_density_error();
 		}
 
 		sph->update_position(d_t);
 
+		if (tmp % 100 == 0)
+			cout << "Time step: " << tmp << endl;
+
+		if (tmp == 2700) {
+			sph->move_coll(vec2(-100.0));
+		}
+		if (tmp == 3700) {
+			sph->write_volume_file();
+		}
+		else if (tmp > 2500) {
+			sph->log_volume();
+		}
 
 		tmp++;
 
@@ -554,7 +559,7 @@ void UI::create_fluid_domain()
 {
 	stop();
 
-	
+
 	DISCRETIZATION = 16; // super high res: 5, high res 10, normal 18, coarse 25
 
 	int width = WIN_SIZE_X - (2 * DISCRETIZATION);
@@ -597,7 +602,6 @@ struct by_count {
 	}
 };
 void UI::identify_fluid(float treshold) {
-	
 	// IDENTIFY FLUID BY PARTICLE DENSITY //
 	for (auto fi = dsc->faces_begin(); fi != dsc->faces_end(); ++fi) {
 		//if (dsc->is_outside(*fi)) {
@@ -606,6 +610,12 @@ void UI::identify_fluid(float treshold) {
 		Particle tmp_particle = Particle(center*2.0, -1);
 		tmp_particle.mass = 0.0;
 		vector<Particle> close_particles = sph->get_close_particles_to_pos(tmp_particle.pos);
+		/*vector<Particle> close_particles;
+		for each(Particle p in close_particles_) {
+			if (p.vel.length() < 1300.0) {
+				close_particles.push_back(p);
+			}
+		}*/
 		if (close_particles.size() > 0) {
 			float mass_at_point = sph->calculate_density(tmp_particle, close_particles) * 1000000.0;
 			// if mass is greater than the threshold value it is marked as inside the fluid

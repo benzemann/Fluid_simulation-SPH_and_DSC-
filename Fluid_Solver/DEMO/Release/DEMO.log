@@ -1,4 +1,4 @@
-﻿Build started 12-05-2016 11:22:39.
+﻿Build started 19-05-2016 20:24:22.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (DEMO.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
@@ -8,14 +8,14 @@
          SPH.cpp
      1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
      1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(119): warning C4018: '<': signed/unsigned mismatch
      1>SPH.cpp(120): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(136): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(137): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(669): warning C4305: 'initializing': truncation from 'double' to 'float'
-     1>SPH.cpp(768): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(809): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(958): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(121): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(144): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(145): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(688): warning C4305: 'initializing': truncation from 'double' to 'float'
+     1>SPH.cpp(797): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(837): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(986): warning C4018: '<': signed/unsigned mismatch
          demo.cpp
      1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
      1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
@@ -60,7 +60,6 @@
          track_particle_function.cpp
      1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
      1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
-     1>track_particle_function.cpp(53): warning C4018: '<': signed/unsigned mismatch
      1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(171): warning C4018: '<': signed/unsigned mismatch
          D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(163): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
                  with
@@ -77,7 +76,7 @@
                  [
                      DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
                  ]
-         user_interface.cpp(242): note: see reference to function template instantiation 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)' being compiled
+         user_interface.cpp(247): note: see reference to function template instantiation 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)' being compiled
                  with
                  [
                      DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
@@ -95,13 +94,13 @@
          Release\track_particle_function.obj
          Release\user_interface.obj
          Generating code
-         0 of 5247 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+         3 of 5244 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
            0 functions were new in current compilation
-           0 functions had inline decision re-evaluated but remain unchanged
+           1 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          DEMO.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.exe
      1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:40.63
+Time Elapsed 00:00:17.98

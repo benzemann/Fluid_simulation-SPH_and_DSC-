@@ -1,4 +1,4 @@
-﻿Build started 11-05-2016 12:57:10.
+﻿Build started 18-05-2016 20:23:19.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\CGLA\CGLA.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D D_SCL_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\CGLA.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\CGLA\ArithSqMat3x3Float.cpp ..\..\CGLA\ArithSqMat4x4Float.cpp ..\..\CGLA\ArithVec2Float.cpp ..\..\CGLA\ArithVec3Float.cpp ..\..\CGLA\eigensolution.cpp ..\..\CGLA\gel_rand.cpp ..\..\CGLA\Mat3x3d.cpp ..\..\CGLA\Mat3x3f.cpp ..\..\CGLA\Mat4x4d.cpp ..\..\CGLA\Mat4x4f.cpp ..\..\CGLA\statistics.cpp ..\..\CGLA\TableTrigonometry.cpp ..\..\CGLA\Vec2i.cpp ..\..\CGLA\Vec3f.cpp ..\..\CGLA\Vec3i.cpp
@@ -38,4 +38,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:17.02
+Time Elapsed 00:00:18.02

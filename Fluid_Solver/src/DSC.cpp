@@ -26,13 +26,14 @@ namespace DSC2D
         MIN_ANGLE = M_PI * 10./180.;
         COS_MIN_ANGLE = cos(MIN_ANGLE);
         DEG_ANGLE = 0.2*MIN_ANGLE;
-        
-        MAX_LENGTH = 2.;
-        MIN_LENGTH = 0.5;
+
+
+        MAX_LENGTH = 0.1;
+        MIN_LENGTH = 0.25;
         DEG_LENGTH = 0.2*MIN_LENGTH;
         
-        MAX_AREA = 5.;
-        MIN_AREA = 0.2;
+        MAX_AREA = 2.5;
+        MIN_AREA = 0.1;
         DEG_AREA = 0.2*MIN_AREA;
         
         INTERFACE_COLOR = DARK_RED;
@@ -143,7 +144,7 @@ namespace DSC2D
     void DeformableSimplicialComplex::fix_complex()
     {
         smooth();
-        
+
         max_min_angle();
         
         remove_degenerate_edges();

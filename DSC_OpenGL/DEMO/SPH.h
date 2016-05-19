@@ -34,6 +34,14 @@ class SPH
 			return false;
 		}
 	};
+	struct Node {
+		Node(vec3 p, double v) :
+			pos(p),
+			value(v)
+		{}
+		vec3 pos;
+		double value;
+	};
 public:
 	SPH();
 	/*
@@ -52,6 +60,8 @@ public:
 	Particle get_closest_particle(vec3 pos);
 
 	void update(double delta_time);
+
+	void update_iso_surface();
 
 	double calculate_density(Particle p, vector<Particle> close_particles);
 	double calculate_local_pressure(Particle p);
@@ -79,15 +89,30 @@ public:
 	vec3 calculate_collision_impulse(Particle p,vec3 wall_normal);
 
 	void move_wall() {
-		collision_boxes[2].pos[1] = 800;
+		collision_boxes[2].pos[1] = 400;
 	}
 
 	double CFL_correction(double delta_time);
 
+	double get_down_scale() {
+		return down_scale;
+	}
+
+	vector<vec3> get_iso_points() {
+		return iso_points;
+	}
+
+	vec3 interpolate_iso_nodes(Node* n_a, Node* n_b, double iso_value);
+
 private:
 	vector<Collision_Box> collision_boxes;
-	double down_scale = 200.0;
+
+
+	double down_scale = 12.5;
 	double avg_density = 0.0;
+
+	Node**** iso_surface_nodes;
+	vector<vec3> iso_points;
 	/*
 	These are user controlled constant to get the desired fluid
 	*/
@@ -100,5 +125,7 @@ private:
 	double REST_DENSITY = 0.000103;
 	double delta = 0.008;
 	double VISCOCITY_TERM = 10.0;
+
+
 };
 

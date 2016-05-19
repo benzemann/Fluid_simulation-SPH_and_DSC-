@@ -78,12 +78,53 @@ namespace DSC {
         //////////////////////////
         
     public:
-        
+        /*   // Thresholds on the quality of edges
+    real DEG_EDGE_QUALITY;
+    real MIN_EDGE_QUALITY;
+    
+    // Thresholds on the quality of faces.
+    real DEG_FACE_QUALITY;
+    real MIN_FACE_QUALITY;
+    
+    // Thresholds on the quality of tetrahedra.
+    real DEG_TET_QUALITY;
+    real MIN_TET_QUALITY;
+    
+    // Thresholds on the length of edges.
+    real MIN_LENGTH;
+    real MAX_LENGTH;
+    
+    // Thresholds on the area of faces.
+    real MIN_AREA;
+    real MAX_AREA;
+    
+    // Thresholds on the volume of tetrahedra.
+    real MIN_VOLUME;
+    real MAX_VOLUME;*/
         /// SimplicialComplex constructor.
         DeformableSimplicialComplex(std::vector<vec3> & points, std::vector<int> & tets, const std::vector<int>& tet_labels):
             is_mesh::ISMesh<node_att, edge_att, face_att, tet_att>(points, tets, tet_labels)
         {
-            pars = {0.1, 0.5, 0.0005, 0.015, 0.02, 0.3, 0., 2., 0.2, 5., 0.2, INFINITY};
+
+			double scale = .08;//0.08
+            pars = { 
+					0.1,		// DEG_EDGE_QUALITY
+					0.5,		// MIN_EDGE_QUALITY
+					0.0005,		// DEG_FACE_QUALITY
+					0.015,		// MIN_FACE_QUALITY
+					0.02,		// DEG_TET_QUALITY
+					0.3,		// MIN_TET_QUALITY
+					0.,			// MIN_LENGTH
+					2.,			// MAX_LENGTH
+					0.2,		// MIN_AREA
+					5.,			// MAX_AREA
+					0.2,		// MIN_VOLUME
+					INFINITY	// MAX_VOLUME
+					};
+
+			//pars = { 0.1, 0.5, 0.0005, 0.015, 0.02, 0.3, 0., 2., 0.2, 5., 0.2, INFINITY };
+			//{0.1, 0.5, 0.0005, 0.015, 0.02, 0.3, 0., .05, 0.005, 0.1, 0.005, INFINITY};
+			//{0.1, 0.5, 0.0005, 0.015, 0.02, 0.3, 0., 2., 0.2, 5., 0.2, INFINITY};
             set_avg_edge_length();
         }
         
@@ -1349,6 +1390,24 @@ namespace DSC {
         ///////////////
         // SMOOTHING //
         ///////////////
+	public:
+		bool laplacian(const node_key& nid, real alpha = 1.)
+		{
+			if (is_safe_editable(nid))
+				return false;
+			is_mesh::SimplexSet<tet_key> tids = get_tets(nid);
+			is_mesh::SimplexSet<face_key> fids = get_faces(tids) - get_faces(nid);
+
+			vec3 old_pos = get_pos(nid);
+			vec3 avg_pos = get_barycenter(get_nodes(fids), true);
+			vec3 new_pos = old_pos + alpha * (avg_pos - old_pos);
+
+			real q_old, q_new;
+			//min_quality(fids, old_pos, new_pos, q_old, q_new);
+			
+			set_pos(nid, new_pos);
+			return true;
+		}
     private:
         /**
          * Performs Laplacian smoothing if it improves the minimum tetrahedron quality locally.
@@ -1398,7 +1457,7 @@ namespace DSC {
         void fix_complex()
         {
             smooth();
-            
+
             topological_edge_removal();
             topological_face_removal();
             

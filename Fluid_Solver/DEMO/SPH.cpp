@@ -10,9 +10,10 @@ SPH::SPH(int tmp)
 void SPH::init() {
 	// Create all particles in a square
 	int indx = 0;
-	/*for (int i = 0; i < 1; i++) {
-		for (int j = 0; j < 2; j++) {
-			DSC2D::vec2 particle_pos = DSC2D::vec2(51 + (i * 12), 110 + (j * 10));
+
+	/*for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 20; j++) {
+			DSC2D::vec2 particle_pos = DSC2D::vec2(500 + (i * 15), 250 + (j * 10));
 			particle_system.create_particle(particle_pos);
 			indx++;
 		}
@@ -31,7 +32,7 @@ void SPH::init() {
 	if (collision_boxes.size() == 0) {
 		DSC2D::vec3 grey = DSC2D::vec3(100, 100, 100);
 		DSC2D::vec3 brown = DSC2D::vec3(122, 88, 37);
-		create_collision_box(DSC2D::vec2(210.0, 250.0), 500.0, 100.0, brown);
+		create_collision_box(DSC2D::vec2(350.0, 500.0), 1000.0, 100.0, brown);
 		create_collision_box(DSC2D::vec2(500.0, 50.0), 125.0, 1000.0, grey);
 		create_collision_box(DSC2D::vec2(500.0, 1000.0), 100.0, 1000.0, grey);
 		create_collision_box(DSC2D::vec2(1000.0, 500.0), 1000.0, 150.0, grey);
@@ -123,16 +124,23 @@ void SPH::update_isosurface() {
 				double sum = 0.0;
 				for each (Particle p in close_particles)
 				{
+
+
+					//if (p.vel.length() < 1300.0) {
 					DSC2D::vec2 p_to_p = isosurface_nodes[i][j]->pos - p.pos;
 					sum += poly6_kernel(p_to_p.length(), 15);
+					//}
+					
 				}
 				isosurface_nodes[i][j]->value = sum;
 			}
 		}
-		double iso_value = 0.0000003;
+
+		double iso_value = 0.000003;
 		int no_of_squares = (isosurface_nodes.size() * isosurface_nodes[0].size()) - (isosurface_nodes.size() + (isosurface_nodes[0].size() - 1));
 		lines_start.clear();
 		lines_end.clear();
+		iso_points.clear();
 		for (int i = 0; i < isosurface_nodes.size() - 1; i++) {
 			for (int j = 0; j < isosurface_nodes.size() - 1; j++) {
 
@@ -146,7 +154,7 @@ void SPH::update_isosurface() {
 				if (n00->value > 0.0 || n10->value > 0.0) {
 					if ((n00->value <= iso_value && n10->value > iso_value) ||
 						(n00->value > iso_value && n10->value <= iso_value)) {
-
+						//cout << n00->value << endl;
 						DSC2D::vec2 interpolated_pos = interpolate_iso_nodes(n00, n10, iso_value);
 						
 						points.push_back(interpolated_pos); // Middle point
@@ -183,15 +191,24 @@ void SPH::update_isosurface() {
 					lines_start.push_back(points[0]);
 					lines_end.push_back(points[1]);
 				}
+				for each (DSC2D::vec2 p in points)
+				{
+					iso_points.push_back(p);
+				}
 			}
 		}
 	}
+	/*Node* n_1 = new Node(DSC2D::vec2(0.0), 0);
+	Node* n_2 = new Node(DSC2D::vec2(15.0, 0.0), 0.0000009);
+	cout << interpolate_iso_nodes(n_1, n_2, 0.0000003) << endl;
+	delete n_1;
+	delete n_2;*/
 }
 
 DSC2D::vec2 SPH::interpolate_iso_nodes(Node* n_a, Node* n_b, double iso_value) {
 
 	double l_between_nodes = 15.0;
-	double t = l_between_nodes * ((iso_value - n_a->value) / (n_b->value - n_a->value));
+	double t = l_between_nodes * ((iso_value - n_b->value) / (n_a->value - n_b->value));
 
 	DSC2D::vec2 n_a_to_n_b = n_b->pos - n_a->pos;
 	n_a_to_n_b = CGLA::normalize(n_a_to_n_b);
@@ -263,7 +280,7 @@ DSC2D::vec2 SPH::calculate_surface_tension(Particle p, vector<Particle> close_pa
 void SPH::correct_density_error() {
 
 	double density_error = avg_density - REST_DENSITY;
-	int max_iterations = 2;
+	int max_iterations = 10;
 	int iterations = 0;
 	while (density_error > 0.00006 && iterations <= max_iterations) {
 		double sum_density = 0.0;
@@ -371,7 +388,7 @@ void SPH::correct_divergence_error() {
 		iterations++;
 	}
 
-	for (int i = 0; i < get_no_of_particle(); i++) {
+	/*for (int i = 0; i < get_no_of_particle(); i++) {
 		Particle* p_ptr = get_particle_ptr(i);
 
 		vector<Particle> close_particles = get_close_particles(p_ptr);
@@ -392,7 +409,7 @@ void SPH::correct_divergence_error() {
 		else {
 			p_ptr->is_inside = true;
 		}
-	}
+	}*/
 }
 
 DSC2D::vec2 SPH::calculate_inward_normal(DSC2D::vec2 pos) {
@@ -489,6 +506,8 @@ void SPH::draw_particles() {
 }
 
 void SPH::create_particle_at_mouse_pos() {
+	if (get_no_of_particle() >= 900)
+		return;
 	POINT curPos;
 	BOOL result = GetCursorPos(&curPos);
 	static int step = -15;
@@ -762,12 +781,21 @@ void SPH::draw_isosurface() {
 		}
 	}
 	glEnd();*/
-	if (is_drawing_isosurfacee) {
+	/*if (is_drawing_isosurfacee) {
 		glBegin(GL_LINES);
 		glColor3f(0.0f, 1.0f, 0.0f);
 		for (int i = 0; i < lines_start.size(); i++) {
 			glVertex2f(lines_start[i][0] * scale, lines_start[i][1] * scale);
 			glVertex2f(lines_end[i][0] * scale, lines_end[i][1] * scale);
+		}
+
+		glEnd();
+	}*/
+	if (is_drawing_isosurfacee) {
+		glBegin(GL_POINTS);
+		glColor3f(0.0f, 1.0f, 0.0f);
+		for (int i = 0; i < iso_points.size(); i++) {
+			glVertex2f(iso_points[i][0] * scale, iso_points[i][1] * scale);
 		}
 
 		glEnd();

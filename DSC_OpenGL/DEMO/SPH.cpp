@@ -8,17 +8,18 @@ SPH::SPH()
 
 void SPH::init() {
 	ps = Particle_System();
-	for (int i = 0; i < 12; i++) {
+	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 5; j++) {
-			for (int k = 0; k < 80; k++) {
+			for (int k = 0; k < 45; k++) {
 				int id = ps.create_particle(vec3( 
-					200 + (i * 15.0),
+					100 + (i * 15.0),
 					100 + (j * 15.0),
 					150 + (k * 15.0)
 					));
 			}
 		}
 	}
+
 	create_collision_box(vec3(200.0, 200.0, 0.0), 100.0, 1500, 1500);
 
 	create_collision_box(vec3(200.0, 0.0, 200.0), 10000.0, 1500, 100);
@@ -28,6 +29,27 @@ void SPH::init() {
 	create_collision_box(vec3(0.0, 200.0, 200.0), 10000.0, 100, 1500);
 
 	ps.create_grid(80, 80, 80, 15);
+
+
+
+	int iso_dims = 54;
+	double iso_cell_size = 7.5;
+
+	iso_surface_nodes = new Node***[iso_dims];
+	for (int i = 0; i < iso_dims; i++) {
+		iso_surface_nodes[i] = new Node**[iso_dims];
+		for (int j = 0; j < iso_dims; j++) {
+			iso_surface_nodes[i][j] = new Node*[iso_dims];
+		}
+	}
+
+	for (int x = 0; x < iso_dims; x++) {
+		for (int y = 0; y < iso_dims; y++) {
+			for (int z = 0; z < iso_dims; z++) {
+				iso_surface_nodes[x][y][z] = new Node(vec3(iso_cell_size*x, iso_cell_size*y, iso_cell_size*z), 0.0);
+			}
+		}
+	}
 }
 
 void SPH::reset() {
@@ -447,6 +469,216 @@ void SPH::draw_collision_boxes(vec3 light_pos) {
 
 	
 
+}
+
+void SPH::update_iso_surface() {
+	
+	iso_points.clear();
+	
+
+
+	for (int x = 0; x < 53; x++) {
+		for (int y = 0; y < 53; y++) {
+			for (int z = 0; z < 53; z++) {
+
+				vector<Particle> close_particles = get_close_particles_to_pos(iso_surface_nodes[x][y][z]->pos);
+
+
+				double sum = 0.0;
+				for each (Particle p in close_particles) {
+					vec3 p_to_p = iso_surface_nodes[x][y][z]->pos - p.pos;
+					sum += poly6_kernel(p_to_p.length(), 30);
+				}
+				iso_surface_nodes[x][y][z]->value = sum;
+				
+			}
+		}
+	}
+
+	for (int x = 0; x < 53; x++) {
+		for (int y = 0; y < 53; y++) {
+			for (int z = 0; z < 53; z++) {
+
+
+				double iso_value = 0.0001;
+
+
+				Node* n000 = iso_surface_nodes[x][y][z];
+				Node* n100 = iso_surface_nodes[x + 1][y][z];
+				Node* n010 = iso_surface_nodes[x][y + 1][z];
+				Node* n110 = iso_surface_nodes[x + 1][y + 1][z];
+				Node* n001 = iso_surface_nodes[x][y][z+1];
+				Node* n101 = iso_surface_nodes[x + 1][y][z+1];
+				Node* n011 = iso_surface_nodes[x][y + 1][z+1];
+				Node* n111 = iso_surface_nodes[x + 1][y + 1][z+1];
+
+				if (n000->value > 0.0 || n100->value > 0.0) {
+					if ((n000->value <= iso_value && n100->value > iso_value) ||
+						(n000->value > iso_value && n100->value <= iso_value)) {
+						//cout << n00->value << endl;
+						vec3 interpolated_pos = interpolate_iso_nodes(n000, n100, iso_value);
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n100->value > 0.0 || n110->value > 0.0) {
+					if ((n100->value <= iso_value && n110->value > iso_value) ||
+						(n100->value > iso_value && n110->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n100, n110, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n000->value > 0.0 || n010->value > 0.0) {
+					if ((n000->value <= iso_value && n010->value > iso_value) ||
+						(n000->value > iso_value && n010->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n000, n010, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n010->value > 0.0 || n110->value > 0.0) {
+					if ((n010->value <= iso_value && n110->value > iso_value) ||
+						(n010->value > iso_value && n110->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n010, n110, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+
+				if (n001->value > 0.0 || n101->value > 0.0) {
+					if ((n001->value <= iso_value && n101->value > iso_value) ||
+						(n001->value > iso_value && n101->value <= iso_value)) {
+						//cout << n00->value << endl;
+						vec3 interpolated_pos = interpolate_iso_nodes(n001, n101, iso_value);
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n101->value > 0.0 || n111->value > 0.0) {
+					if ((n101->value <= iso_value && n111->value > iso_value) ||
+						(n101->value > iso_value && n111->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n101, n111, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n001->value > 0.0 || n011->value > 0.0) {
+					if ((n001->value <= iso_value && n011->value > iso_value) ||
+						(n001->value > iso_value && n011->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n001, n011, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n011->value > 0.0 || n111->value > 0.0) {
+					if ((n011->value <= iso_value && n111->value > iso_value) ||
+						(n011->value > iso_value && n111->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n011, n111, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n000->value > 0.0 || n001->value > 0.0) {
+					if ((n000->value <= iso_value && n001->value > iso_value) ||
+						(n000->value > iso_value && n001->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n000, n001, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n100->value > 0.0 || n101->value > 0.0) {
+					if ((n100->value <= iso_value && n101->value > iso_value) ||
+						(n100->value > iso_value && n101->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n100, n101, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n010->value > 0.0 || n011->value > 0.0) {
+					if ((n010->value <= iso_value && n011->value > iso_value) ||
+						(n010->value > iso_value && n011->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n010, n011, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				if (n110->value > 0.0 || n111->value > 0.0) {
+					if ((n110->value <= iso_value && n111->value > iso_value) ||
+						(n110->value > iso_value && n111->value <= iso_value)) {
+
+						vec3 interpolated_pos = interpolate_iso_nodes(n110, n111, iso_value);
+
+						interpolated_pos = interpolated_pos / down_scale;
+						interpolated_pos = vec3(-1 + interpolated_pos[0], -1 + interpolated_pos[1], -1 + interpolated_pos[2]);
+						iso_points.push_back(interpolated_pos);
+					}
+				}
+				// DRAW ISO NODES //
+				/*if (iso_surface_nodes[x][y][z]->value > 0) {
+					vec3 pos = iso_surface_nodes[x][y][z]->pos / down_scale;
+					pos = vec3(-1 + pos[0], -1 + pos[1], -1 + pos[2]);
+					glPushMatrix();
+					glTranslated(pos[0], pos[1], pos[2]);
+					glutSolidSphere(0.01, 5, 5);
+					glPopMatrix();
+				}*/
+				
+			}
+		}
+	}
+	
+
+	/*for each (vec3 iso_point in iso_points)
+	{
+		vec3 pos = iso_point;
+		glPushMatrix();
+		glTranslated(pos[0], pos[1], pos[2]);
+		glutSolidSphere(.08, 5, 5);
+		glPopMatrix();
+	}*/
+	
+}
+
+
+vec3 SPH::interpolate_iso_nodes(Node* n_a, Node* n_b, double iso_value) {
+
+	double l_between_nodes = 15.0;
+	double t = l_between_nodes * ((iso_value - n_b->value) / (n_a->value - n_b->value));
+
+	vec3 n_a_to_n_b = n_b->pos - n_a->pos;
+	n_a_to_n_b = CGLA::normalize(n_a_to_n_b);
+	vec3 interpolated_pos = n_a->pos + (n_a_to_n_b * (l_between_nodes - t));
+	return interpolated_pos;
 }
 
 double SPH::poly6_kernel(float r, float d) {

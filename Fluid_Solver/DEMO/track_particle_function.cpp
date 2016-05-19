@@ -43,14 +43,42 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
 
 	vector<vec2> isosurface_start = sph.get_lines_start();
 	vector<vec2> isosurface_end = sph.get_lines_end();
-
+	vector<vec2> iso_points = sph.get_iso_points();
 	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
 
 		if (dsc.is_interface(*vi)) {
 			vec2 closest_point = vec2(-100.0);
 			double closest_dis = 10000000.0;
 			vec2 pos = dsc.get_pos(*vi);
-			for (int i = 0; i < isosurface_start.size(); i++) {
+
+			for each (vec2 point in iso_points)
+			{
+				vec2 p_to_point = (point*sph.get_scale()) - pos;
+				double distance = p_to_point.length();
+				if (distance < closest_dis) {
+					closest_dis = distance;
+					closest_point = (point*sph.get_scale());
+				}
+			}
+			
+			if (closest_point != vec2(-100.0)) {
+				vec2 vel = closest_point - dsc.get_pos(*vi);
+				//if (vel.length() > 1.5) {
+				//vel.normalize();
+				//vel = vel * 1.5;
+				//}
+				if (vel.length() > 3.0) {
+					vel.normalize();
+					vel = vel * 1.5;
+				}
+				else {
+					vel.normalize();
+					vel = vel * 0.1;
+				}
+				dsc.set_destination(*vi, dsc.get_pos(*vi) + vel);
+				
+			}
+			/*for (int i = 0; i < isosurface_start.size(); i++) {
 
 				// Find closest point to each line
 				vec2 start_p = pos - (isosurface_start[i] * sph.get_scale());
@@ -86,7 +114,7 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
 					vel = vel * 1.5;
 					dsc.set_destination(*vi, dsc.get_pos(*vi) + vel);
 				}
-			}
+			}*/
 		}
 	}
 

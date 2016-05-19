@@ -42,12 +42,13 @@ public:
         return std::string("NORMAL MOTION");
     }
     
+
     /**
      Computes the motion of each interface vertex and stores the new position in new_pos in the simplicial complex class.
      */
     virtual void deform(DSC::DeformableSimplicialComplex<>& dsc)
     {
-        auto init_time = std::chrono::system_clock::now();
+        /*auto init_time = std::chrono::system_clock::now();
         vec3 new_pos;
         for(auto nit = dsc.nodes_begin(); nit != dsc.nodes_end(); nit++)
         {
@@ -57,7 +58,7 @@ public:
                 dsc.set_destination(nit.key(), new_pos);
             }
         }
-        update_compute_time(init_time);
+        update_compute_time(init_time);*/
         VelocityFunc::deform(dsc);
     }
 };

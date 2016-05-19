@@ -46,8 +46,8 @@ class UI
     vec3 camera_pos = {3., 3., 7.};
     vec3 light_pos = {0., 0., 70.};
     
-    int WIN_SIZE_X = 1280;
-    int WIN_SIZE_Y = 720;
+    int WIN_SIZE_X = 640*2;
+    int WIN_SIZE_Y = 360*2;
     
     bool CONTINUOUS = false;
     bool RECORD = false;
@@ -96,6 +96,8 @@ public:
      The keyboard is used for all inputs. See https://github.com/asny/DSC/wiki/DEMO-instructions for up-to-date instructions on how to use the DEMO application.
      */
     void keyboard(unsigned char key, int x, int y);
+
+	void identify_fluid(double threshold);
     
 private:
     

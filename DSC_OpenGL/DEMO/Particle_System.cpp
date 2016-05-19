@@ -46,10 +46,11 @@ void Particle_System::draw( vec3 light_pos) {
 	
 	for each (Particle p in particles)
 	{
+
 		vec3 pos = p.pos_scaled;
 		glPushMatrix();
 		glTranslated(pos[0], pos[1], pos[2]);
-		glutSolidSphere(0.04, 5, 5);
+		glutSolidSphere(0.5, 5, 5);
 		glPopMatrix();
 	}
 	

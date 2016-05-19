@@ -48,16 +48,20 @@ public:
     {
         auto init_time = std::chrono::system_clock::now();
         vec3 new_pos, p;
-        for(auto nit = dsc.nodes_begin(); nit != dsc.nodes_end(); nit++)
-        {
-            if(dsc.is_movable(nit.key()))
-            {
-                p = nit->get_pos();
-                new_pos = p + 0.1*VELOCITY * (dsc.get_barycenter(nit.key(), true) - p);
-                dsc.set_destination(nit.key(), new_pos);
-            }
-        }
-        update_compute_time(init_time);
-        VelocityFunc::deform(dsc);
+
+		for (int i = 0; i < 5; i++) {
+			for (auto nit = dsc.nodes_begin(); nit != dsc.nodes_end(); nit++)
+			{
+				if (dsc.is_movable(nit.key()))
+				{
+					p = nit->get_pos();
+					new_pos = p + 0.1*VELOCITY * (dsc.get_barycenter(nit.key(), true) - p);
+					dsc.set_destination(nit.key(), new_pos);
+				}
+			}
+			update_compute_time(init_time);
+			VelocityFunc::deform(dsc);
+		}
+        
     }
 };
