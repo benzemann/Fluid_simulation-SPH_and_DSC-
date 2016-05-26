@@ -142,7 +142,8 @@ UI::UI(int &argc, char** argv)
 		update_title();
 	}
 
-	dsc->scale(vec3(30.0, 60.0, 40.0));
+
+	dsc->scale(vec3(40., 40., 40.));
 
 	int i = 0;
 	vector<is_mesh::TetrahedronKey> keys;
@@ -331,7 +332,7 @@ void UI::display()
 	//sph->draw_particles(lightPos);
 	//sph->draw_collision_boxes(lightPos);
 
-	sph->update_iso_surface();
+	//sph->update_iso_surface();
 
 
 	string name = "C:/Users/Jeppe/Desktop/Screenshots/" + std::to_string(c_tmp);
@@ -356,8 +357,7 @@ void UI::animate()
 	if (CONTINUOUS)
 	{
 		std::cout << "\n***************TIME STEP " << vel_fun->get_time_step() + 1 << " START*************\n" << std::endl;
-		
-		identify_fluid(185);
+		identify_fluid(165);
 		vel_fun->take_time_step(*dsc);
 	}
     glutPostRedisplay();

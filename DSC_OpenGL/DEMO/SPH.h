@@ -63,11 +63,13 @@ public:
 
 	void update_iso_surface();
 
-	double calculate_density(Particle p, vector<Particle> close_particles);
+	double calculate_density(Particle p, vector<Particle> close_particles, double radius=-1);
 	double calculate_local_pressure(Particle p);
 	vec3 calculate_pressure(Particle p, vector<Particle> close_particles);
 	vec3 calculate_viscocity(Particle p, vector<Particle> close_particles);
 	vec3 calculate_external_forces(Particle p);
+	vec3 calculate_density_gradient(Particle p, vector<Particle> close_particles, double radius = -1);
+
 
 	double calculate_a(Particle p, vector<Particle> close_particles);
 	void correct_density_error(double delta_time);
@@ -107,8 +109,7 @@ public:
 private:
 	vector<Collision_Box> collision_boxes;
 
-
-	double down_scale = 12.5;
+	double down_scale = 17.5;
 	double avg_density = 0.0;
 
 	Node**** iso_surface_nodes;

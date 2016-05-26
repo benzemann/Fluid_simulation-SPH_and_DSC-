@@ -72,12 +72,13 @@ public:
 	/*
 	Calculations for the different SPH components
 	*/
-	double calculate_density(Particle p, vector<Particle> close_particles);
+	double calculate_density(Particle p, vector<Particle> close_particles, double radius=30.0);
 	double calculate_local_pressure(Particle p);
 	DSC2D::vec2 calculate_pressure(Particle p, vector<Particle> close_particles);
 	DSC2D::vec2 calculate_viscocity(Particle p, vector<Particle> close_particles);
 	DSC2D::vec2 calculate_external_forces(Particle p);
 	DSC2D::vec2 calculate_surface_tension(Particle p, vector<Particle> close_particles);
+	DSC2D::vec2 calculate_gradient_density(Particle p, vector<Particle> close_particles, double radius=30.0);
 	/*
 	Find close particles to a given pos or particle
 	*/

@@ -1,82 +1,15 @@
-﻿Build started 19-05-2016 20:24:22.
+﻿Build started 26-05-2016 17:31:39.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (DEMO.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"D:\Programmering\DSC + SPH\DEMO\DEMO\Eigen\src" /I"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO.sln\..\..\src" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt -mms-bitfields -ID:/Programmering/GTK/include/gtk-2.0 -ID:/Programmering/GTK/lib/gtk-2.0/include -ID:/Programmering/GTK/include/atk-1.0 -ID:/Programmering/GTK/include/cairo -ID:/Programmering/GTK/include/gdk-pixbuf-2.0 -ID:/Programmering/GTK/include/pango-1.0 -ID:/Programmering/GTK/include/glib-2.0 -ID:/Programmering/GTK/lib/glib-2.0/include -ID:/Programmering/GTK/include -ID:/Programmering/GTK/include/freetype2 -ID:/Programmering/GTK/include/libpng14  
-          SPH.cpp demo.cpp track_particle_function.cpp user_interface.cpp
+          track_particle_function.cpp
      1>cl : Command line warning D9002: ignoring unknown option '-mms-bitfields'
-         SPH.cpp
-     1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
-     1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(120): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(121): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(144): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(145): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(688): warning C4305: 'initializing': truncation from 'double' to 'float'
-     1>SPH.cpp(797): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(837): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(986): warning C4018: '<': signed/unsigned mismatch
-         demo.cpp
-     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
-     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
-     1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(171): warning C4018: '<': signed/unsigned mismatch
-         D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(163): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
-                 with
-                 [
-                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
-                 ]
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1199): note: see reference to class template instantiation 'DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>' being compiled
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1198): note: while compiling class template member function 'void std::default_delete<_Ty>::operator ()(_Ty *) noexcept const'
-                 with
-                 [
-                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
-                 ]
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1403): note: see reference to function template instantiation 'void std::default_delete<_Ty>::operator ()(_Ty *) noexcept const' being compiled
-                 with
-                 [
-                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
-                 ]
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1233): note: see reference to class template instantiation 'std::default_delete<_Ty>' being compiled
-                 with
-                 [
-                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
-                 ]
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1242): note: see reference to class template instantiation 'std::_Get_deleter_pointer_type<_Ty,std::default_delete<_Ty>>' being compiled
-                 with
-                 [
-                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
-                 ]
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\memory(1285): note: see reference to class template instantiation 'std::_Unique_ptr_base<_Ty,_Dx>' being compiled
-                 with
-                 [
-                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>,
-                     _Dx=std::default_delete<DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>>
-                 ]
-         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\user_interface.h(41): note: see reference to class template instantiation 'std::unique_ptr<DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>,std::default_delete<_Ty>>' being compiled
-                 with
-                 [
-                     _Ty=DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>
-                 ]
          track_particle_function.cpp
      1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
      1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
      1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(171): warning C4018: '<': signed/unsigned mismatch
          D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(163): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
-                 with
-                 [
-                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
-                 ]
-         d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\demo\track_particle_function.h(7): note: see reference to class template instantiation 'DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>' being compiled
-         user_interface.cpp
-     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
-     1>d:\programmering\fluid_simulation-sph_and_dsc-\fluid_solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
-     1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(171): warning C4018: '<': signed/unsigned mismatch
-         D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\velocity_function.h(163): note: while compiling class template member function 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)'
-                 with
-                 [
-                     DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
-                 ]
-         user_interface.cpp(247): note: see reference to function template instantiation 'bool DSC2D::VelocityFunc<DSC2D::DeformableSimplicialComplex>::is_motion_finished(DeformableSimplicialComplex &)' being compiled
                  with
                  [
                      DeformableSimplicialComplex=DSC2D::DeformableSimplicialComplex
@@ -94,13 +27,13 @@
          Release\track_particle_function.obj
          Release\user_interface.obj
          Generating code
-         3 of 5244 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+         1 of 5246 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
            0 functions were new in current compilation
-           1 functions had inline decision re-evaluated but remain unchanged
+           23 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          DEMO.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.exe
      1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:17.98
+Time Elapsed 00:00:16.93

@@ -32,7 +32,7 @@ void SPH::init() {
 	if (collision_boxes.size() == 0) {
 		DSC2D::vec3 grey = DSC2D::vec3(100, 100, 100);
 		DSC2D::vec3 brown = DSC2D::vec3(122, 88, 37);
-		create_collision_box(DSC2D::vec2(350.0, 500.0), 1000.0, 100.0, brown);
+		create_collision_box(DSC2D::vec2(350.0, 500.0), 1000.0, 100.0, grey);
 		create_collision_box(DSC2D::vec2(500.0, 50.0), 125.0, 1000.0, grey);
 		create_collision_box(DSC2D::vec2(500.0, 1000.0), 100.0, 1000.0, grey);
 		create_collision_box(DSC2D::vec2(1000.0, 500.0), 1000.0, 150.0, grey);
@@ -68,8 +68,9 @@ void SPH::update(double delta_time) {
 		p_ptr->a = calculate_a(*p_ptr, close_particles);
 		p_ptr->pressure = calculate_pressure(*p_ptr, close_particles);
 		p_ptr->viscocity = calculate_viscocity(*p_ptr, close_particles);
-		//p_ptr->surface_tension = calculate_surface_tension(*p_ptr, close_particles);
-		p_ptr->surface_tension = calculate_inward_normal(p_ptr->pos) * 2000.0;
+		//p_ptr->surface_tension = calculate_gradient_density(*p_ptr, close_particles) * 2000.0;
+		//cout << p_ptr->surface_tension << endl;
+		//p_ptr->surface_tension = calculate_inward_normal(p_ptr->pos) * 2000.0;
 		p_ptr->external_forces = calculate_external_forces(*p_ptr);
 	}
 	//cout << (avg_density / get_no_of_particle()) - REST_DENSITY << endl;
@@ -230,13 +231,25 @@ Particle* SPH::get_particle_ptr(int id) {
 	return particle_system.get_particle_ptr(id);
 }
 
-double SPH::calculate_density(Particle p, vector<Particle> close_particles) {
+double SPH::calculate_density(Particle p, vector<Particle> close_particles, double radius) {
 	double density = 0.0;
 	for each(Particle close_particle in close_particles) {
 		DSC2D::vec2 p_to_p = p.pos - close_particle.pos;
-		density += (close_particle.mass * poly6_kernel(p_to_p.length(), KERNEL_RADIUS));
+		density += (close_particle.mass * poly6_kernel(p_to_p.length(), radius));
 	}
-	return density + p.mass * poly6_kernel(0.0, KERNEL_RADIUS);
+	return density + p.mass * poly6_kernel(0.0, radius);
+}
+
+DSC2D::vec2 SPH::calculate_gradient_density(Particle p, vector<Particle> close_particles, double radius) {
+	DSC2D::vec2 density_grad = DSC2D::vec2(0.0);
+	for each(Particle close_particle in close_particles) {
+
+		DSC2D::vec2 p_to_p = p.pos - close_particle.pos;
+		vector<Particle> close_to_p = get_close_particles(&close_particle, radius);
+		double d = calculate_density(close_particle, close_to_p);
+		density_grad += close_particle.mass * gradient_kernel(p_to_p.length(), p_to_p, radius);
+	}
+	return density_grad;
 }
 
 double SPH::calculate_a(Particle p, vector<Particle> close_particles) {
@@ -506,7 +519,7 @@ void SPH::draw_particles() {
 }
 
 void SPH::create_particle_at_mouse_pos() {
-	if (get_no_of_particle() >= 900)
+	if (get_no_of_particle() >= 1000)
 		return;
 	POINT curPos;
 	BOOL result = GetCursorPos(&curPos);
@@ -737,7 +750,73 @@ void SPH::draw_viscocity() {
 
 void SPH::draw_surface_tension() {
 	if (is_drawing_surface_tension) {
+		for (int i = 0; i < 250; i++) {
+			for (int j = 0; j < 250; j++) {
+
+				Particle p_tmp = Particle(DSC2D::vec2(i*4, j*4), -1);
+				vector<Particle> close_partcle = get_close_particles(&p_tmp);
+
+				double den = calculate_density(p_tmp, close_partcle);
+
+				double color = ((den - 0.00006)/0.000150);
+
+				if (den < 0.00006) {
+					color = 0.0;
+				}
+				glBegin(GL_POINTS);
+				//cout << color << endl;
+				glColor3f(0.0f, color, 0.0f);
+				glVertex2f(p_tmp.pos[0] * 0.5, p_tmp.pos[1] * 0.5);
+
+				glEnd();
+			}
+
+		}
+
+		/*Particle p = Particle(DSC2D::vec2(200.0, 300.0), -1);
+		Particle c_p = get_closest_particle(p.pos);
+
+		DSC2D::vec2 dis = p.pos - c_p.pos;
+
+
+
+		double l = dis.length() * 5.0;
+		if (l < 15.0)
+			l = 15.0;
+
+		l = 100.0;
+		vector<Particle> close_particles = get_close_particles(&p, l);
+		double den = calculate_density(p, close_particles, l);
+		//cout << den << endl;
+		DSC2D::vec2 den_grad = calculate_gradient_density(p, close_particles, l);
+		double len = den_grad.length();
+		DSC2D::vec2 res = DSC2D::vec2(0.0);
+		glBegin(GL_POINTS);
+		//cout << den << endl;
+
+		/*if (den > 0.000016) {
+			res = -den_grad * ((den - 0.000016) / (len * len));
+			glColor3f(0.0f, 1.0f, 0.0f);
+		}
+		else {
+			res = -den_grad * ((den - 0.000016) / (len * len));
+			glColor3f(1.0f, 0.0f, 0.0f);
+		}*/
+		/*res = -den_grad * ((den - 0.000016) / (len * len));
+		DSC2D::vec2 pos_scaled = p.pos / 2.0;
+		den_grad = den_grad / 2.0;
+		res = res * 0.5;
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex2f(pos_scaled[0], pos_scaled[1]);
+		glEnd();
 		glBegin(GL_LINES);
+		glVertex2f(pos_scaled[0], pos_scaled[1]);
+		glVertex2f(pos_scaled[0] + res[0], pos_scaled[1] + res[1]);
+
+		glEnd();
+
+		cout << den_grad << endl;
+		/*glBegin(GL_LINES);
 
 		glColor3f(0.0f, 1.0f, 1.0f);
 		for (int i = 0; i < particle_system.get_number_of_particles(); i++) {
@@ -748,7 +827,7 @@ void SPH::draw_surface_tension() {
 				glVertex2f(pos[0] + p.surface_tension[0], pos[1] + p.surface_tension[1]);
 			}
 		}
-		glEnd();
+		glEnd();*/
 	}
 }
 

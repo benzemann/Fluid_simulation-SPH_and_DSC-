@@ -112,13 +112,26 @@ double SPH::CFL_correction(double delta_time) {
 	return d_t;
 }
 
-double SPH::calculate_density(Particle p, vector<Particle> close_particles) {
+double SPH::calculate_density(Particle p, vector<Particle> close_particles, double radius) {
+	if (radius == -1)
+		radius = KERNEL_RADIUS;
 	double density = 0.0;
 	for each(Particle close_particle in close_particles) {
 		vec3 p_to_p = p.pos - close_particle.pos;
-		density += (close_particle.mass * poly6_kernel(p_to_p.length(), KERNEL_RADIUS));
+		density += (close_particle.mass * poly6_kernel(p_to_p.length(), radius));
 	}
 	return density + p.mass * poly6_kernel(0.0, KERNEL_RADIUS);
+}
+
+vec3 SPH::calculate_density_gradient(Particle p, vector<Particle> close_particles, double radius) {
+	vec3 density_gradient = vec3(0.0);
+	for each(Particle close_particle in close_particles) {
+		vec3 p_to_p = p.pos - close_particle.pos;
+		vector<Particle> close_to_p = get_close_particles(&close_particle, radius);
+		double d = calculate_density(close_particle, close_to_p);
+		density_gradient += close_particle.mass * gradient_kernel(p_to_p.length(), p_to_p, radius);
+	}
+	return density_gradient;
 }
 
 double SPH::calculate_local_pressure(Particle p) {

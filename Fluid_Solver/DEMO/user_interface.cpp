@@ -154,8 +154,46 @@ void UI::update_title()
 double sum_time = 0.0;
 int tmp = 0;
 
-void UI
-::display()
+bool save_screenshot(string filename, int w, int h)
+{
+	//This prevents the images getting padded 
+	// when the width multiplied by 3 is not a multiple of 4
+	glPixelStorei(GL_PACK_ALIGNMENT, 1);
+
+	int nSize = w*h * 3;
+	// First let's create our buffer, 3 channels per Pixel
+	char* dataBuffer = (char*)malloc(nSize*sizeof(char));
+
+	if (!dataBuffer) return false;
+
+	// Let's fetch them from the backbuffer	
+	// We request the pixels in GL_BGR format, thanks to Berzeger for the tip
+	glReadPixels((GLint)0, (GLint)0,
+		(GLint)w, (GLint)h,
+		GL_BGR, GL_UNSIGNED_BYTE, dataBuffer);
+
+	//Now the file creation
+	FILE *filePtr = fopen(filename.c_str(), "wb");
+	if (!filePtr) return false;
+
+
+	unsigned char TGAheader[12] = { 0,0,2,0,0,0,0,0,0,0,0,0 };
+	unsigned char header[6] = { w % 256,w / 256,
+		h % 256,h / 256,
+		24,0 };
+	// We write the headers
+	fwrite(TGAheader, sizeof(unsigned char), 12, filePtr);
+	fwrite(header, sizeof(unsigned char), 6, filePtr);
+	// And finally our image data
+	fwrite(dataBuffer, sizeof(GLubyte), nSize, filePtr);
+	fclose(filePtr);
+
+	free(dataBuffer);
+
+	return true;
+}
+
+void UI::display()
 {
     if (glutGet(GLUT_WINDOW_WIDTH) != WIN_SIZE_X || glutGet(GLUT_WINDOW_HEIGHT) != WIN_SIZE_Y) {
         return;
@@ -203,23 +241,25 @@ void UI
 		
 		sph->update_velocity(d_t);
 		
-		sph->update_isosurface();
+
+		//sph->update_isosurface();
 
 		if (sph->is_it_projecting()) {
 			sph->project_velocities(*dsc);
 		}
+
 		//sph->draw_dsc_velocities(*dsc);
 		if (sph->is_fluid_detection())
 			identify_fluid(135.0);
-
 
 		if (sph->is_dsc_tracking()) {
 			//if(tmp % 2 == 0)
 			vel_fun->take_time_step(*dsc);
 		}
+
 		if (sph->is_density_correction()) {
 			//sph->correct_divergence_error();
-			//sph->correct_density_error();
+			sph->correct_density_error();
 		}
 
 		sph->update_position(d_t);
@@ -227,13 +267,14 @@ void UI
 		if (tmp % 100 == 0)
 			cout << "Time step: " << tmp << endl;
 
-		if (tmp == 2700) {
-			sph->move_coll(vec2(-100.0));
-		}
+
 		if (tmp == 3700) {
+			//sph->move_coll(vec2(-100.0));
+		}
+		if (tmp == 4700) {
 			sph->write_volume_file();
 		}
-		else if (tmp > 2500) {
+		else if (tmp > 3500) {
 			sph->log_volume();
 		}
 
@@ -251,6 +292,11 @@ void UI
                 exit(0);
             }
         }
+
+		if (tmp > 3000) {
+			string tmp_s = std::to_string(tmp);
+			save_screenshot("C:/Users/Jeppe/Desktop/Screenshots/2D/" + tmp_s + ".TGA", WIN_SIZE_X, WIN_SIZE_Y);
+		}
     }
     check_gl_error();
 }
@@ -559,8 +605,7 @@ void UI::create_fluid_domain()
 {
 	stop();
 
-
-	DISCRETIZATION = 16; // super high res: 5, high res 10, normal 18, coarse 25
+	DISCRETIZATION = 18; // super high res: 5, high res 10, normal 18, coarse 25
 
 	int width = WIN_SIZE_X - (2 * DISCRETIZATION);
 	int height = WIN_SIZE_Y - (2 * DISCRETIZATION);

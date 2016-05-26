@@ -4,32 +4,41 @@
 void track_particles_function::deform(DSC::DeformableSimplicialComplex<>& dsc) {
 	
 	
-	vector<vec3> iso_points = sph->get_iso_points();
 	for (auto n = dsc.nodes_begin(); n != dsc.nodes_end(); n++) {
 		if (dsc.is_movable(n.key())) {
 
-			vec3 closest_point = vec3(1000.0);
-			double closest_distance = 1000.0;
+			double radius = 100.0;
+			vec3 vert_pos = dsc.get_pos(n.key());
+			vert_pos = vec3(vert_pos[0] + 1, vert_pos[1] + 1, vert_pos[2] + 1);
+			vert_pos = vert_pos * sph->get_down_scale();
+			vector<Particle> close_particles = sph->get_close_particles_to_pos(vert_pos, radius);
+			vec3 vel = vec3(0.0);
+			if (close_particles.size() > 0) {
 
-			for each (vec3 point in iso_points)
-			{
-				vec3 n_to_point = point - dsc.get_pos(n.key());
-				double distance = n_to_point.length();
-				if (distance < closest_distance) {
-					closest_distance = distance;
-					closest_point = point;
+				double iso_value = 0.00011;
+				Particle p_tmp = Particle(vert_pos, -1);
+				double density = sph->calculate_density(p_tmp, close_particles, radius);
+				//cout << density << endl;
+				vec3 den_grad = sph->calculate_density_gradient(p_tmp, close_particles, radius);
+				double len = den_grad.length();
+				vel = -den_grad * ((density - iso_value) / (len * len));
+				vel = vel / sph->get_down_scale();
+				//vel = vec3(-1 + vel[0], -1 + vel[1], -1 + vel[2]);
+				//cout << density << endl;
+				if (vel.length() > 0.05) {
+					vel.normalize();
+					vel = vel * 0.05;
 				}
 			}
+			else {
 
+				Particle closest_p = sph->get_closest_particle(vert_pos);
+				vel = closest_p.pos - vert_pos;
+				vel.normalize();
 
-			vec3 vel = closest_point - dsc.get_pos(n.key());
-			//cout << vel.length() << endl;
-			//if (vel.length() > 0.01) {
-			//	vel.normalize();
-			//	vel *= 0.01;
-			//}
+			}
+
 			dsc.set_destination(n.key(), dsc.get_pos(n.key()) + vel);
-
 		}
 	}
 	
@@ -55,7 +64,7 @@ void track_particles_function::deform(DSC::DeformableSimplicialComplex<>& dsc) {
 
 	dsc.deform();
 	
-	for (int i = 0; i < 1; i++) {
+	/*for (int i = 0; i < 1; i++) {
 		vec3 new_pos, p;
 		for (auto nit = dsc.nodes_begin(); nit != dsc.nodes_end(); nit++)
 		{
@@ -70,7 +79,7 @@ void track_particles_function::deform(DSC::DeformableSimplicialComplex<>& dsc) {
 		}
 
 		dsc.deform();
-	}
+	}*/
 
 	/*
 	for (auto nit = dsc.nodes_begin(); nit != dsc.nodes_end(); nit++)

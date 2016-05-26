@@ -41,13 +41,41 @@ void track_particle_function::init(DSC2D::DeformableSimplicialComplex& dsc) {
 
 void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
 
-	vector<vec2> isosurface_start = sph.get_lines_start();
-	vector<vec2> isosurface_end = sph.get_lines_end();
-	vector<vec2> iso_points = sph.get_iso_points();
+	//HMesh::VertexAttributeVector<vec2> vels;
 	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
-
+		//vels[*vi] = vec2(0.0);
 		if (dsc.is_interface(*vi)) {
-			vec2 closest_point = vec2(-100.0);
+			double radius = 100.0;
+			vec2 vert_pos = dsc.get_pos(*vi) * 2.0;
+			vector<Particle> close_particles = sph.get_close_particles_to_pos(vert_pos, radius);
+			vec2 vel = vec2(0.0);
+			if (close_particles.size() > 0) {
+				double iso_value = 0.000016;
+				Particle p_tmp = Particle(vert_pos, -1);
+				double density = sph.calculate_density(p_tmp, close_particles, radius);
+				//cout << density << endl;
+				vec2 den_grad = sph.calculate_gradient_density(p_tmp, close_particles, radius);
+				double len = den_grad.length();
+				vel = -den_grad * ((density - iso_value) / (len * len));
+				vel = vel * 0.5;
+				//vels[*vi] = vel;
+				if (vel.length() > 5.0) {
+					vel.normalize();
+					vel = vel * 5.0;
+				}
+
+			}
+			else {
+
+				Particle closest_p = sph.get_closest_particle(vert_pos);
+				vel = closest_p.pos - vert_pos;
+				vel.normalize();
+
+			}
+			//sph.set_dsc_vert_velocities(vels);
+			dsc.set_destination(*vi, dsc.get_pos(*vi) + vel);
+
+			/*vec2 closest_point = vec2(-100.0);
 			double closest_dis = 10000000.0;
 			vec2 pos = dsc.get_pos(*vi);
 
@@ -77,7 +105,7 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
 				}
 				dsc.set_destination(*vi, dsc.get_pos(*vi) + vel);
 				
-			}
+			}*/
 			/*for (int i = 0; i < isosurface_start.size(); i++) {
 
 				// Find closest point to each line

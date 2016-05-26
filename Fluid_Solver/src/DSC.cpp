@@ -27,8 +27,7 @@ namespace DSC2D
         COS_MIN_ANGLE = cos(MIN_ANGLE);
         DEG_ANGLE = 0.2*MIN_ANGLE;
 
-
-        MAX_LENGTH = 0.1;
+        MAX_LENGTH = 1.;
         MIN_LENGTH = 0.25;
         DEG_LENGTH = 0.2*MIN_LENGTH;
         
