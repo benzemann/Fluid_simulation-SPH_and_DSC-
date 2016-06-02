@@ -53,12 +53,12 @@ UI* UI::instance = NULL;
 
 void UI::setup_light()
 {
-	vec3 center = vec3(0.0,0.0,0.0);
+	vec3 center = vec3(2, 2, 2);
 	vec3 eye = center + vec3(gl_dis_max*3.0*cos(angle)*cos(angle2),
 		gl_dis_max*3.0*cos(angle)*sin(angle2),
 		gl_dis_max*3.0*sin(angle));
 	eye.normalize();
-	eye = eye * 120.0;
+	eye = eye * 30.0;
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat mat_shininess[] = { 50.0 };
 	lightPos = vec3(-(GLfloat)eye[0], -(GLfloat)eye[1], -(GLfloat)eye[2]);
@@ -143,7 +143,7 @@ UI::UI(int &argc, char** argv)
 	}
 
 
-	dsc->scale(vec3(40., 40., 40.));
+	dsc->scale(vec3(8.0, 8.0, 8.0));
 
 	int i = 0;
 	vector<is_mesh::TetrahedronKey> keys;
@@ -154,6 +154,26 @@ UI::UI(int &argc, char** argv)
 	{
 		dsc->split(key);
 	}
+	cout << "SPLIT" << endl;
+	keys.clear();
+	for (auto te = dsc->tetrahedra_begin(); te != dsc->tetrahedra_end(); te++) {
+		keys.push_back(te.key());
+	}
+	for each (is_mesh::TetrahedronKey key in keys)
+	{
+		dsc->split(key);
+	}
+	cout << "SPLIT" << endl;
+	keys.clear();
+	for (auto te = dsc->tetrahedra_begin(); te != dsc->tetrahedra_end(); te++) {
+		keys.push_back(te.key());
+	}
+	for each (is_mesh::TetrahedronKey key in keys)
+	{
+		dsc->split(key);
+	}
+	cout << "SPLIT" << endl;
+	keys.clear();
 	for (auto te = dsc->tetrahedra_begin(); te != dsc->tetrahedra_end(); te++) {
 		vel_fun->set_label(*dsc, te.key(), 0);
 		/*if (i < 75000) {
@@ -220,7 +240,7 @@ void UI::update_gl()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	vec3 center = vec3(0.0,0.0,0.0);
+	vec3 center = vec3(2, 2, 2);
 	vec3 eye = center + vec3(gl_dis_max*3.0*cos(angle)*cos(angle2),
 		gl_dis_max*3.0*cos(angle)*sin(angle2),
 		gl_dis_max*3.0*sin(angle));
@@ -228,7 +248,7 @@ void UI::update_gl()
 		-sin(angle)*sin(angle2),
 		cos(angle));
 	eye.normalize();
-	eye = eye * 120.0;
+	eye = eye * 30.0;
 	gluLookAt(eye[0], eye[1], eye[2], /* eye is at (0,8,60) */
 		center[0], center[1], center[2],      /* center is at (0,8,0) */
 		head[0], head[1], head[2]);      /* up is in postivie Y direction */
@@ -311,14 +331,17 @@ void UI::display()
 		//cout << vel_fun->get_time_step() % 10 << endl;
 
 		//if (vel_fun->get_time_step() % 2 == 0 && vel_fun->get_time_step() < 160000) {
+		
 		string name = "C:/Users/Jeppe/Desktop/Screenshots/" + std::to_string(vel_fun->get_time_step());
 		name = name + ".BMP";
 		screenshot((char*)name.c_str());
 		//}
 	}
 	else {
-		sph->draw_particles(lightPos);
+		//sph->draw_particles(lightPos);
 	}
+	sph->draw_particles(lightPos);
+
 	double d_t = sph->CFL_correction(0.008);
 	//cout << d_t << endl;
 	sph->update(d_t);
@@ -352,12 +375,16 @@ void UI::reshape(int width, int height)
 	glutReshapeWindow(WIN_SIZE_X, WIN_SIZE_Y);
 }
 
+
+
 void UI::animate()
 {
+
 	if (CONTINUOUS)
 	{
 		std::cout << "\n***************TIME STEP " << vel_fun->get_time_step() + 1 << " START*************\n" << std::endl;
-		identify_fluid(165);
+
+		identify_fluid(220);
 		vel_fun->take_time_step(*dsc);
 	}
     glutPostRedisplay();
@@ -534,9 +561,14 @@ void UI::keyboard(unsigned char key, int x, int y) {
 			break;
 		case 'j':
 		{
-			identify_fluid(185);
+			identify_fluid(50);
 		}
 			break;
+		case 'u':
+		{
+			identify_fluid(220);
+		}
+		break;
     }
 }
 
@@ -580,7 +612,7 @@ void UI::identify_fluid(double threshold)
 			}
 		}
 		else {
-			vel_fun->set_label(*dsc, te.key(), 0);
+			//vel_fun->set_label(*dsc, te.key(), 0);
 		}
 
 	}

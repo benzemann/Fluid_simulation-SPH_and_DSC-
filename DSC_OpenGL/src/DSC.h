@@ -107,6 +107,7 @@ namespace DSC {
         {
 
 			double scale = .08;//0.08
+
             pars = { 
 					0.1,		// DEG_EDGE_QUALITY
 					0.5,		// MIN_EDGE_QUALITY
@@ -115,10 +116,10 @@ namespace DSC {
 					0.02,		// DEG_TET_QUALITY
 					0.3,		// MIN_TET_QUALITY
 					0.,			// MIN_LENGTH
-					2.,			// MAX_LENGTH
-					0.2,		// MIN_AREA
-					5.,			// MAX_AREA
-					0.2,		// MIN_VOLUME
+					1.,			// MAX_LENGTH
+					0.1,		// MIN_AREA
+					2.5,			// MAX_AREA
+					0.1,		// MIN_VOLUME
 					INFINITY	// MAX_VOLUME
 					};
 

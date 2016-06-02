@@ -2,20 +2,18 @@
 
 
 void track_particles_function::deform(DSC::DeformableSimplicialComplex<>& dsc) {
-	
-	
 	for (auto n = dsc.nodes_begin(); n != dsc.nodes_end(); n++) {
 		if (dsc.is_movable(n.key())) {
-
 			double radius = 100.0;
 			vec3 vert_pos = dsc.get_pos(n.key());
 			vert_pos = vec3(vert_pos[0] + 1, vert_pos[1] + 1, vert_pos[2] + 1);
 			vert_pos = vert_pos * sph->get_down_scale();
 			vector<Particle> close_particles = sph->get_close_particles_to_pos(vert_pos, radius);
 			vec3 vel = vec3(0.0);
+
 			if (close_particles.size() > 0) {
 
-				double iso_value = 0.00011;
+				double iso_value = 0.00004;
 				Particle p_tmp = Particle(vert_pos, -1);
 				double density = sph->calculate_density(p_tmp, close_particles, radius);
 				//cout << density << endl;
@@ -25,9 +23,9 @@ void track_particles_function::deform(DSC::DeformableSimplicialComplex<>& dsc) {
 				vel = vel / sph->get_down_scale();
 				//vel = vec3(-1 + vel[0], -1 + vel[1], -1 + vel[2]);
 				//cout << density << endl;
-				if (vel.length() > 0.05) {
+				if (vel.length() > 0.5) {
 					vel.normalize();
-					vel = vel * 0.05;
+					vel = vel * 0.5;
 				}
 			}
 			else {

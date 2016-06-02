@@ -1,9 +1,13 @@
-﻿Build started 26-05-2016 17:47:07.
-     1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\src\src.vcxproj" on node 2 (Build target(s)).
-     1>Lib:
+﻿Build started 31-05-2016 15:52:27.
+     1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\src\src.vcxproj" on node 3 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _SCL_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\src.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\src\geometry.cpp
+         geometry.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\Release\src.lib" ISMesh.lib /NOLOGO /LTCG Release\geometry.obj
          src.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\Release\src.lib
      1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\src\src.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.18
+Time Elapsed 00:00:02.39

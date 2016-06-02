@@ -231,8 +231,8 @@ void UI::display()
 		sph->set_delta(d_t);
 		sph->CFL_delta_time_update();
 
-		if (sph->get_delta() > 0.009) {
-			sph->set_delta(0.009);
+		if (sph->get_delta() > 0.008) {
+			sph->set_delta(0.008);
 		}
 
 		d_t = sph->get_delta();
@@ -258,8 +258,8 @@ void UI::display()
 		}
 
 		if (sph->is_density_correction()) {
-			//sph->correct_divergence_error();
-			sph->correct_density_error();
+			sph->correct_divergence_error();
+			//sph->correct_density_error();
 		}
 
 		sph->update_position(d_t);
@@ -267,16 +267,15 @@ void UI::display()
 		if (tmp % 100 == 0)
 			cout << "Time step: " << tmp << endl;
 
-
-		if (tmp == 3700) {
-			//sph->move_coll(vec2(-100.0));
+		/*if (tmp == 3700) {
+			sph->move_coll(vec2(-100.0));
 		}
 		if (tmp == 4700) {
 			sph->write_volume_file();
 		}
 		else if (tmp > 3500) {
 			sph->log_volume();
-		}
+		}*/
 
 		tmp++;
 
@@ -293,10 +292,10 @@ void UI::display()
             }
         }
 
-		if (tmp > 3000) {
+		/*if (tmp > 3000) {
 			string tmp_s = std::to_string(tmp);
 			save_screenshot("C:/Users/Jeppe/Desktop/Screenshots/2D/" + tmp_s + ".TGA", WIN_SIZE_X, WIN_SIZE_Y);
-		}
+		}*/
     }
     check_gl_error();
 }

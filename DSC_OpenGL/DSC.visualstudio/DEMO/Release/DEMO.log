@@ -1,25 +1,17 @@
-﻿Build started 26-05-2016 18:25:04.
+﻿Build started 31-05-2016 23:26:07.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\DEMO\DEMO.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _SCL_SECURE_NO_WARNINGS /D _CRT_SECURE_NO_WARNINGS /D GLUT_BUILDING_LIB /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\DEMO\track_particles_function.cpp ..\..\DEMO\user_interface.cpp
-         track_particles_function.cpp
-     1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\src\velocity_function.h(188): warning C4018: '<': signed/unsigned mismatch
-         D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\src\velocity_function.h(180): note: while compiling class template member function 'bool DSC::VelocityFunc<DSC::DeformableSimplicialComplex<is_mesh::NodeAttributes,is_mesh::EdgeAttributes,is_mesh::FaceAttributes,is_mesh::TetAttributes>>::is_motion_finished(DeformableSimplicialComplex &)'
-                 with
-                 [
-                     DeformableSimplicialComplex=DSC::DeformableSimplicialComplex<is_mesh::NodeAttributes,is_mesh::EdgeAttributes,is_mesh::FaceAttributes,is_mesh::TetAttributes>
-                 ]
-         d:\programmering\fluid_simulation-sph_and_dsc-\dsc_opengl\demo\track_particles_function.h(6): note: see reference to class template instantiation 'DSC::VelocityFunc<DSC::DeformableSimplicialComplex<is_mesh::NodeAttributes,is_mesh::EdgeAttributes,is_mesh::FaceAttributes,is_mesh::TetAttributes>>' being compiled
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _SCL_SECURE_NO_WARNINGS /D _CRT_SECURE_NO_WARNINGS /D GLUT_BUILDING_LIB /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\DEMO\user_interface.cpp
          user_interface.cpp
      1>d:\programmering\fluid_simulation-sph_and_dsc-\dsc_opengl\demo\draw.h(101): warning C4305: 'argument': truncation from 'double' to 'float'
      1>d:\programmering\fluid_simulation-sph_and_dsc-\dsc_opengl\demo\user_interface.h(92): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
      1>d:\programmering\fluid_simulation-sph_and_dsc-\dsc_opengl\demo\user_interface.h(93): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-     1>..\..\DEMO\user_interface.cpp(239): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
-     1>..\..\DEMO\user_interface.cpp(260): warning C4018: '<': signed/unsigned mismatch
-     1>..\..\DEMO\user_interface.cpp(507): warning C4305: '-=': truncation from 'double' to 'GLfloat'
-     1>..\..\DEMO\user_interface.cpp(512): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-     1>..\..\DEMO\user_interface.cpp(517): warning C4305: '-=': truncation from 'double' to 'GLfloat'
-     1>..\..\DEMO\user_interface.cpp(522): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+     1>..\..\DEMO\user_interface.cpp(259): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
+     1>..\..\DEMO\user_interface.cpp(280): warning C4018: '<': signed/unsigned mismatch
+     1>..\..\DEMO\user_interface.cpp(534): warning C4305: '-=': truncation from 'double' to 'GLfloat'
+     1>..\..\DEMO\user_interface.cpp(539): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+     1>..\..\DEMO\user_interface.cpp(544): warning C4305: '-=': truncation from 'double' to 'GLfloat'
+     1>..\..\DEMO\user_interface.cpp(549): warning C4305: '+=': truncation from 'double' to 'GLfloat'
      1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\src\velocity_function.h(188): warning C4018: '<': signed/unsigned mismatch
          D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\src\velocity_function.h(180): note: while compiling class template member function 'bool DSC::VelocityFunc<DSC::DeformableSimplicialComplex<is_mesh::NodeAttributes,is_mesh::EdgeAttributes,is_mesh::FaceAttributes,is_mesh::TetAttributes>>::is_motion_finished(DeformableSimplicialComplex &)'
                  with
@@ -40,11 +32,11 @@
          Generating code
          2 of 3737 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
            0 functions were new in current compilation
-           1 functions had inline decision re-evaluated but remain unchanged
+           7 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          DEMO.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\Release\DEMO.exe
      1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\DEMO\DEMO.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:14.94
+Time Elapsed 00:00:34.13

@@ -224,7 +224,7 @@ public:
 	void correct_divergence_error();
 	void write_volume_file() {
 		ofstream file;
-		file.open("density_error.txt");
+		file.open("density_e.txt");
 		for (double v : vol_log) {
 			file << v << endl;
 		}

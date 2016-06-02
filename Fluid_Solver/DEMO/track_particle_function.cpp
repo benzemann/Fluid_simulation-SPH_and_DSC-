@@ -41,9 +41,9 @@ void track_particle_function::init(DSC2D::DeformableSimplicialComplex& dsc) {
 
 void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
 
-	//HMesh::VertexAttributeVector<vec2> vels;
+	HMesh::VertexAttributeVector<vec2> vels;
 	for (auto vi = dsc.vertices_begin(); vi != dsc.vertices_end(); vi++) {
-		//vels[*vi] = vec2(0.0);
+		vels[*vi] = vec2(0.0);
 		if (dsc.is_interface(*vi)) {
 			double radius = 100.0;
 			vec2 vert_pos = dsc.get_pos(*vi) * 2.0;
@@ -58,12 +58,14 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
 				double len = den_grad.length();
 				vel = -den_grad * ((density - iso_value) / (len * len));
 				vel = vel * 0.5;
-				//vels[*vi] = vel;
+				
 				if (vel.length() > 5.0) {
 					vel.normalize();
 					vel = vel * 5.0;
 				}
 
+
+				vels[*vi] = vel * 100.0;
 			}
 			else {
 
@@ -72,7 +74,7 @@ void track_particle_function::deform(DSC2D::DeformableSimplicialComplex& dsc) {
 				vel.normalize();
 
 			}
-			//sph.set_dsc_vert_velocities(vels);
+			sph.set_dsc_vert_velocities(vels);
 			dsc.set_destination(*vi, dsc.get_pos(*vi) + vel);
 
 			/*vec2 closest_point = vec2(-100.0);

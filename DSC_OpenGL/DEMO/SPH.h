@@ -91,7 +91,8 @@ public:
 	vec3 calculate_collision_impulse(Particle p,vec3 wall_normal);
 
 	void move_wall() {
-		collision_boxes[2].pos[1] = 400;
+
+		collision_boxes[2].pos[1] = 700;
 	}
 
 	double CFL_correction(double delta_time);
@@ -105,11 +106,12 @@ public:
 	}
 
 	vec3 interpolate_iso_nodes(Node* n_a, Node* n_b, double iso_value);
-
 private:
+
 	vector<Collision_Box> collision_boxes;
 
-	double down_scale = 17.5;
+
+	double down_scale = 62.5;
 	double avg_density = 0.0;
 
 	Node**** iso_surface_nodes;

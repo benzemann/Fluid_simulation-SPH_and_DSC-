@@ -8,9 +8,10 @@ SPH::SPH()
 
 void SPH::init() {
 	ps = Particle_System();
+
 	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 5; j++) {
-			for (int k = 0; k < 45; k++) {
+		for (int j = 0; j < 10; j++) {
+			for (int k = 0; k < 100; k++) {
 				int id = ps.create_particle(vec3( 
 					100 + (i * 15.0),
 					100 + (j * 15.0),
@@ -23,9 +24,9 @@ void SPH::init() {
 	create_collision_box(vec3(200.0, 200.0, 0.0), 100.0, 1500, 1500);
 
 	create_collision_box(vec3(200.0, 0.0, 200.0), 10000.0, 1500, 100);
-	create_collision_box(vec3(200.0, 200.0, 200.0), 10000.0, 1500, 100);
+	create_collision_box(vec3(200.0, 300.0, 200.0), 10000.0, 1500, 100);
 
-	create_collision_box(vec3(400.0, 200.0, 200.0), 10000.0, 100, 1500);
+	create_collision_box(vec3(600.0, 200.0, 200.0), 10000.0, 100, 1500);
 	create_collision_box(vec3(0.0, 200.0, 200.0), 10000.0, 100, 1500);
 
 	ps.create_grid(80, 80, 80, 15);
@@ -120,7 +121,7 @@ double SPH::calculate_density(Particle p, vector<Particle> close_particles, doub
 		vec3 p_to_p = p.pos - close_particle.pos;
 		density += (close_particle.mass * poly6_kernel(p_to_p.length(), radius));
 	}
-	return density + p.mass * poly6_kernel(0.0, KERNEL_RADIUS);
+	return density + p.mass * poly6_kernel(0.0, radius);
 }
 
 vec3 SPH::calculate_density_gradient(Particle p, vector<Particle> close_particles, double radius) {
@@ -128,7 +129,7 @@ vec3 SPH::calculate_density_gradient(Particle p, vector<Particle> close_particle
 	for each(Particle close_particle in close_particles) {
 		vec3 p_to_p = p.pos - close_particle.pos;
 		vector<Particle> close_to_p = get_close_particles(&close_particle, radius);
-		double d = calculate_density(close_particle, close_to_p);
+		//double d = calculate_density(close_particle, close_to_p);
 		density_gradient += close_particle.mass * gradient_kernel(p_to_p.length(), p_to_p, radius);
 	}
 	return density_gradient;
