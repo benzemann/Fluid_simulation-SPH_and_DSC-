@@ -215,7 +215,7 @@ void UI::display()
 				double ms_per_frame = (dt_compute_time * 1000.0) / frames_compute_time;
 				cout << ms_per_frame << " ms per frame";
 				dt_compute_time = 0.0;
-				frames_compute_time = 0;
+				
 				double FPS = 1000.0 / ms_per_frame;
 				int particle_count = sph->get_no_of_particle();
 				cout << " [" << FPS << " FPS] [" << particle_count << " particles]" << endl;
@@ -228,10 +228,13 @@ void UI::display()
 			//d_t = 0.008;
 		//d_t = 0.008;
 
-		sph->set_delta(d_t);
-		sph->CFL_delta_time_update();
+		std::chrono::time_point<std::chrono::system_clock> sph_start_time = std::chrono::system_clock::now();
 
-		if (sph->get_delta() > 0.008) {
+		d_t = 0.008;
+		sph->set_delta(d_t);
+		//sph->CFL_delta_time_update();
+
+		if (sph->get_delta() > d_t) {
 			sph->set_delta(0.008);
 		}
 
@@ -240,13 +243,16 @@ void UI::display()
 		sph->update(d_t);
 		
 		sph->update_velocity(d_t);
-		
+
+		std::chrono::time_point<std::chrono::system_clock> sph_end_time = std::chrono::system_clock::now();
 
 		//sph->update_isosurface();
 
 		if (sph->is_it_projecting()) {
 			sph->project_velocities(*dsc);
 		}
+
+		std::chrono::time_point<std::chrono::system_clock> dsc_start_time = std::chrono::system_clock::now();
 
 		//sph->draw_dsc_velocities(*dsc);
 		if (sph->is_fluid_detection())
@@ -255,11 +261,50 @@ void UI::display()
 		if (sph->is_dsc_tracking()) {
 			//if(tmp % 2 == 0)
 			vel_fun->take_time_step(*dsc);
+			//cout << "    DSC: " << vel_fun->get_compute_time() << endl;
 		}
+		std::chrono::time_point<std::chrono::system_clock> dsc_end_time = std::chrono::system_clock::now();
+		//if (sph->is_density_correction()) {
+		std::chrono::time_point<std::chrono::system_clock> div_start_time = std::chrono::system_clock::now();
+			
+		//sph->correct_divergence_error();
+			
+		std::chrono::time_point<std::chrono::system_clock> div_end_time = std::chrono::system_clock::now();
+		std::chrono::time_point<std::chrono::system_clock> den_start_time = std::chrono::system_clock::now();
 
-		if (sph->is_density_correction()) {
-			sph->correct_divergence_error();
-			//sph->correct_density_error();
+		sph->correct_density_error();
+
+		std::chrono::time_point<std::chrono::system_clock> den_end_time = std::chrono::system_clock::now();
+		//}
+
+		if (show_compute_time) {
+			std::chrono::duration<real> sph_delta_time = sph_end_time - sph_start_time;
+			std::chrono::duration<real> div_delta_time = div_end_time - div_start_time;
+			std::chrono::duration<real> den_delta_time = den_end_time - den_start_time;
+			std::chrono::duration<real> dsc_delta_time = dsc_end_time - dsc_start_time;
+			sph_compute_time += sph_delta_time.count();
+			div_compute_time += div_delta_time.count();
+			den_compute_time += den_delta_time.count();
+			dsc_compute_time += dsc_delta_time.count();
+			if (frames_compute_time > 100) {
+				double ms_per_frame = (sph_compute_time * 1000.0) / frames_compute_time;
+				cout << "    SPH: " << ms_per_frame << endl;
+				sph_compute_time = 0.0;
+
+				ms_per_frame = (div_compute_time * 1000.0) / frames_compute_time;
+				cout << "    DIV: " << ms_per_frame << endl;
+				div_compute_time = 0.0;
+
+				ms_per_frame = (den_compute_time * 1000.0) / frames_compute_time;
+				cout << "    DEN: " << ms_per_frame << endl;
+				den_compute_time = 0.0;
+
+				ms_per_frame = (dsc_compute_time * 1000.0) / frames_compute_time;
+				cout << "    DSC: " << ms_per_frame << endl;
+				dsc_compute_time = 0.0;
+
+				frames_compute_time = 0;
+			}
 		}
 
 		sph->update_position(d_t);
@@ -292,10 +337,12 @@ void UI::display()
             }
         }
 
-		/*if (tmp > 3000) {
-			string tmp_s = std::to_string(tmp);
-			save_screenshot("C:/Users/Jeppe/Desktop/Screenshots/2D/" + tmp_s + ".TGA", WIN_SIZE_X, WIN_SIZE_Y);
-		}*/
+		if (tmp > 1500) {
+			if (tmp % 2 == 0) {
+				string tmp_s = std::to_string(tmp);
+				save_screenshot("C:/Users/Jeppe/Desktop/Screenshots/2D/" + tmp_s + ".TGA", WIN_SIZE_X, WIN_SIZE_Y);
+			}
+		}
     }
     check_gl_error();
 }

@@ -11,7 +11,7 @@ void SPH::init() {
 
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 10; j++) {
-			for (int k = 0; k < 100; k++) {
+			for (int k = 0; k < 140; k++) {
 				int id = ps.create_particle(vec3( 
 					100 + (i * 15.0),
 					100 + (j * 15.0),
@@ -21,15 +21,18 @@ void SPH::init() {
 		}
 	}
 
-	create_collision_box(vec3(200.0, 200.0, 0.0), 100.0, 1500, 1500);
+	create_collision_box(vec3(200.0, 200.0, 0.0), 100.0, 2500, 2500);
 
-	create_collision_box(vec3(200.0, 0.0, 200.0), 10000.0, 1500, 100);
-	create_collision_box(vec3(200.0, 300.0, 200.0), 10000.0, 1500, 100);
+	create_collision_box(vec3(200.0, 0.0, 200.0), 10000.0, 1500, 50);
+	create_collision_box(vec3(200.0, 350.0, 200.0), 10000.0, 1500, 50);
 
-	create_collision_box(vec3(600.0, 200.0, 200.0), 10000.0, 100, 1500);
-	create_collision_box(vec3(0.0, 200.0, 200.0), 10000.0, 100, 1500);
+	create_collision_box(vec3(600.0, 200.0, 200.0), 10000.0, 50, 1500);
+	create_collision_box(vec3(0.0, 200.0, 200.0), 10000.0, 50, 1500);
 
-	ps.create_grid(80, 80, 80, 15);
+
+	create_collision_box(vec3(300.0, 600.0, 200.0), 400.0, 100, 100);
+	
+	ps.create_grid(100, 100, 100, 15);
 
 
 
@@ -51,6 +54,16 @@ void SPH::init() {
 			}
 		}
 	}
+}
+#include <iostream>
+#include <fstream>
+void SPH::save_particle_pos(string path) {
+	ofstream file;
+	file.open(path);
+	for (int i = 0; i < ps.get_number_of_particles(); i++) {
+		file << ps.get_particle(i).pos_scaled << endl;
+	}
+	file.close();
 }
 
 void SPH::reset() {
@@ -192,7 +205,7 @@ void SPH::update_position(double delta_time) {
 		Particle* p_ptr = ps.get_particle_ptr(i);
 		p_ptr->pos += p_ptr->vel * delta_time;
 		p_ptr->pos_scaled = (p_ptr->pos / down_scale);
-		p_ptr->pos_scaled = vec3(p_ptr->pos_scaled[0] - 1.0, p_ptr->pos_scaled[1] - 1.0, p_ptr->pos_scaled[2] - 1.0);
+		p_ptr->pos_scaled = vec3(p_ptr->pos_scaled[0] - 7.0, p_ptr->pos_scaled[1] - 7.0, p_ptr->pos_scaled[2] - 7.0);
 	}
 
 }
@@ -430,11 +443,11 @@ void SPH::draw_collision_boxes(vec3 light_pos) {
 	GLfloat light_position[] = { -light_pos[0] , -light_pos[1], -light_pos[2] , 1.0 };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
-	for (int i = 0; i < collision_boxes.size(); i++) {
+	for (int i = 0; i < collision_boxes.size(); i+=5) {
 		
 		//glLoadIdentity();                 // Reset the model-view matrix
 		vec3 pos_scaled = collision_boxes[i].pos / down_scale;
-		pos_scaled = vec3(pos_scaled[0] - 1, pos_scaled[1] - 1, pos_scaled[2] - 1);
+		pos_scaled = vec3(pos_scaled[0] - 7, pos_scaled[1] - 7, pos_scaled[2] - 7);
 		vec3 scale_scaled = vec3(collision_boxes[i].width / (down_scale*2.0), collision_boxes[i].length / (down_scale*2), collision_boxes[i].height / (down_scale*2));
 		glPushMatrix();
 		glTranslatef(pos_scaled[0], pos_scaled[1], pos_scaled[2]);

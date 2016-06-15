@@ -1,4 +1,4 @@
-﻿Build started 01-06-2016 00:31:20.
+﻿Build started 13-06-2016 00:28:55.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (DEMO.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
@@ -8,14 +8,14 @@
          SPH.cpp
      1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\util.h(322): warning C4018: '<': signed/unsigned mismatch
      1>D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\src\util.h(324): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(121): warning C4018: '<': signed/unsigned mismatch
      1>SPH.cpp(122): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(145): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(123): warning C4018: '<': signed/unsigned mismatch
      1>SPH.cpp(146): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(712): warning C4305: 'initializing': truncation from 'double' to 'float'
-     1>SPH.cpp(891): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(930): warning C4018: '<': signed/unsigned mismatch
-     1>SPH.cpp(1079): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(147): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(717): warning C4305: 'initializing': truncation from 'double' to 'float'
+     1>SPH.cpp(896): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(935): warning C4018: '<': signed/unsigned mismatch
+     1>SPH.cpp(1084): warning C4018: '<': signed/unsigned mismatch
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.exe" /INCREMENTAL:NO /NOLOGO glew32.lib GEL.lib odbc32.lib DSC.lib freeglut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.lib" /MACHINE:X86 /SAFESEH /libpath:D:/Programmering/GTK/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib gdk_pixbuf-2.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib gthread-2.0.lib glib-2.0.lib intl.lib  
          /ENTRY:mainCRTStartup Release\Debug_GUI.obj
@@ -28,13 +28,13 @@
          Release\track_particle_function.obj
          Release\user_interface.obj
          Generating code
-         2 of 5235 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+         1 of 5246 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
            0 functions were new in current compilation
-           1 functions had inline decision re-evaluated but remain unchanged
+           2 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          DEMO.vcxproj -> D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\Release\Fluid_Solver.exe
      1>Done Building Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\Fluid_Solver\DEMO\DEMO.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.46
+Time Elapsed 00:00:07.89

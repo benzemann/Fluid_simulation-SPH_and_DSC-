@@ -92,7 +92,7 @@ public:
 
 	void move_wall() {
 
-		collision_boxes[2].pos[1] = 700;
+		collision_boxes[2].pos[1] = 900;
 	}
 
 	double CFL_correction(double delta_time);
@@ -106,6 +106,8 @@ public:
 	}
 
 	vec3 interpolate_iso_nodes(Node* n_a, Node* n_b, double iso_value);
+
+	void save_particle_pos(string path);
 private:
 
 	vector<Collision_Box> collision_boxes;

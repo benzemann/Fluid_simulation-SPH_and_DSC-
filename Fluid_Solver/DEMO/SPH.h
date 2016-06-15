@@ -295,7 +295,7 @@ private:
 	double GAS_CONSTANT = 18900000;
 	double REST_DENSITY = 0.000103;
 	double delta = 0.008;
-	double VISCOCITY_TERM = 10.0; 
+	double VISCOCITY_TERM =  10.0; 
 
 	double volume_diff = 500000.0;
 	// Scaling of the simulation 

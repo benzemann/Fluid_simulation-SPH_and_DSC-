@@ -1,4 +1,4 @@
-﻿Build started 31-05-2016 15:52:23.
+﻿Build started 11-06-2016 21:50:08.
      1>Project "D:\Programmering\Fluid_simulation-SPH_and_DSC-\DSC_OpenGL\DSC.visualstudio\ISMesh\ISMesh.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _CRT_SECURE_NO_WARNINGS /D _SCL_SECURE_NO_WARNINGS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\ISMesh.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\is_mesh\mesh_io.cpp
@@ -11,4 +11,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.17
+Time Elapsed 00:00:01.97

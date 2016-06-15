@@ -50,15 +50,14 @@ void animate_(){
 
 UI* UI::instance = NULL;
 
-
 void UI::setup_light()
 {
-	vec3 center = vec3(2, 2, 2);
+	vec3 center = vec3(2, 4, 1);
 	vec3 eye = center + vec3(gl_dis_max*3.0*cos(angle)*cos(angle2),
 		gl_dis_max*3.0*cos(angle)*sin(angle2),
 		gl_dis_max*3.0*sin(angle));
 	eye.normalize();
-	eye = eye * 30.0;
+	eye = eye * 25.0;
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat mat_shininess[] = { 50.0 };
 	lightPos = vec3(-(GLfloat)eye[0], -(GLfloat)eye[1], -(GLfloat)eye[2]);
@@ -240,7 +239,7 @@ void UI::update_gl()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	vec3 center = vec3(2, 2, 2);
+	vec3 center = vec3(2, 4, 1);
 	vec3 eye = center + vec3(gl_dis_max*3.0*cos(angle)*cos(angle2),
 		gl_dis_max*3.0*cos(angle)*sin(angle2),
 		gl_dis_max*3.0*sin(angle));
@@ -248,7 +247,7 @@ void UI::update_gl()
 		-sin(angle)*sin(angle2),
 		cos(angle));
 	eye.normalize();
-	eye = eye * 30.0;
+	eye = eye * 25.0;
 	gluLookAt(eye[0], eye[1], eye[2], /* eye is at (0,8,60) */
 		center[0], center[1], center[2],      /* center is at (0,8,0) */
 		head[0], head[1], head[2]);      /* up is in postivie Y direction */
@@ -326,20 +325,6 @@ void UI::display()
 	//draw_helper::dsc_draw_edge(*dsc);
 	draw_helper::dsc_draw_interface(*dsc);
 
-
-	if (CONTINUOUS) {
-		//cout << vel_fun->get_time_step() % 10 << endl;
-
-		//if (vel_fun->get_time_step() % 2 == 0 && vel_fun->get_time_step() < 160000) {
-		
-		string name = "C:/Users/Jeppe/Desktop/Screenshots/" + std::to_string(vel_fun->get_time_step());
-		name = name + ".BMP";
-		screenshot((char*)name.c_str());
-		//}
-	}
-	else {
-		//sph->draw_particles(lightPos);
-	}
 	sph->draw_particles(lightPos);
 
 	double d_t = sph->CFL_correction(0.008);
@@ -353,7 +338,7 @@ void UI::display()
 	sph->update_position(d_t);
 
 	//sph->draw_particles(lightPos);
-	//sph->draw_collision_boxes(lightPos);
+	sph->draw_collision_boxes(lightPos);
 
 	//sph->update_iso_surface();
 
@@ -361,6 +346,27 @@ void UI::display()
 	string name = "C:/Users/Jeppe/Desktop/Screenshots/" + std::to_string(c_tmp);
 	name = name + ".BMP";
 	screenshot((char*)name.c_str());
+
+	if (CONTINUOUS) {
+		//cout << vel_fun->get_time_step() % 10 << endl;
+
+		//if (vel_fun->get_time_step() % 2 == 0 && vel_fun->get_time_step() < 160000) {
+
+		string name = "C:/Users/Jeppe/Desktop/Screenshots/" + std::to_string(vel_fun->get_time_step());
+		name = name + ".BMP";
+		screenshot((char*)name.c_str());
+		vector<vec3> points;
+		vector<int> faces;
+		dsc->extract_surface_mesh(points, faces);
+		name = "C:/Users/Jeppe/Desktop/Fluid_objs/" + std::to_string(vel_fun->get_time_step());
+		name = name + ".obj";
+		is_mesh::export_surface_mesh(name, points, faces);
+		name = "C:/Users/Jeppe/Desktop/particle_pos/" + std::to_string(vel_fun->get_time_step());
+		name = name + ".txt";
+		sph->save_particle_pos(name);
+		//}
+	}
+
 	c_tmp++;
 	glutSwapBuffers();
 }
@@ -599,7 +605,7 @@ void UI::identify_fluid(double threshold)
 	for (auto te = dsc->tetrahedra_begin(); te != dsc->tetrahedra_end(); te++) {
 
 		vec3 center = dsc->get_barycenter(dsc->get_nodes(te.key()));
-		center = vec3(center[0] + 1, center[1] + 1, center[2] + 1);
+		center = vec3(center[0] + 7, center[1] + 7, center[2] + 7);
 		center = center * sph->get_down_scale();
 		vector<Particle> close_particles = sph->get_close_particles_to_pos(center);
 		if (close_particles.size() > 0) {

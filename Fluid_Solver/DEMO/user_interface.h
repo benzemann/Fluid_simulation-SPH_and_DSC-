@@ -64,6 +64,10 @@ class UI
 	bool show_compute_time = false;
 	int frames_compute_time = 0;
 	double dt_compute_time = 0.0;
+	double sph_compute_time = 0.0;
+	double div_compute_time = 0.0;
+	double den_compute_time = 0.0;
+	double dsc_compute_time = 0.0;
     
 public:
     

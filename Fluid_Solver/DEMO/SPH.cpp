@@ -328,8 +328,7 @@ void SPH::correct_density_error() {
 
 void SPH::correct_divergence_error() {
 
-
-	int max_iterations = 50;
+	int max_iterations = 5;
 	int iterations = 0;
 	double divergence_avg = 0.0;
 
@@ -411,7 +410,7 @@ void SPH::correct_divergence_error() {
 	}
 	double div_error_after = divergence_avg;
 
-	cout << "START: " << div_error_start << " AFTER: " << div_error_after << " DIFFERENCE: " << (div_error_after) / div_error_start << endl;
+	//cout << "START: " << div_error_start << " AFTER: " << div_error_after << " DIFFERENCE: " << (div_error_after) / div_error_start << endl;
 	/*for (int i = 0; i < get_no_of_particle(); i++) {
 		Particle* p_ptr = get_particle_ptr(i);
 
@@ -492,6 +491,7 @@ void SPH::update_velocity(double delta_time) {
 			p_ptr->vel = velocity;
 			
 			p_ptr->vel += check_collision(*p_ptr, delta_time);
+
 		}
 	}
 }
@@ -503,7 +503,7 @@ void SPH::update_position(double delta_time) {
 		
 		if(!p_ptr->is_fixed)
 			p_ptr->pos += p_ptr->vel * delta_time;
-		p_ptr->pos_0 = p_ptr->pos / 2.0;
+		p_ptr->pos_0 = p_ptr->pos * scale;
 	}
 }
 
@@ -530,8 +530,8 @@ void SPH::draw_particles() {
 }
 
 void SPH::create_particle_at_mouse_pos() {
-	if (get_no_of_particle() >= 900)
-		return;
+	//if (get_no_of_particle() >= 700)
+	//	return;
 	POINT curPos;
 	BOOL result = GetCursorPos(&curPos);
 	static int step = -15;
